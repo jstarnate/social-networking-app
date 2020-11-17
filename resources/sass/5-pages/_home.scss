@@ -1,0 +1,44 @@
+.home {
+    max-width: 1366px;
+}
+
+.timeline {
+    &__post-input {
+        width: 100%;
+        resize: none;
+        border-radius: $radius--md $radius--md 0 0;
+    }
+
+    &__post-submit {
+        border-radius: 0 0 $radius--md $radius--md;
+    }
+
+    &__post-body {
+        line-height: 1.5;
+    }
+
+    &__comment-box {
+        border-radius: 2rem;
+        resize: none;
+    }
+}
+
+.profile {
+    &__follow-button {
+        border-radius: 2rem;
+    }
+
+    &__active-tab {
+        border-bottom: 3px solid $primary;
+        font-weight: 700;
+    }
+
+    &__post-body {
+        line-height: 1.5;
+    }
+
+    &__comment-box {
+        border-radius: 2rem;
+        resize: none;
+    }
+}

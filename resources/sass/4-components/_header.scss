@@ -1,0 +1,25 @@
+.header {
+    top: 0;
+    
+    &__wrap {
+        max-width: 1366px;
+    }
+
+    &__logo-link {
+        @include coords(50%, auto, 0, 50%);
+        transform: translate(-50%, -50%);
+    }
+
+    &__sidelink:hover {
+        color: $black--light;
+    }
+
+    &__search-input {
+        border-radius: $radius--sm 0 0 $radius--sm;
+    }
+
+    &__search-submit {
+        border-radius: 0 $radius--sm $radius--sm 0;
+    }
+
+}

@@ -1,0 +1,27 @@
+* {
+	box-sizing: border-box;
+	font-family: 'Nunito', Helvetica, sans-serif;
+	border-style: solid;
+	border-width: 0;
+}
+
+html, body, h1, h2, h3, h4, h5, h6, p {
+	margin: 0;
+}
+
+html {
+	-webkit-text-size-adjust:100%;
+}
+
+body {
+	-webkit-font-smoothing:antialiased;
+	-moz-osx-font-smoothing:grayscale;
+}
+
+a[href] {
+	text-decoration: none;
+}
+
+svg {
+	display: block;
+}

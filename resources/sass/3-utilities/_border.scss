@@ -1,0 +1,152 @@
+/*
+| ==================================================
+| SIZE
+| ==================================================
+*/
+.b--1 {
+	border-width: 1px;
+}
+
+.bt--1 {
+	border-top-width: 1px;
+}
+
+.br--1 {
+	border-right-width: 1px;
+}
+
+.bb--1 {
+	border-bottom-width: 1px;
+}
+
+.bl--1 {
+	border-left-width: 1px;
+}
+
+
+
+/*
+| ==================================================
+| COLORS
+| ==================================================
+*/
+.brdr--primary {
+	border-color: $primary;
+}
+
+.brdr--primary-light {
+	border-color: $primary--light;
+}
+
+.brdr--primary-dark {
+	border-color: $primary--dark;
+}
+
+.brdr--success {
+	border-color: $success;
+}
+
+.brdr--success-light {
+	border-color: $success--light;
+}
+
+.brdr--success-dark {
+	border-color: $success--dark;
+}
+
+.brdr--danger {
+	border-color: $danger;
+}
+
+.brdr--danger-light {
+	border-color: $danger--light;
+}
+
+.brdr--danger-dark {
+	border-color: $danger--dark;
+}
+
+.brdr--black {
+	border-color: $black;
+}
+
+.brdr--black-light {
+	border-color: $black--light;
+}
+
+.brdr--gray {
+	border-color: $gray;
+}
+
+.brdr--gray-light {
+	border-color: $gray--light;
+}
+
+.brdr--bluish-white {
+	border-color: $bluish-white;
+}
+
+.brdr--pale {
+	border-color: $pale;
+}
+
+
+
+/*
+| ==================================================
+| RADIUS
+| ==================================================
+*/
+
+// ALL SIDES
+.b-rad--sm {
+	border-radius: $radius--sm;
+}
+
+.b-rad--md {
+	border-radius: $radius--md;
+}
+
+.curved {
+	border-radius: 1rem;
+}
+
+.round {
+	border-radius: 100%;
+}
+
+// TOP-LEFT
+.btl-rad--sm {
+	border-top-left-radius: $radius--sm;
+}
+
+.btl-rad--md {
+	border-top-left-radius: $radius--md;
+}
+
+// TOP-RIGHT
+.btr-rad--sm {
+	border-top-right-radius: $radius--sm;
+}
+
+.btr-rad--md {
+	border-top-right-radius: $radius--md;
+}
+
+// BOTTOM-LEFT
+.bbl-rad--sm {
+	border-bottom-left-radius: $radius--sm;
+}
+
+.bbl-rad--md {
+	border-bottom-left-radius: $radius--md;
+}
+
+// BOTTOM-RIGHT
+.bbr-rad--sm {
+	border-bottom-right-radius: $radius--sm;
+}
+
+.bbr-rad--md {
+	border-bottom-right-radius: $radius--md;
+}

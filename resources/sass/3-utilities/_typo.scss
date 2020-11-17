@@ -1,0 +1,44 @@
+// SIZE
+.font--xs {
+	font-size: $font--xs;
+}
+
+.font--sm {
+	font-size: $font--sm;
+}
+
+.font--md {
+	font-size: $font--md;
+}
+
+.font--lg {
+	font-size: $font--lg;
+}
+
+.font--xl {
+	font-size: $font--xl;
+}
+
+
+// WEIGHT
+.text--light {
+	font-weight: 400;
+}
+
+.text--bold {
+	font-weight: 700;
+}
+
+
+// ALIGNMENT
+.text--left {
+	text-align: left;
+}
+
+.text--right {
+	text-align: right;
+}
+
+.text--center {
+	text-align: center;
+}

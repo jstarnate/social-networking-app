@@ -1,0 +1,11 @@
+.alert--success {
+    background: $success--light;
+    border: 1px solid $success--dark;
+    color: darken($success, 40%);
+}
+
+.alert--danger {
+    background: $danger--light;
+    border: 1px solid $danger--dark;
+    color: darken($danger, 40%);
+}

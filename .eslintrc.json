@@ -1,0 +1,63 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/recommended",
+        "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "import",
+        "prettier"
+    ],
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".ts", ".tsx"]
+            }
+        }
+    },
+    "rules": {
+        "no-dupe-args": "error",
+        "no-dupe-keys": "error",
+        "no-empty": "error",
+        "no-extra-semi": "error",
+        "no-sparse-arrays": "error",
+        "no-template-curly-in-string": "error",
+        "no-regex-spaces": "error",
+        "no-unexpected-multiline": "error",
+        "no-unreachable": "warn",
+        "array-callback-return": "error",
+        "block-scoped-var": "error",
+        "curly": "error",
+        "dot-notation": "warn",
+        "eqeqeq": "error",
+        "no-alert": "error",
+        "no-console": "error",
+        "no-else-return": ["warn", { "allowElseIf": false }],
+        "no-empty-function": "error",
+        "no-eq-null": "error",
+        "no-lone-blocks": "error",
+        "no-multi-spaces": ["warn", { "ignoreEOLComments": false }],
+        "no-octal": "warn",
+        "no-redeclare": "error",
+        "no-self-assign": "error",
+        "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
+        "@typescript-eslint/no-var-requires": "off",
+        "import/no-unresolved": "off"
+    }
+}

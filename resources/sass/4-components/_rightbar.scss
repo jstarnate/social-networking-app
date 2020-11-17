@@ -1,0 +1,13 @@
+.rightbar {
+    width: 350px;
+
+    &__wrap {
+        right: 0;
+        width: inherit;
+        height: calc(100vw - 70px);
+    }
+
+    &__follow-button {
+        border-radius: 0 0 $radius--sm $radius--sm;
+    }
+}

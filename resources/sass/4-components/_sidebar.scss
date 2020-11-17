@@ -1,0 +1,13 @@
+.sidebar {
+    width: 250px;
+
+    &__wrap {
+        left: 0;
+        width: inherit;
+        height: calc(100vw - 70px);
+    }
+
+    &__active-link {
+        color: $primary--dark;
+    }
+}
