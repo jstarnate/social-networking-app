@@ -1,4 +1,4 @@
-import { User, Post } from 'types/models';
+import { Post } from 'types/models';
 import { State, SetItem, AddItem } from 'types/redux';
 import initialState from './state';
 
@@ -10,9 +10,9 @@ export default (state = initialState, action: SetItem | AddItem): State => {
     }
 
     if (action.type === 'ADD') {
-        const property: (User | Post)[] = state[action.name];
+        const posts: Post[] = state.posts;
 
-        property.push(action.payload);
+        state.posts = [action.payload, ...posts];
 
         return state;
     }
