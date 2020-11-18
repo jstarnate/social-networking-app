@@ -1,10 +1,12 @@
 import React, { FC, ReactElement, useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
 import { Post as PostExtension } from 'types/models';
 
 interface PostProps extends PostExtension {
     namespace: string;
+    render?: (comments: number) => ReactElement;
 }
 
 const Post: FC<PostProps> = (props: PostProps): ReactElement => {
@@ -82,12 +84,18 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
                     </button>
                 )}
 
-                <button className='btn font--lg mg-l--xl'>
-                    <i className='fa fa-comment-o text--black-light'></i>
-                    <span className='text--black-light mg-l--xxs'>
-                        {props.comments}
-                    </span>
-                </button>
+                {props.render ? (
+                    props.render(props.comments)
+                ) : (
+                    <Link
+                        to={`/posts/${props.id}/comments`}
+                        className='btn font--lg mg-l--xl'>
+                        <i className='fa fa-comment-o text--black-light'></i>
+                        <span className='text--black-light mg-l--xxs'>
+                            {props.comments}
+                        </span>
+                    </Link>
+                )}
 
                 {bookmarked ? (
                     <button
