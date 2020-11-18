@@ -17,7 +17,7 @@ const BasicUserInfo: FC<BasicUserInfoProps> = ({
     url,
 }: BasicUserInfoProps): ReactElement => {
     return (
-        <Link className={className} to={url}>
+        <Link className={className} to={url || ''}>
             {gender === 'Male' && !image_url ? (
                 <MaleDefaultAvatar size={55} />
             ) : gender === 'Female' && !image_url ? (

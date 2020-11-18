@@ -52,10 +52,7 @@ class PostController extends Controller
     public function fetch(Request $request)
     {
         $getPost = Post::find($request->id);
-        $post = $getPost->format()->merge(
-                    auth()->user()->only('gender', 'image_url')
-                );
-        
+        $post = $getPost->format();
         $commentsCount = $getPost->comments->count();
 
         return response()->json(compact('post', 'commentsCount'));
