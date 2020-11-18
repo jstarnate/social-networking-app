@@ -11,7 +11,6 @@ const Spinner: FC<LoaderInterface> = ({
             <svg
                 style={{
                     margin: 'auto',
-                    background: 'rgb(255, 255, 255)',
                     shapeRendering: 'auto',
                 }}
                 className={className}

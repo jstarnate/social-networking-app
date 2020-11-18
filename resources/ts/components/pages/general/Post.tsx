@@ -1,5 +1,4 @@
 import React, { FC, ReactElement, useState } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
 import { Post as PostExtension } from 'types/models';
@@ -58,9 +57,7 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
     }
 
     return (
-        <Link
-            to={`/posts/${props.id}/comments`}
-            className='d--block b--1 brdr--primary b-rad--md pd--md mg-t--md'>
+        <div className='d--block b--1 brdr--primary b-rad--md pd--md mg-t--md'>
             <BasicUserInfo className='d--if ai--center' {...props.user} />
 
             <p
@@ -106,7 +103,7 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
                     </button>
                 )}
             </div>
-        </Link>
+        </div>
     );
 };
 

@@ -1,17 +1,5 @@
-import { User, Post } from 'types/models';
-import { Payload } from 'types/redux';
-
-export interface SetItem {
-    type: 'SET';
-    name: string;
-    payload: Payload;
-}
-
-export interface AddItem {
-    type: 'ADD';
-    name: string;
-    payload: User | Post;
-}
+import { Post } from 'types/models';
+import { Payload, SetItem, AddItem } from 'types/redux';
 
 export const set = (name: string, payload: Payload): SetItem => ({
     type: 'SET',
@@ -19,8 +7,7 @@ export const set = (name: string, payload: Payload): SetItem => ({
     payload,
 });
 
-export const add = (name: string, payload: User | Post): AddItem => ({
+export const add = (payload: Post): AddItem => ({
     type: 'ADD',
-    name,
     payload,
 });
