@@ -61,6 +61,7 @@ Route::middleware('auth')->group(function() {
     Route::post('/users/follow', [UserController::class, 'follow']);
     Route::post('/users/unfollow', [UserController::class, 'unfollow']);
 
+    Route::post('/posts/fetch', [PostController::class, 'fetch']);
     Route::post('/posts/friends', [PostController::class, 'get']);
     Route::post('/posts/create', [PostController::class, 'store']);
     Route::delete('/posts/delete/{post}', [PostController::class, 'destroy']);
