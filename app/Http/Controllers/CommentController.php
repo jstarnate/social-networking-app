@@ -58,36 +58,40 @@ class CommentController extends Controller
         $user = auth()->user();
         $post = Post::find($request->id);
         $posterId = $post->user->id;
-        $comment = $user->comments()->create($request->only('body'));
+        $comment = $user->comments()->create([
+            'user_id' => auth()->user()->id,
+            'post_id' => $request->id,
+            'body' => $request->body,
+        ]);
 
-        $comment->posts()->attach($request->id);
-
-        if ($posterId !== $user->id) {
-            $this->notificationRepository->store(
-                $user,
-                $posterId,
-                Notification::COMMENTED,
-                "/home/post/{$request->id}"
-            );
+        // if ($posterId !== $user->id) {
+        //     $this->notificationRepository->store(
+        //         $user,
+        //         $posterId,
+        //         Notification::COMMENTED,
+        //         "/posts/{$request->id}/comments"
+        //     );
             
-            event(new NotifyUser($posterId));
-        }
-        else {
-            $otherUsersComments = $post->comments()->whereNotIn('user_id', [$posterId])->get();
+        //     event(new NotifyUser($posterId));
+        // }
+        // else {
+        //     $otherUsersComments = $post->comments()->whereNotIn('user_id', [$posterId])->get();
 
-            $otherUsersComments->each(function($c) use ($post, $request) {
-                $this->notificationRepository->store(
-                    $post->user,
-                    $c->user_id,
-                    Notification::COMMENTED,
-                    "/home/post/{$request->id}"
-                );
+        //     $otherUsersComments->each(function($c) use ($post, $request) {
+        //         $this->notificationRepository->store(
+        //             $post->user,
+        //             $c->user_id,
+        //             Notification::COMMENTED,
+        //             "/posts/{$request->id}/comments"
+        //         );
 
-                event(new NotifyUser($c->user_id));
-            });
-        }
+        //         event(new NotifyUser($c->user_id));
+        //     });
+        // }
 
-        return response()->json(['comment' => $comment->format($user)]);
+        return response()->json([
+            'comment' => $comment->format()
+        ]);
     }
 
     /**
@@ -100,7 +104,6 @@ class CommentController extends Controller
     {
         $this->authorize('delete', $comment = Comment::find($id));
 
-        $comment->posts()->detach();
         $comment->delete();
     }
 
