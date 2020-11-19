@@ -25,6 +25,5 @@ export interface Comment {
     id: number;
     body: string;
     from_self: boolean;
-    is_liked: boolean;
     user: User;
 }
