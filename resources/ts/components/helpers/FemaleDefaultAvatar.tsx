@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react';
 
 interface Props {
-    size: number;
+    size?: number;
 }
 
 const FemaleDefaultAvatar: FC<Props> = ({ size }: Props): ReactElement => {
@@ -44,6 +44,10 @@ const FemaleDefaultAvatar: FC<Props> = ({ size }: Props): ReactElement => {
             </g>
         </svg>
     );
+};
+
+FemaleDefaultAvatar.defaultProps = {
+    size: 55,
 };
 
 export default FemaleDefaultAvatar;
