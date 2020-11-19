@@ -15,7 +15,7 @@ class Comment extends Model
      *
      * @var array
      */
-    protected $fillable = ['body'];
+    protected $fillable = ['user_id', 'post_id', 'body'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -55,12 +55,12 @@ class Comment extends Model
     */
     public function format()
     {
-        $authUserId = auth()->user()->id;
         $comment = collect($this);
+        $user = $this->user->only('full_name', 'username', 'gender', 'image_url');
+        $user['url'] = route('profile', ['username' => $user['username']]);
 
-        $comment['from_self'] = $authUserId === $this->user_id;
-        $comment['is_liked'] = $this->likers->contains($authUserId);
-        $comment['user'] = $this->user->only('full_name', 'username', 'gender', 'image_url');
+        $comment['from_self'] = auth()->user()->id === $this->user_id;
+        $comment['user'] = $user;
 
         return $comment;
     }
