@@ -52,7 +52,11 @@ const PostView: FC = (): ReactElement => {
                 />
             )}
 
-            <CommentsSection postId={id} />
+            <CommentsSection
+                postId={id}
+                userGender={tweet?.user.gender || null}
+                avatarLink={tweet?.user.image_url || undefined}
+            />
         </section>
     );
 };
