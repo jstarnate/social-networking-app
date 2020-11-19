@@ -6,10 +6,12 @@ import { User } from 'types/models';
 
 interface BasicUserInfoProps extends User {
     className?: string;
+    avatarSize?: number;
 }
 
 const BasicUserInfo: FC<BasicUserInfoProps> = ({
     className,
+    avatarSize,
     full_name,
     username,
     gender,
@@ -19,9 +21,9 @@ const BasicUserInfo: FC<BasicUserInfoProps> = ({
     return (
         <Link className={className} to={url || ''}>
             {gender === 'Male' && !image_url ? (
-                <MaleDefaultAvatar size={55} />
+                <MaleDefaultAvatar size={avatarSize} />
             ) : gender === 'Female' && !image_url ? (
-                <FemaleDefaultAvatar size={55} />
+                <FemaleDefaultAvatar size={avatarSize} />
             ) : (
                 <img className='circle' src={image_url} alt='Profile photo' />
             )}
