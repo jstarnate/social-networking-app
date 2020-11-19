@@ -15,7 +15,11 @@ class FetchRepository implements FetchRepositoryInterface
      */
 	public function fetch($models, $date)
 	{
-		$payload = $models->latest()->where('updated_at', '<', $date ?: now())->get()->take(5);
+        $payload = $models->orderBy('updated_at', 'desc')
+                    ->where('updated_at', '<', $date ?: now())
+                    ->get()
+                    ->take(5);
+                    
         $items = $payload->map(fn($item) => $item->format());
         $timestamp = $payload->count() ? $payload->last()->updated_at : null;
 
