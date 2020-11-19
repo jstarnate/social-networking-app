@@ -1,5 +1,9 @@
 .home {
     max-width: 1366px;
+
+    &__big-dot {
+        @include size(5px);
+    }
 }
 
 .timeline {

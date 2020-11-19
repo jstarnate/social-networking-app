@@ -69,16 +69,16 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
 
             <div className='mg-t--sm'>
                 {liked ? (
-                    <button className='btn font--lg' onClick={dislike}>
-                        <i className='fa fa-heart text--danger-dark'></i>
-                        <span className='font--sm text--danger-dark mg-l--xxs'>
+                    <button className='btn' onClick={dislike}>
+                        <i className='fa fa-heart font--lg text--danger-dark'></i>
+                        <span className='font--sm font--lg text--danger-dark mg-l--xxs'>
                             {likesCount}
                         </span>
                     </button>
                 ) : (
                     <button className='btn font--lg' onClick={like}>
-                        <i className='fa fa-heart-o text--black-light'></i>
-                        <span className='font--sm text--black-light mg-l--xxs'>
+                        <i className='fa fa-heart-o font--lg text--black-light'></i>
+                        <span className='font--sm font--lg text--black-light mg-l--xxs'>
                             {likesCount}
                         </span>
                     </button>
@@ -98,16 +98,12 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
                 )}
 
                 {bookmarked ? (
-                    <button
-                        className='btn font--lg mg-l--xl'
-                        onClick={unbookmark}>
-                        <i className='fa fa-bookmark text--black-light'></i>
+                    <button className='btn mg-l--xl' onClick={unbookmark}>
+                        <i className='fa fa-bookmark font--lg text--black-light'></i>
                     </button>
                 ) : (
-                    <button
-                        className='btn font--lg mg-l--xl'
-                        onClick={bookmark}>
-                        <i className='fa fa-bookmark-o text--black-light'></i>
+                    <button className='btn mg-l--xl' onClick={bookmark}>
+                        <i className='fa fa-bookmark-o font--lg text--black-light'></i>
                     </button>
                 )}
             </div>

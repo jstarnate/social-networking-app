@@ -30,11 +30,11 @@ class CommentController extends Controller
      * Get 5 comment models from storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function get(Request $request, Post $post)
+    public function get(Request $request)
     {
+        $post = Post::find($request->postId);
         $body = $this->fetchRepository->fetch(
                     $post->comments(),
                     $request->date

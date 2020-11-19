@@ -5,6 +5,7 @@ import axios from 'axios';
 import { State } from 'types/redux';
 import { Post as PostInterface } from 'types/models';
 import Post from './Post';
+import CommentsSection from './CommentsSection';
 
 interface RouteParams {
     id?: (number & string) | undefined;
@@ -50,6 +51,8 @@ const PostView: FC = (): ReactElement => {
                     {...tweet}
                 />
             )}
+
+            <CommentsSection postId={id} />
         </section>
     );
 };
