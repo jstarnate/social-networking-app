@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function() {
     Route::post('/posts/bookmark', [PostController::class, 'bookmark']);
     Route::post('/posts/unbookmark', [PostController::class, 'unbookmark']);
 
-    Route::post('/posts/{post}/comments', [CommentController::class, 'get']);
+    Route::post('/comments/get', [CommentController::class, 'get']);
 
     // Route::post('/foo', function() {
     //     auth()->logout();
