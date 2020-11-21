@@ -97,14 +97,16 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Comment  $comment
      * @return void
      */
-    public function destroy(int $id)
+    public function destroy(Comment $comment)
     {
-        $this->authorize('delete', $comment = Comment::find($id));
+        $this->authorize('delete', $comment);
 
         $comment->delete();
+
+        return response()->json(['message' => 'Comment successfully deleted.']);
     }
 
 }
