@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function() {
 
     Route::post('/comments/get', [CommentController::class, 'get']);
     Route::post('/comments/store', [CommentController::class, 'store']);
+    Route::delete('/comments/{comment}/destroy', [CommentController::class, 'destroy']);
 
     // Route::post('/foo', function() {
     //     auth()->logout();

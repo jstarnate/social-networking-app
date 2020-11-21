@@ -7,11 +7,11 @@ import React, {
     KeyboardEvent,
 } from 'react';
 import axios from 'axios';
-import BasicUserInfo from 'helpers/BasicUserInfo';
 import Spinner from 'helpers/Spinner';
 import MaleDefaultAvatar from 'helpers/MaleDefaultAvatar';
 import FemaleDefaultAvatar from 'helpers/FemaleDefaultAvatar';
-import { Comment } from 'types/models';
+import Comment from './Comment';
+import { Comment as CommentType } from 'types/models';
 
 interface CommentsSectionProps {
     postId: number | string | undefined;
@@ -24,7 +24,7 @@ const CommentsSection: FC<CommentsSectionProps> = ({
     userGender,
     avatarLink,
 }: CommentsSectionProps): ReactElement => {
-    const [comments, setComments] = useState<Comment[]>([]);
+    const [comments, setComments] = useState<CommentType[]>([]);
     const [commentBody, setCommentBody] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [commentLoading, setCommentLoading] = useState<boolean>(false);
@@ -82,6 +82,11 @@ const CommentsSection: FC<CommentsSectionProps> = ({
         }
     }
 
+    function deleteCommentEvent(commentId: number) {
+        const filtered = comments.filter(comment => comment.id !== commentId);
+        setComments(filtered);
+    }
+
     if (loading) {
         return (
             <div className='mg-t--md'>
@@ -112,7 +117,7 @@ const CommentsSection: FC<CommentsSectionProps> = ({
                 )}
 
                 <textarea
-                    className='full-width flex--1 font--md text--black pd-t--xs pd-b--xs pd-l--sm pd-r--sm b--1 brdr--primary mg-l--xs home__comment-box'
+                    className='full-width flex--1 font--md text--black pd-t--xs pd-b--xs pd-l--sm pd-r--sm b--1 brdr--gray mg-l--xs home__comment-box'
                     maxLength={250}
                     rows={1}
                     placeholder='Press Enter to submit comment'
@@ -125,19 +130,11 @@ const CommentsSection: FC<CommentsSectionProps> = ({
             {!loading && !!comments.length && (
                 <div>
                     {comments.map(comment => (
-                        <div
+                        <Comment
                             key={comment.id}
-                            className='b--1 brdr--primary b-rad--sm pd--md mg-t--md'>
-                            <BasicUserInfo
-                                className='d--flex ai--center'
-                                avatarSize={45}
-                                {...comment.user}
-                            />
-
-                            <p className='text--black mg-t--sm timeline__post-body'>
-                                {comment.body}
-                            </p>
-                        </div>
+                            deleteEvent={deleteCommentEvent}
+                            {...comment}
+                        />
                     ))}
                 </div>
             )}

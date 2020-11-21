@@ -9,6 +9,7 @@
 
 @section('content')
     <main id="home"></main>
+    <main id="portal"></main>
 @endsection
 
 @section('js', asset('js/home.js'))
