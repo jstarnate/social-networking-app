@@ -19,3 +19,14 @@ export interface AddItem {
     type: 'ADD';
     payload: Post;
 }
+
+export interface UpdateItem {
+    type: 'UPDATE';
+    id: number;
+    payload: Post;
+}
+
+export interface DeleteItem {
+    type: 'DESTROY';
+    id: number;
+}
