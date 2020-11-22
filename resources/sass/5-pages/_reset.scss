@@ -4,4 +4,23 @@
         max-width: 520px;
     }
 
+    &__modal {
+        @include coords(0, 0, 0, 0);
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+    }
+
+    &__modal-main {
+        max-width: 480px;
+        margin-top: 7vw;
+    }
+
+    &__modal-head {
+        border-radius: $radius--md $radius--md 0 0;
+    }
+
+    &__modal-body {
+        line-height: 1.5;
+    }
+
 }
