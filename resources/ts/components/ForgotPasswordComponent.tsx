@@ -66,6 +66,7 @@ const ForgotPasswordComponent: FC = (): ReactElement => {
             {isSent && (
                 <Portal>
                     <Modal
+                        namespace='forgot'
                         title='Request sent!'
                         type='primary'
                         message='Please check your email for the sent request. Thank you!'
