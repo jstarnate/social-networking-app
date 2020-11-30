@@ -1,6 +1,7 @@
 import React, { FC, ReactElement } from 'react';
 
 interface ModalProps {
+    namespace: string;
     title: string;
     type: string;
     message: string | null;
@@ -8,20 +9,23 @@ interface ModalProps {
 }
 
 const AlertBox: FC<ModalProps> = ({
+    namespace,
     title,
     type,
     message,
     children,
 }: ModalProps): ReactElement => {
     return (
-        <div className='pos--fixed home__modal'>
-            <div className='bg--white b-rad--md mg-l--auto mg-r--auto home__modal-main'>
+        <div className={`pos--fixed ${namespace}__modal`}>
+            <div
+                className={`bg--white b-rad--md mg-l--auto mg-r--auto ${namespace}__modal-main`}>
                 <header
-                    className={`d--flex bg--${type} pd--xs home__modal-head`}>
+                    className={`d--flex bg--${type} pd--xs ${namespace}__modal-head`}>
                     <h3 className='text--white'>{title}</h3>
                 </header>
 
-                <p className='font--md text--black-light pd-t--sm pd-b--sm pd-l--xs pd-r--xs home__modal-body'>
+                <p
+                    className={`font--md text--black-light pd-t--sm pd-b--sm pd-l--xs pd-r--xs ${namespace}__modal-body`}>
                     {message}
                 </p>
 
