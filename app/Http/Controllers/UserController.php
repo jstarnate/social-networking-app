@@ -23,6 +23,13 @@ class UserController extends Controller
         $this->notificationRepository = $notificationRepository;
     }
 
+    public function getAuthUser()
+    {
+        return response()->json([
+            'user' => auth()->user()->formatBasic()
+        ]);
+    }
+
     /**
      * Get a specific user model.
      *
