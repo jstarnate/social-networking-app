@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\{Post, Comment, Notification};
 use Illuminate\Http\Request;
-use App\Events\NotifyUser;
+use App\Events\UserCommented;
 use App\Repositories\{FetchRepository, NotificationRepository};
 
 class CommentController extends Controller
@@ -57,37 +57,39 @@ class CommentController extends Controller
         
         $user = auth()->user();
         $post = Post::find($request->id);
-        $posterId = $post->user->id;
+        $op = $post->user;
         $comment = $user->comments()->create([
             'user_id' => auth()->user()->id,
             'post_id' => $request->id,
             'body' => $request->body,
         ]);
 
-        // if ($posterId !== $user->id) {
-        //     $this->notificationRepository->store(
-        //         $user,
-        //         $posterId,
-        //         Notification::COMMENTED,
-        //         "/posts/{$request->id}/comments"
-        //     );
+        if ($op->id !== $user->id) {
+            // If the commenter is not the auth user, notify the auth user.
+            $this->notificationRepository->store(
+                $user,
+                $op->id,
+                Notification::COMMENTED,
+                "/posts/{$request->id}/comments"
+            );
             
-        //     event(new NotifyUser($posterId));
-        // }
-        // else {
-        //     $otherUsersComments = $post->comments()->whereNotIn('user_id', [$posterId])->get();
+            event(new UserCommented($op, $user));
+        }
+        else {
+            // If the auth user commented on his own post, notify each commenter.
+            $otherUsersComments = $post->comments()->whereNotIn('user_id', [$op->id])->get();
 
-        //     $otherUsersComments->each(function($c) use ($post, $request) {
-        //         $this->notificationRepository->store(
-        //             $post->user,
-        //             $c->user_id,
-        //             Notification::COMMENTED,
-        //             "/posts/{$request->id}/comments"
-        //         );
+            $otherUsersComments->each(function($c) use ($post, $request) {
+                $this->notificationRepository->store(
+                    $post->user,
+                    $c->user_id,
+                    Notification::COMMENTED,
+                    "/posts/{$request->id}/comments"
+                );
 
-        //         event(new NotifyUser($c->user_id));
-        //     });
-        // }
+                event(new UserCommented($c->user, $user));
+            });
+        }
 
         return response()->json([
             'comment' => $comment->format()

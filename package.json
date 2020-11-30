@@ -9,7 +9,11 @@
         "jest": "jest",
         "jest:watch": "jest --watch"
     },
-    "keywords": ["react", "laravel", "typescript"],
+    "keywords": [
+        "react",
+        "laravel",
+        "typescript"
+    ],
     "author": "",
     "license": "ISC",
     "dependencies": {
@@ -19,6 +23,8 @@
         "@types/react-redux": "^7.1.9",
         "@types/react-router-dom": "^5.1.6",
         "axios": "^0.20.0",
+        "laravel-echo": "^1.9.0",
+        "pusher-js": "^7.0.1",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-helmet": "^6.1.0",
@@ -43,6 +49,7 @@
         "browser-sync": "^2.26.12",
         "browser-sync-webpack-plugin": "^2.2.2",
         "css-loader": "^4.3.0",
+        "dotenv-webpack": "^5.1.0",
         "eslint": "^7.12",
         "eslint-config-prettier": "^6.15",
         "eslint-plugin-import": "^2.22.1",

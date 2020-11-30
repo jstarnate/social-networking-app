@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\{User, Notification};
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,21 +11,24 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NotifyUser implements ShouldBroadcast
+class UserCommented implements ShouldBroadcast
 {
-
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $receiverId;
+    public $user;
+    public $commenter;
 
     /**
      * Create a new event instance.
      *
+     * @param \App\Models\User  $user
+     * @param \App\Models\User  $commenter
      * @return void
      */
-    public function __construct($receiverId)
+    public function __construct(User $user, User $commenter)
     {
-        $this->receiverId = $receiverId;
+        $this->user = $user;
+        $this->commenter = $commenter;
     }
 
     /**
@@ -35,7 +38,7 @@ class NotifyUser implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('notify.' . $this->receiverId);
+        return new Channel('comment.notify.' . $this->user->id);
     }
 
     /**
@@ -45,16 +48,8 @@ class NotifyUser implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        $unopened = User::find($this->receiverId)
-                        ->notificationStatuses
-                        ->where('opened', false)
-                        ->first();
-
-        $number = $unopened->notifications()
-                           ->where('read', false)
-                           ->count();
-
-        return compact('number');
+        return [
+            'message' => "{$this->commenter->full_name} commented on your post."
+        ];
     }
-
 }
