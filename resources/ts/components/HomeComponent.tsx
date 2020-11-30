@@ -1,6 +1,8 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import axios from 'axios';
+import Echo from 'laravel-echo';
 import Header from './modules/Header';
 import Sidebar from './modules/Sidebar';
 import Rightbar from './modules/Rightbar';
@@ -9,8 +11,48 @@ import Profile from './pages/profile/Profile';
 import Notifications from './pages/notifications/Notifications';
 import Users from './pages/users/Users';
 import PostView from 'pages/general/PostView';
+import 'pusher-js';
+
+interface EchoData {
+    message: string;
+}
+
+const storageUser = localStorage.getItem('user');
 
 const HomeComponent: FC = (): ReactElement => {
+    const [user, setUser] = useState(null);
+    const echo = new Echo({
+        broadcaster: 'pusher',
+        key: process.env.PUSHER_APP_KEY,
+        cluster: process.env.PUSHER_APP_CLUSTER,
+    });
+
+    useEffect(() => {
+        if (!storageUser) {
+            getAuthUser();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (storageUser) {
+            const { id } = JSON.parse(storageUser);
+
+            echo.channel(`comment.notify.${id}`).listen(
+                'UserCommented',
+                (data: EchoData) => {
+                    console.log(data);
+                }
+            );
+        }
+    }, [user]);
+
+    async function getAuthUser() {
+        const { data } = await axios.get('/users/auth');
+
+        setUser(data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
+    }
+
     return (
         <>
             <Helmet>
