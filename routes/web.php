@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function() {
 // ===============================================
 Route::middleware('auth')->group(function() {
     Route::post('/users', [UserController::class, 'fetchUsers']);
+    Route::get('/users/auth', [UserController::class, 'getAuthUser']);
     Route::get('/users/u/{username}', [UserController::class, 'getUser']);
     Route::get('/users/u/{username}/{name}', [UserController::class, 'getConnectedPosts']);
     Route::get('/users/suggested', [UserController::class, 'getSuggestedUsers']);
