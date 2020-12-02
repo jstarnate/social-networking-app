@@ -5,22 +5,49 @@ import Post from 'pages/general/Post';
 import Spinner from 'helpers/Spinner';
 import { Post as PostModel } from 'types/models';
 
-const Posts: FC = (): ReactElement => {
+interface PostsProps {
+    section?: string;
+}
+
+interface RouteParams {
+    username: string;
+}
+
+const Posts: FC<PostsProps> = ({ section }: PostsProps): ReactElement => {
     const [posts, setPosts] = useState<PostModel[]>([]);
     const [loadingPosts, setLoadingPosts] = useState<boolean>(false);
-    const params: { username: string } = useParams();
+    const { username }: RouteParams = useParams();
 
     useEffect(() => {
         getPosts();
-    }, []);
+    }, [section]);
 
     async function getPosts() {
         setLoadingPosts(true);
 
-        const { data } = await axios.get(`/users/u/${params.username}/posts`);
+        const route = section
+            ? `/users/u/${username}/${section}`
+            : `/users/u/${username}/posts`;
+        const { data } = await axios.get(route);
 
         setPosts(data.posts);
         setLoadingPosts(false);
+    }
+
+    if (!posts.length) {
+        return (
+            <section>
+                <h4 className='text--gray text--bold text--center pd-t--md pd-b--md pd-l--sm pd-r--sm'>
+                    {section === 'likes'
+                        ? "You don't have any liked post yet."
+                        : section === 'comments'
+                        ? "You don't have any comment yet."
+                        : section === 'bookmarks'
+                        ? "You don't have any bookmarked post yet."
+                        : "You haven't posted anything yet."}
+                </h4>
+            </section>
+        );
     }
 
     return (
