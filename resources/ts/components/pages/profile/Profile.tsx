@@ -45,6 +45,15 @@ const Profile: FC = (): ReactElement => {
 
             <Switch>
                 <Route exact path={path} component={Posts} />
+                <Route path={`${path}/likes`}>
+                    <Posts section='likes' />
+                </Route>
+                <Route path={`${path}/comments`}>
+                    <Posts section='comments' />
+                </Route>
+                <Route path={`${path}/bookmarks`}>
+                    <Posts section='bookmarks' />
+                </Route>
             </Switch>
 
             {/* <p className='mg-t--md text--center text--gray text--bold'>
