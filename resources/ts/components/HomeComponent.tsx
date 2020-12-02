@@ -1,4 +1,11 @@
-import React, { FC, ReactElement, useEffect, useState } from 'react';
+import React, {
+    FC,
+    ReactElement,
+    useEffect,
+    useState,
+    lazy,
+    Suspense,
+} from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
@@ -7,10 +14,10 @@ import Header from './modules/Header';
 import Sidebar from './modules/Sidebar';
 import Rightbar from './modules/Rightbar';
 import Timeline from './pages/home/Timeline';
-import Profile from './pages/profile/Profile';
 import Notifications from './pages/notifications/Notifications';
 import Users from './pages/users/Users';
 import PostView from 'pages/general/PostView';
+import Spinner from 'helpers/Spinner';
 import 'pusher-js';
 
 interface EchoData {
@@ -18,6 +25,12 @@ interface EchoData {
 }
 
 const storageUser = localStorage.getItem('user');
+const Profile = lazy(() => import('./pages/profile/Profile'));
+const ProfileLoader = () => (
+    <div className='flex--1 mg-t--lg'>
+        <Spinner />
+    </div>
+);
 
 const HomeComponent: FC = (): ReactElement => {
     const [user, setUser] = useState(null);
@@ -69,7 +82,11 @@ const HomeComponent: FC = (): ReactElement => {
 
                     <Switch>
                         <Route path='/home' component={Timeline} />
-                        <Route path='/profile' component={Profile} />
+                        <Route path='/u/:username'>
+                            <Suspense fallback={<ProfileLoader />}>
+                                <Profile />
+                            </Suspense>
+                        </Route>
                         <Route
                             path='/notifications'
                             component={Notifications}

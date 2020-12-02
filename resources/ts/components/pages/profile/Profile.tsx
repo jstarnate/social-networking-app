@@ -19,7 +19,7 @@ const Profile: FC = (): ReactElement => {
                 <NavLink
                     className='flex--1 font--md text--primary text--center pd-t--sm pd-b--sm'
                     activeClassName='profile__active-tab'
-                    to={`${url}`}
+                    to={url}
                     exact>
                     Posts
                 </NavLink>
@@ -44,7 +44,7 @@ const Profile: FC = (): ReactElement => {
             </div>
 
             <Switch>
-                <Route exact path={`${path}`} component={Posts} />
+                <Route exact path={path} component={Posts} />
             </Switch>
 
             {/* <p className='mg-t--md text--center text--gray text--bold'>

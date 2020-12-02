@@ -1,7 +1,7 @@
 export interface LoaderInterface {
     className?: string;
-    size: number;
-    color: string;
+    size?: number;
+    color?: string;
 }
 
 export interface BasicUserInfoInterface {
