@@ -54,7 +54,9 @@ class UserController extends Controller
      */
     public function getConnectedPosts(string $username, string $name)
     {
-        if ($name !== 'likes' && $name !== 'comments' && $name !== 'bookmarks') {
+        $names = ['posts', 'likes', 'comments', 'bookmarks'];
+
+        if (!in_array($name, $names)) {
             abort(400);
         }
 
@@ -169,11 +171,11 @@ class UserController extends Controller
      */
     public function show(string $username)
     {
-        if (!User::where('username', $username)->first()) {
+        if (!User::where('username', $username)->exists()) {
             abort(404);
         }
 
-        return view('profile');
+        return view('home');
     }
 
     /**
