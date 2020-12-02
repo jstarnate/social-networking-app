@@ -40,4 +40,9 @@ const Spinner: FC<LoaderInterface> = ({
     );
 };
 
+Spinner.defaultProps = {
+    size: 40,
+    color: '#7EAEE7',
+};
+
 export default Spinner;
