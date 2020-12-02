@@ -18,6 +18,7 @@ import Notifications from './pages/notifications/Notifications';
 import Users from './pages/users/Users';
 import PostView from 'pages/general/PostView';
 import Spinner from 'helpers/Spinner';
+import { UserWithId } from 'types/models';
 import 'pusher-js';
 
 interface EchoData {
@@ -33,7 +34,7 @@ const ProfileLoader = () => (
 );
 
 const HomeComponent: FC = (): ReactElement => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<UserWithId | null>(null);
     const echo = new Echo({
         broadcaster: 'pusher',
         key: process.env.PUSHER_APP_KEY,
@@ -43,6 +44,8 @@ const HomeComponent: FC = (): ReactElement => {
     useEffect(() => {
         if (!storageUser) {
             getAuthUser();
+        } else {
+            setUser(JSON.parse(storageUser));
         }
     }, []);
 
@@ -78,7 +81,7 @@ const HomeComponent: FC = (): ReactElement => {
                 <section
                     className='d--flex mg-l--auto mg-r--auto home'
                     data-testid='container'>
-                    <Sidebar />
+                    <Sidebar user={user} />
 
                     <Switch>
                         <Route path='/home' component={Timeline} />

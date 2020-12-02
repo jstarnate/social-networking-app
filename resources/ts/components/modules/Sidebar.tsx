@@ -1,18 +1,33 @@
 import React, { FC, ReactElement } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import MaleDefaultAvatar from 'helpers/MaleDefaultAvatar';
+import FemaleDefaultAvatar from 'helpers/FemaleDefaultAvatar';
+import { UserWithId } from 'types/models';
 
-const Sidebar: FC = (): ReactElement => {
+interface SidebarProps {
+    user: UserWithId | null;
+}
+
+const Sidebar: FC<SidebarProps> = ({ user }: SidebarProps): ReactElement => {
     return (
         <aside className='sidebar'>
             <div className='pos--fixed bg--primary-pale br--1 brdr--primary sidebar__wrap'>
                 <div className='pd-l--lg'>
-                    <a className='d--flex ai--center mg-t--lg' href=''>
-                        <MaleDefaultAvatar size={30} />
+                    <Link
+                        to={`/u/${user?.username}`}
+                        className='d--flex ai--center mg-t--lg'
+                        href=''>
+                        {!user?.image_url && user?.gender === 'Male' ? (
+                            <MaleDefaultAvatar size={30} />
+                        ) : !user?.image_url && user?.gender === 'Female' ? (
+                            <FemaleDefaultAvatar size={30} />
+                        ) : (
+                            <img className='round' src={user?.image_url} />
+                        )}
                         <span className='font--sm text--black text--bold mg-l--xs'>
-                            John Doe
+                            {user?.full_name}
                         </span>
-                    </a>
+                    </Link>
 
                     <nav className='mg-t--md'>
                         <NavLink
