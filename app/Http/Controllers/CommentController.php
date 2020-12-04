@@ -73,7 +73,7 @@ class CommentController extends Controller
                 "/posts/{$request->id}/comments"
             );
             
-            event(new UserCommented($op, $user));
+            event(new UserCommented($op));
         }
         else {
             // If the auth user commented on his own post, notify each commenter.
@@ -83,11 +83,11 @@ class CommentController extends Controller
                 $this->notificationRepository->store(
                     $post->user,
                     $c->user_id,
-                    Notification::COMMENTED,
+                    Notification::COMMENTED_ON_OWN,
                     "/posts/{$request->id}/comments"
                 );
 
-                event(new UserCommented($c->user, $user));
+                event(new UserCommented($c->user));
             });
         }
 
