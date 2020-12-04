@@ -22,7 +22,7 @@ import { UserWithId } from 'types/models';
 import 'pusher-js';
 
 interface EchoData {
-    message: string;
+    count: number;
 }
 
 const storageUser = localStorage.getItem('user');
@@ -35,32 +35,12 @@ const ProfileLoader = () => (
 
 const HomeComponent: FC = (): ReactElement => {
     const [user, setUser] = useState<UserWithId | null>(null);
+    const [notifCount, setNotifCount] = useState<number>(0);
     const echo = new Echo({
         broadcaster: 'pusher',
         key: process.env.PUSHER_APP_KEY,
         cluster: process.env.PUSHER_APP_CLUSTER,
     });
-
-    useEffect(() => {
-        if (!storageUser) {
-            getAuthUser();
-        } else {
-            setUser(JSON.parse(storageUser));
-        }
-    }, []);
-
-    useEffect(() => {
-        if (storageUser) {
-            const { id } = JSON.parse(storageUser);
-
-            echo.channel(`comment.notify.${id}`).listen(
-                'UserCommented',
-                (data: EchoData) => {
-                    console.log(data);
-                }
-            );
-        }
-    }, [user]);
 
     async function getAuthUser() {
         const { data } = await axios.get('/users/auth');
@@ -68,6 +48,39 @@ const HomeComponent: FC = (): ReactElement => {
         setUser(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));
     }
+
+    async function updateNotifStatus() {
+        await axios.put('/notifications/status/update');
+        setNotifCount(0);
+    }
+
+    async function getNotifCount() {
+        const { data } = await axios.get('/notifications/count');
+        setNotifCount(data.count);
+    }
+
+    useEffect(() => {
+        if (!storageUser) {
+            getAuthUser();
+        } else {
+            setUser(JSON.parse(storageUser));
+        }
+
+        getNotifCount();
+    }, []);
+
+    useEffect(() => {
+        if (storageUser) {
+            const { id } = JSON.parse(storageUser);
+
+            echo.channel(`comment.count.${id}`).listen(
+                'UserCommented',
+                (data: EchoData) => {
+                    setNotifCount(data.count);
+                }
+            );
+        }
+    }, [user]);
 
     return (
         <>
@@ -81,7 +94,11 @@ const HomeComponent: FC = (): ReactElement => {
                 <section
                     className='d--flex mg-l--auto mg-r--auto home'
                     data-testid='container'>
-                    <Sidebar user={user} />
+                    <Sidebar
+                        user={user}
+                        notifCount={notifCount}
+                        updateNotifStatus={updateNotifStatus}
+                    />
 
                     <Switch>
                         <Route path='/home' component={Timeline} />
