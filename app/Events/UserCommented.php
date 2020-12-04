@@ -16,19 +16,16 @@ class UserCommented implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $user;
-    public $commenter;
 
     /**
      * Create a new event instance.
      *
      * @param \App\Models\User  $user
-     * @param \App\Models\User  $commenter
      * @return void
      */
-    public function __construct(User $user, User $commenter)
+    public function __construct(User $user)
     {
         $this->user = $user;
-        $this->commenter = $commenter;
     }
 
     /**
@@ -38,7 +35,7 @@ class UserCommented implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('comment.notify.' . $this->user->id);
+        return new Channel('comment.count.' . $this->user->id);
     }
 
     /**
@@ -49,7 +46,11 @@ class UserCommented implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'message' => "{$this->commenter->full_name} commented on your post."
+            'count' => $this->user->notificationStatuses
+                            ->where('opened', false)
+                            ->first()
+                            ->notifications()
+                            ->count()
         ];
     }
 }
