@@ -5,7 +5,8 @@ use App\Http\Controllers\{
     AuthController,
     UserController,
     PostController,
-    CommentController
+    CommentController,
+    NotificationController,
 };
 
 /*
@@ -74,6 +75,11 @@ Route::middleware('auth')->group(function() {
     Route::post('/comments/get', [CommentController::class, 'get']);
     Route::post('/comments/store', [CommentController::class, 'store']);
     Route::delete('/comments/{comment}/destroy', [CommentController::class, 'destroy']);
+
+    Route::get('/notifications/get', [NotificationController::class, 'get']);
+    Route::get('/notifications/count', [NotificationController::class, 'getCount']);
+    Route::put('/notifications/status/update', [NotificationController::class, 'updateStatus']);
+    Route::put('/notifications/read', [NotificationController::class, 'read']);
 
     // Route::post('/foo', function() {
     //     auth()->logout();
