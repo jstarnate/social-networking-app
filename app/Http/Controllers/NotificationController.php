@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Modesl\{User, Notification};
+use App\Models\{User, Notification};
 use Illuminate\Http\Request;
 use App\Repositories\FetchRepository;
 
@@ -40,7 +40,8 @@ class NotificationController extends Controller
 	public function get(Request $request)
 	{
 		$statusIds = auth()->user()->notificationStatuses->pluck('id');
-		$notifications = Notification::latest()->whereIn('notification_status_id', $statusIds);
+		$notifications = Notification::orderBy('updated_at', 'desc')
+									->whereIn('notification_status_id', $statusIds);
 		$body = $this->fetchRepository->fetch($notifications, $request->date);
 
 		return response()->json($body);
