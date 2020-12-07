@@ -121,4 +121,9 @@ const Ellipsis: FC<LoaderInterface> = ({
     );
 };
 
+Ellipsis.defaultProps = {
+    size: 40,
+    color: '#7EAEE7',
+};
+
 export default Ellipsis;
