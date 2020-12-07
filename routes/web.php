@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function() {
     Route::get('/users/suggested', [UserController::class, 'getSuggestedUsers']);
     Route::post('/users/follow', [UserController::class, 'follow']);
     Route::post('/users/unfollow', [UserController::class, 'unfollow']);
+    Route::get('/users/search', [UserController::class, 'search']);
 
     Route::post('/posts/fetch', [PostController::class, 'fetch']);
     Route::post('/posts/friends', [PostController::class, 'get']);
