@@ -136,10 +136,19 @@ class UserController extends Controller
      */
     public function search(Request $request)
     {
-        $results = User::whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$request->sq%"])
-                    ->orWhere('username', 'like', "%$request->sq%")
-                    ->get()->take(3);
-        $users = $results->map(fn($user) => $user->formatBasic()->except('id'));
+        $query = $request->query('sq');
+
+        if (!isset($query)) {
+            return response()->json([
+                'users' => []
+            ]);
+        }
+
+        $results = User::whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$query%"])
+                    ->orWhere('username', 'like', "%$query%")
+                    ->get()
+                    ->take(5);
+        $users = $results->map(fn($user) => collect($user->formatBasic())->except('id'));
 
         return response()->json(compact('users'));
     }
@@ -157,7 +166,8 @@ class UserController extends Controller
         $results = User::whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$request->sq%"])
                     ->orWhere('username', 'like', "%$request->sq%")
                     ->whereNotIn('id', $request->ids)
-                    ->get()->take(10);
+                    ->get()
+                    ->take(10);
         $users = $results->map(fn($u) => $u->formatBasic(auth()->user()));
 
         return response()->json(compact('users'));
