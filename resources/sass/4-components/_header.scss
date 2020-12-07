@@ -1,5 +1,6 @@
 .header {
     top: 0;
+    z-index: 10;
     
     &__wrap {
         max-width: 1366px;
@@ -20,6 +21,16 @@
 
     &__search-submit {
         border-radius: 0 $radius--sm $radius--sm 0;
+    }
+
+    &__search-suggestions,
+    &__loading-spinner {
+        @include coords(91%, null, null, 0);
+        border-radius: 0 0 $radius--sm $radius--sm;
+    }
+
+    &__search-suggestion:hover {
+        background: $pale;
     }
 
 }
