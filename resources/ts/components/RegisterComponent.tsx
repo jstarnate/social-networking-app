@@ -12,16 +12,7 @@ import useInput from 'hooks/useInput';
 import RadioButton from 'helpers/RadioButton';
 import Portal from 'helpers/Portal';
 import Modal from 'helpers/Modal';
-
-function generateYears() {
-    const years = [];
-
-    for (let i = new Date().getFullYear(); i >= 1920; i--) {
-        years.push(i);
-    }
-
-    return years;
-}
+import { generateMonths, generateYears } from 'utilities/generators';
 
 const RegisterComponent: FC = (): ReactElement => {
     const [first_name, firstNameData, setFirstnameError] = useInput(null);
@@ -192,18 +183,9 @@ const RegisterComponent: FC = (): ReactElement => {
                             className='bg--none font--md text--black pd-t--xs pd-b--xs pd-l--sm pd-r--sm b-rad--sm b--1 brdr--gray'
                             placeholder='Select month'
                             onChange={handleBirthMonthValue}>
-                            <option value='January'>January</option>
-                            <option value='February'>February</option>
-                            <option value='March'>March</option>
-                            <option value='April'>April</option>
-                            <option value='May'>May</option>
-                            <option value='June'>June</option>
-                            <option value='July'>July</option>
-                            <option value='August'>August</option>
-                            <option value='September'>September</option>
-                            <option value='October'>October</option>
-                            <option value='November'>November</option>
-                            <option value='December'>December</option>
+                            {Children.map(generateMonths(), (month: string) => (
+                                <option value={month}>{month}</option>
+                            ))}
                         </select>
 
                         <input

@@ -161,11 +161,27 @@ class UserController extends Controller
      */
     public function getSearchResults(Request $request)
     {
-        $user = auth()->user();
-        $following = $user->following->pluck('id')->merge($user->id);
         $results = User::whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$request->sq%"])
                     ->orWhere('username', 'like', "%$request->sq%")
                     ->whereNotIn('id', $request->ids)
+                    ->get()
+                    ->take(10);
+        $users = $results->map(fn($u) => $u->formatBasic(auth()->user()));
+
+        return response()->json(compact('users'));
+    }
+
+    /**
+     * Filter users according to sent requests body
+     *
+     * @return \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Request $request)
+    {
+        $body = collect($request->all())->filter(fn($data) => $data);
+        $results = User::whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$request->sq%"])
+                    ->where($body->toArray())
                     ->get()
                     ->take(10);
         $users = $results->map(fn($u) => $u->formatBasic(auth()->user()));

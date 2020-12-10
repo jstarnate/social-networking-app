@@ -38,7 +38,7 @@ const Sidebar: FC<SidebarProps> = ({
                         ) : (
                             <img className='round' src={user?.image_url} />
                         )}
-                        <span className='font--sm text--black text--bold mg-l--xs'>
+                        <span className='font--sm text--black-light text--bold mg-l--xs'>
                             {user?.full_name}
                         </span>
                     </Link>
@@ -68,7 +68,7 @@ const Sidebar: FC<SidebarProps> = ({
                         </NavLink>
                         <NavLink
                             className='d--block font--lg text--gray pd-t--xs pd-b--xs'
-                            to='/users'
+                            to='/users/search'
                             activeClassName='sidebar__active-link'>
                             <i className='fa fa-users'></i>
                             <span className='text--bold mg-l--sm'>

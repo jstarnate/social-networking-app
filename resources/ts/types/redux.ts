@@ -1,10 +1,11 @@
-import { User, UserWithId, Post } from './models';
+import { UserWithId, Post } from './models';
 
-export type Payload = User[] | Post[] | UserWithId[];
+export type Payload = (UserWithId | Post)[] | boolean;
 
 export interface State {
     [index: string]: Payload;
-    users: User[];
+    users: UserWithId[];
+    usersLoading: boolean;
     posts: Post[];
     suggestedUsers: UserWithId[];
 }
@@ -15,18 +16,37 @@ export interface SetItem {
     payload: Payload;
 }
 
-export interface AddItem {
-    type: 'ADD';
-    payload: Post;
+export interface PushAdd {
+    type: 'PUSH_ADD';
+    name: string;
+    payload: UserWithId | Post;
 }
 
-export interface UpdateItem {
-    type: 'UPDATE';
+export interface UnshiftAdd {
+    type: 'UNSHIFT_ADD';
+    name: string;
+    payload: UserWithId | Post;
+}
+
+export interface PushSpread {
+    type: 'PUSH_SPREAD';
+    name: string;
+    payload: Payload;
+}
+
+export interface UnshiftSpread {
+    type: 'UNSHIFT_SPREAD';
+    name: string;
+    payload: Payload;
+}
+
+export interface UpdatePost {
+    type: 'UPDATE_POST';
     id: number;
     payload: Post;
 }
 
-export interface DeleteItem {
-    type: 'DESTROY';
+export interface DeletePost {
+    type: 'DELETE_POST';
     id: number;
 }

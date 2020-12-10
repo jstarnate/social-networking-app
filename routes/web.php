@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function() {
     Route::view('/notifications', 'home');
     Route::view('/users', 'home');
     Route::view('/posts/{post}/comments', 'home');
+    Route::view('/users/search', 'home');
 });
 
 
@@ -62,7 +63,9 @@ Route::middleware('auth')->group(function() {
     Route::get('/users/suggested', [UserController::class, 'getSuggestedUsers']);
     Route::post('/users/follow', [UserController::class, 'follow']);
     Route::post('/users/unfollow', [UserController::class, 'unfollow']);
-    Route::get('/users/search', [UserController::class, 'search']);
+    Route::get('/api/users/search', [UserController::class, 'search']);
+    Route::post('/api/users/search/results', [UserController::class, 'getSearchResults']);
+    Route::post('/api/users/filter', [UserController::class, 'filter']);
 
     Route::post('/posts/fetch', [PostController::class, 'fetch']);
     Route::post('/posts/friends', [PostController::class, 'get']);

@@ -21,7 +21,7 @@ const RadioButton: FC<RadioButtonProps> = ({
 }: RadioButtonProps): ReactElement => {
     return (
         <label
-            className={`d--flex ai--center cursor--pointer ${className || ''}`}
+            className={`d--if ai--center cursor--pointer ${className || ''}`}
             htmlFor={id}>
             {condition ? (
                 <i className='fa fa-dot-circle-o text--black-light'></i>

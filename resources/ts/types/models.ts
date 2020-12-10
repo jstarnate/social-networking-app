@@ -4,6 +4,7 @@ export interface User {
     gender: 'Male' | 'Female';
     image_url: string | undefined;
     url: string;
+    followed: boolean;
 }
 
 export interface UserWithId extends User {
