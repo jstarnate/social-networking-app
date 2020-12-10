@@ -8,7 +8,7 @@ interface Props {
     type?: string;
     value: string | null;
     onChangeEvent: (event: ChangeEvent<HTMLInputElement>) => void;
-    error: string | null;
+    error?: string | null;
     autoFocus?: boolean;
     children?: ReactElement;
 }

@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, ReactElement, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import { add } from 'actions';
+import { unshiftAdd } from 'actions';
 
 const PostBox: FC = (): ReactElement => {
     const [body, setBody] = useState<string | null>(null);
@@ -18,7 +18,7 @@ const PostBox: FC = (): ReactElement => {
         try {
             const { data } = await axios.post('/posts/create', { body });
 
-            dispatch(add(data.post));
+            dispatch(unshiftAdd('posts', data.post));
             setBody(null);
             setLoading(false);
         } catch (err) {

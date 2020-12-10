@@ -46,3 +46,14 @@
 		background: $danger--dark;
 	}
 }
+
+.btn--danger-o {
+	border: 1px solid $danger;
+	color: $danger;
+
+	&:hover {
+		border-color: transparent;
+		background: $danger;
+		color: $white;
+	}
+}

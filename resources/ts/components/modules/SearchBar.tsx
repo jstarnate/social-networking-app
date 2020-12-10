@@ -20,10 +20,13 @@ const SearchBar: FC = (): ReactElement => {
         const { value } = event.target;
 
         setQuery(value);
-        setLoading(true);
+
+        if (value.length) {
+            setLoading(true);
+        }
 
         try {
-            const { data } = await axios.get(`/users/search?sq=${value}`);
+            const { data } = await axios.get(`/api/users/search?sq=${value}`);
 
             setUsers(data.users);
             setLoading(false);
@@ -39,10 +42,15 @@ const SearchBar: FC = (): ReactElement => {
     }
 
     return (
-        <form className='d--flex mg-l--md pos--rel' onSubmit={submitForm}>
+        <form
+            method='GET'
+            action='/users/search'
+            className='d--flex mg-l--md pos--rel'
+            onSubmit={submitForm}>
             <input
                 className='font--md text--black pd-t--xs pd-b--xs pd-l--xs header__search-input'
                 type='text'
+                name='sq'
                 placeholder='Search name or username'
                 value={query}
                 onChange={getSearchSuggestions}
@@ -72,7 +80,7 @@ const SearchBar: FC = (): ReactElement => {
 
                         <a
                             className='d--block font--sm text--primary-dark text--center bt--1 brdr--gray-light pd-t--xs pd-b--xs'
-                            href=''>
+                            href={`/users/search?sq=${query}`}>
                             Show all
                         </a>
                     </section>

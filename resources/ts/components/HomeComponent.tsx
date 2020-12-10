@@ -15,7 +15,7 @@ import Sidebar from './modules/Sidebar';
 import Rightbar from './modules/Rightbar';
 import Timeline from './pages/home/Timeline';
 import Notifications from './pages/notifications/Notifications';
-import Users from './pages/users/Users';
+import Users from './pages/users/index';
 import PostView from 'pages/general/PostView';
 import Spinner from 'helpers/Spinner';
 import { UserWithId } from 'types/models';
@@ -111,7 +111,7 @@ const HomeComponent: FC = (): ReactElement => {
                             path='/notifications'
                             component={Notifications}
                         />
-                        <Route path='/users' component={Users} />
+                        <Route path='/users/search' component={Users} />
                         <Route
                             path='/posts/:id/comments'
                             component={PostView}
