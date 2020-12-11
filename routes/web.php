@@ -85,8 +85,5 @@ Route::middleware('auth')->group(function() {
     Route::put('/notifications/status/update', [NotificationController::class, 'updateStatus']);
     Route::put('/notifications/read', [NotificationController::class, 'read']);
 
-    // Route::post('/foo', function() {
-    //     auth()->logout();
-    //     return response()->json(['message' => 'success']);
-    // });
+    Route::post('/sign-out', [AuthController::class, 'logout']);
 });

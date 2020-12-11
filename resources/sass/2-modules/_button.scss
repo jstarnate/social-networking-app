@@ -30,12 +30,11 @@
 		background: $primary;
 		color: $white;
 	}
+}
 
-	// &:disabled {
-	// 	opacity: .5;
-	// 	background: $primary--dark;
-	// 	cursor: default;
-	// }
+.btn--secondary {
+	background: $pale;
+	color: $black--light;
 }
 
 .btn--danger {

@@ -189,5 +189,19 @@ class AuthController extends Controller
             'message' => 'You have successfully changed your password.'
         ]);
     }
+
+    /**
+     * Handle a logout request to the application.
+     *
+     * @param \Illumiate\Http\Request  $request
+     * @return \Illumiate\Http\RedirectResponse
+     */
+    public function logout(Request $request)
+    {
+        auth()->logout();
+        $request->session()->flush();
+
+        return redirect()->route('index');
+    }
     
 }
