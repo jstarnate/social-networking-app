@@ -1,7 +1,27 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useState, useRef } from 'react';
 import SearchBar from './SearchBar';
+import Portal from 'helpers/Portal';
+import Modal from 'helpers/Modal';
 
 const Header: FC = (): ReactElement => {
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const logoutForm = useRef<HTMLFormElement>(null);
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute('content');
+
+    function enableModal() {
+        setShowModal(true);
+    }
+
+    function disableModal() {
+        setShowModal(false);
+    }
+
+    function signOut() {
+        logoutForm.current?.submit();
+    }
+
     return (
         <header className='pos--sticky bg--primary pd-t--sm pd-b--sm pd-l--lg pd-r--lg header'>
             <div className='d--flex ai--center mg-l--auto mg-r--auto header__wrap'>
@@ -23,10 +43,46 @@ const Header: FC = (): ReactElement => {
 
                 <SearchBar />
 
-                <button className='btn pd--xs mg-l--auto'>
+                <button className='btn pd--xs mg-l--auto' onClick={enableModal}>
                     <i className='fa fa-sign-out font--md text--gray'></i>
                 </button>
             </div>
+
+            {showModal && (
+                <Portal>
+                    <Modal
+                        namespace='home'
+                        type='primary'
+                        title='Sign out'
+                        message='Are you sure you want to sign out?'>
+                        <>
+                            <button
+                                className='btn btn--secondary font--sm b-ra--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-r--sm'
+                                onClick={disableModal}>
+                                Cancel
+                            </button>
+                            <button
+                                className='btn btn--primary font--sm text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md'
+                                onClick={signOut}>
+                                Sign out
+                            </button>
+
+                            <form
+                                ref={logoutForm}
+                                className='d--none'
+                                method='POST'
+                                action='/sign-out'>
+                                <input
+                                    type='hidden'
+                                    name='_token'
+                                    value={csrfToken || ''}
+                                />
+                                <input type='submit' />
+                            </form>
+                        </>
+                    </Modal>
+                </Portal>
+            )}
         </header>
     );
 };
