@@ -106,6 +106,11 @@ class PostController extends Controller
     public function like(Request $request)
     {
         $user = auth()->user();
+
+        if ($user->likes->contains($request->id)) {
+            return;
+        }
+
         $posterId = Post::find($request->id)->user->id;
 
         $user->likes()->attach($request->id);
