@@ -71,7 +71,7 @@ const Header: FC = (): ReactElement => {
                                 ref={logoutForm}
                                 className='d--none'
                                 method='POST'
-                                action='/sign-out'>
+                                action='/api/sign-out'>
                                 <input
                                     type='hidden'
                                     name='_token'

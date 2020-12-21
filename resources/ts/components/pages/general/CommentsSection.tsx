@@ -36,7 +36,7 @@ const CommentsSection: FC<CommentsSectionProps> = ({
     async function getComments() {
         setLoading(true);
 
-        const { data } = await axios.post('/comments/get', { postId });
+        const { data } = await axios.post('/api/comments/get', { postId });
 
         setComments(data.items);
         setLoading(false);
@@ -46,7 +46,7 @@ const CommentsSection: FC<CommentsSectionProps> = ({
         setCommentLoading(true);
 
         try {
-            const { data } = await axios.post('/comments/store', {
+            const { data } = await axios.post('/api/comments/store', {
                 id: postId,
                 body: commentBody,
             });

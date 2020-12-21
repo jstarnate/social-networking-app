@@ -19,7 +19,7 @@ const Rightbar: FC = (): ReactElement => {
         setLoading(true);
 
         try {
-            const { data } = await axios.get('/users/suggested');
+            const { data } = await axios.get('/api/users/suggested');
 
             dispatch(set('suggestedUsers', data.users));
             setLoading(false);

@@ -26,7 +26,7 @@ const PostBox: FC = (): ReactElement => {
         setLoading(true);
 
         try {
-            const { data } = await axios.post('/posts/create', { body });
+            const { data } = await axios.post('/api/posts/create', { body });
 
             dispatch(unshiftAdd('posts', data.post));
             setBody(null);

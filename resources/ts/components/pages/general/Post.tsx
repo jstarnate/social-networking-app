@@ -23,9 +23,9 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
 
     async function toggleLikeRequest() {
         if (!liked) {
-            await axios.post('/posts/like', { id: props.id });
+            await axios.post('/api/posts/like', { id: props.id });
         } else {
-            await axios.post('/posts/dislike', { id: props.id });
+            await axios.post('/api/posts/dislike', { id: props.id });
         }
     }
 
@@ -33,7 +33,7 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
         setBookmarked(true);
 
         try {
-            await axios.post('/posts/bookmark', { id: props.id });
+            await axios.post('/api/posts/bookmark', { id: props.id });
         } catch (error) {
             setBookmarked(false);
         }
@@ -43,7 +43,7 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
         setBookmarked(false);
 
         try {
-            await axios.post('/posts/unbookmark', { id: props.id });
+            await axios.post('/api/posts/unbookmark', { id: props.id });
         } catch (error) {
             setBookmarked(true);
         }

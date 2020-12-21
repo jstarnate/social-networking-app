@@ -21,9 +21,9 @@ const SuggestedUser: FC<UserWithId> = ({
 
     async function toggleFollowRequest() {
         if (!isFollowed) {
-            await axios.post('/users/follow', { id });
+            await axios.post('/api/users/follow', { id });
         } else {
-            await axios.post('/users/unfollow', { id });
+            await axios.post('/api/users/unfollow', { id });
         }
     }
 

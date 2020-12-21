@@ -28,7 +28,7 @@ const PostView: FC = (): ReactElement => {
     async function getPost() {
         setLoading(true);
 
-        const { data } = await axios.post('/posts/fetch', { id });
+        const { data } = await axios.post('/api/posts/fetch', { id });
 
         setTweet(data.post);
         setLoading(false);

@@ -26,8 +26,8 @@ const Posts: FC<PostsProps> = ({ section }: PostsProps): ReactElement => {
         setLoadingPosts(true);
 
         const route = section
-            ? `/users/u/${username}/${section}`
-            : `/users/u/${username}/posts`;
+            ? `/api/users/u/${username}/${section}`
+            : `/api/users/u/${username}/posts`;
         const { data } = await axios.get(route);
 
         setPosts(data.posts);

@@ -43,19 +43,19 @@ const HomeComponent: FC = (): ReactElement => {
     });
 
     async function getAuthUser() {
-        const { data } = await axios.get('/users/auth');
+        const { data } = await axios.get('/api/users/auth');
 
         setUser(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));
     }
 
     async function updateNotifStatus() {
-        await axios.put('/notifications/status/update');
+        await axios.put('/api/notifications/status/update');
         setNotifCount(0);
     }
 
     async function getNotifCount() {
-        const { data } = await axios.get('/notifications/count');
+        const { data } = await axios.get('/api/notifications/count');
         setNotifCount(data.count);
     }
 

@@ -24,16 +24,16 @@ Route::middleware('guest')->group(function() {
     Route::view('/index', 'index')->name('index');
     Route::view('/register', 'register')->name('register');
     
-    Route::post('/sign-in', [AuthController::class, 'login'])->name('signin');
-    Route::post('/sign-up', [AuthController::class, 'register'])->name('signup');
+    Route::post('/api/sign-in', [AuthController::class, 'login'])->name('signin');
+    Route::post('/api/sign-up', [AuthController::class, 'register'])->name('signup');
     
     Route::get('/verify/{token}', [AuthController::class, 'verify'])->name('verify');
     
     Route::view('/forgot-password', 'forgot')->name('forgot-password');
-    Route::post('/forgot-password/send', [AuthController::class, 'sendPasswordResetNotification']);
+    Route::post('/api/forgot-password/send', [AuthController::class, 'sendPasswordResetNotification']);
     
     Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('reset-password.show');
-    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
+    Route::post('/api/reset-password', [AuthController::class, 'resetPassword'])->name('reset-password');
 });
 
 
@@ -56,34 +56,34 @@ Route::middleware('auth')->group(function() {
 //  API routes
 // ===============================================
 Route::middleware('auth')->group(function() {
-    Route::post('/users', [UserController::class, 'fetchUsers']);
-    Route::get('/users/auth', [UserController::class, 'getAuthUser']);
-    Route::get('/users/u/{username}', [UserController::class, 'getUser']);
-    Route::get('/users/u/{username}/{name}', [UserController::class, 'getConnectedPosts']);
-    Route::get('/users/suggested', [UserController::class, 'getSuggestedUsers']);
-    Route::post('/users/follow', [UserController::class, 'follow']);
-    Route::post('/users/unfollow', [UserController::class, 'unfollow']);
-    Route::get('/api/users/search', [UserController::class, 'search']);
-    Route::post('/api/users/search/results', [UserController::class, 'getSearchResults']);
-    Route::post('/api/users/filter', [UserController::class, 'filter']);
+    Route::post('/api/users', [UserController::class, 'fetchUsers']);
+    Route::get('/api/users/auth', [UserController::class, 'getAuthUser']);
+    Route::get('/api/users/u/{username}', [UserController::class, 'getUser']);
+    Route::get('/api/users/u/{username}/{name}', [UserController::class, 'getConnectedPosts']);
+    Route::get('/api/users/suggested', [UserController::class, 'getSuggestedUsers']);
+    Route::post('/api/users/follow', [UserController::class, 'follow']);
+    Route::post('/api/users/unfollow', [UserController::class, 'unfollow']);
+    Route::get('/api/api/users/search', [UserController::class, 'search']);
+    Route::post('/api/api/users/search/results', [UserController::class, 'getSearchResults']);
+    Route::post('/api/api/users/filter', [UserController::class, 'filter']);
 
-    Route::post('/posts/fetch', [PostController::class, 'fetch']);
-    Route::post('/posts/friends', [PostController::class, 'get']);
-    Route::post('/posts/create', [PostController::class, 'store']);
-    Route::delete('/posts/delete/{post}', [PostController::class, 'destroy']);
-    Route::post('/posts/like', [PostController::class, 'like']);
-    Route::post('/posts/dislike', [PostController::class, 'dislike']);
-    Route::post('/posts/bookmark', [PostController::class, 'bookmark']);
-    Route::post('/posts/unbookmark', [PostController::class, 'unbookmark']);
+    Route::post('/api/posts/fetch', [PostController::class, 'fetch']);
+    Route::post('/api/posts/friends', [PostController::class, 'get']);
+    Route::post('/api/posts/create', [PostController::class, 'store']);
+    Route::delete('/api/posts/delete/{post}', [PostController::class, 'destroy']);
+    Route::post('/api/posts/like', [PostController::class, 'like']);
+    Route::post('/api/posts/dislike', [PostController::class, 'dislike']);
+    Route::post('/api/posts/bookmark', [PostController::class, 'bookmark']);
+    Route::post('/api/posts/unbookmark', [PostController::class, 'unbookmark']);
 
-    Route::post('/comments/get', [CommentController::class, 'get']);
-    Route::post('/comments/store', [CommentController::class, 'store']);
-    Route::delete('/comments/{comment}/destroy', [CommentController::class, 'destroy']);
+    Route::post('/api/comments/get', [CommentController::class, 'get']);
+    Route::post('/api/comments/store', [CommentController::class, 'store']);
+    Route::delete('/api/comments/{comment}/destroy', [CommentController::class, 'destroy']);
 
-    Route::get('/notifications/get', [NotificationController::class, 'get']);
-    Route::get('/notifications/count', [NotificationController::class, 'getCount']);
-    Route::put('/notifications/status/update', [NotificationController::class, 'updateStatus']);
-    Route::put('/notifications/read', [NotificationController::class, 'read']);
+    Route::get('/api/notifications/get', [NotificationController::class, 'get']);
+    Route::get('/api/notifications/count', [NotificationController::class, 'getCount']);
+    Route::put('/api/notifications/status/update', [NotificationController::class, 'updateStatus']);
+    Route::put('/api/notifications/read', [NotificationController::class, 'read']);
 
-    Route::post('/sign-out', [AuthController::class, 'logout']);
+    Route::post('/api/sign-out', [AuthController::class, 'logout']);
 });

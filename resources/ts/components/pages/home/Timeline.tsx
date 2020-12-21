@@ -20,7 +20,7 @@ const Timeline: FC = (): ReactElement => {
     async function getPosts() {
         setLoadingPosts(true);
 
-        const { data } = await axios.post('/posts/friends');
+        const { data } = await axios.post('/api/posts/friends');
 
         dispatch(set('posts', data.items));
         setLoadingPosts(false);

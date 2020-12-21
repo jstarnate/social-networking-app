@@ -35,7 +35,7 @@ const Comment: FC<CommentProps> = ({
         setShowModal(false);
         setLoadingDelete(true);
 
-        await axios.delete(`/comments/${id}/destroy`);
+        await axios.delete(`/api/comments/${id}/destroy`);
 
         deleteEvent(id);
     }
