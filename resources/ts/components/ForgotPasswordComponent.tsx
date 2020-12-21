@@ -26,7 +26,7 @@ const ForgotPasswordComponent: FC = (): ReactElement => {
         setLoading(true);
 
         try {
-            await axios.post('/forgot-password/send', { email });
+            await axios.post('/api/forgot-password/send', { email });
 
             setIsSent(true);
         } catch (error) {

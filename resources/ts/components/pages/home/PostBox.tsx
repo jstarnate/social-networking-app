@@ -3,20 +3,30 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { unshiftAdd } from 'actions';
 
+const totalChars = 170;
+
 const PostBox: FC = (): ReactElement => {
     const [body, setBody] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [charsLeft, setCharsLeft] = useState<number>(totalChars);
     const dispatch = useDispatch();
 
     function handleBodyValue(event: ChangeEvent<HTMLTextAreaElement>) {
-        setBody(event.target.value);
+        const { value } = event.target;
+
+        if (value.length === totalChars + 1) {
+            return false;
+        }
+
+        setCharsLeft(totalChars - value.length);
+        setBody(value);
     }
 
     async function submitPost() {
         setLoading(true);
 
         try {
-            const { data } = await axios.post('/posts/create', { body });
+            const { data } = await axios.post('/api/posts/create', { body });
 
             dispatch(unshiftAdd('posts', data.post));
             setBody(null);
@@ -35,9 +45,15 @@ const PostBox: FC = (): ReactElement => {
                 value={body || ''}
                 onChange={handleBodyValue}></textarea>
 
-            <div className='bt--1 brdr--primary d--flex jc--end'>
+            <div className='bt--1 brdr--primary d--flex ai--center pd-l--md'>
+                <label>
+                    <span className='text--black-light text--bold'>
+                        {charsLeft}{' '}
+                    </span>
+                    <span className='text--black-light'>left</span>
+                </label>
                 <button
-                    className='btn text--primary-dark text--bold pd-t--sm pd-b--sm pd-l--md pd-r--md timeline__post-submit'
+                    className='btn text--primary-dark text--bold pd-t--sm pd-b--sm pd-l--md pd-r--md mg-l--auto timeline__post-submit'
                     disabled={loading}
                     onClick={submitPost}>
                     Submit post

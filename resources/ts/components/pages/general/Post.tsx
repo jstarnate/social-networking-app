@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
 import { Post as PostExtension } from 'types/models';
+import useDebounce from 'hooks/useDebounce';
 
 interface PostProps extends PostExtension {
     namespace: string;
@@ -13,28 +14,18 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
     const [liked, setLiked] = useState<boolean>(props.is_liked);
     const [bookmarked, setBookmarked] = useState<boolean>(props.bookmarked);
     const [likesCount, setLikesCount] = useState<number>(props.likes);
+    const likeEvent = useDebounce(toggleLikeButton, toggleLikeRequest, 2000);
 
-    async function like() {
-        setLiked(true);
-        setLikesCount(likesCount => likesCount + 1);
-
-        try {
-            await axios.post('/posts/like', { id: props.id });
-        } catch (error) {
-            setLiked(false);
-            setLikesCount(likesCount);
-        }
+    function toggleLikeButton() {
+        setLiked(isLiked => !isLiked);
+        setLikesCount(count => (liked ? count - 1 : count + 1));
     }
 
-    async function dislike() {
-        setLiked(false);
-        setLikesCount(likesCount => likesCount - 1);
-
-        try {
-            await axios.post('/posts/dislike', { id: props.id });
-        } catch (error) {
-            setLiked(false);
-            setLikesCount(likesCount => likesCount - 1);
+    async function toggleLikeRequest() {
+        if (!liked) {
+            await axios.post('/api/posts/like', { id: props.id });
+        } else {
+            await axios.post('/api/posts/dislike', { id: props.id });
         }
     }
 
@@ -42,7 +33,7 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
         setBookmarked(true);
 
         try {
-            await axios.post('/posts/bookmark', { id: props.id });
+            await axios.post('/api/posts/bookmark', { id: props.id });
         } catch (error) {
             setBookmarked(false);
         }
@@ -52,7 +43,7 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
         setBookmarked(false);
 
         try {
-            await axios.post('/posts/unbookmark', { id: props.id });
+            await axios.post('/api/posts/unbookmark', { id: props.id });
         } catch (error) {
             setBookmarked(true);
         }
@@ -68,21 +59,20 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
             </p>
 
             <div className='mg-t--sm'>
-                {liked ? (
-                    <button className='btn' onClick={dislike}>
+                <button className='btn font--lg' onClick={likeEvent}>
+                    {liked ? (
                         <i className='fa fa-heart font--lg text--danger-dark'></i>
-                        <span className='font--sm font--lg text--danger-dark mg-l--xxs'>
-                            {likesCount}
-                        </span>
-                    </button>
-                ) : (
-                    <button className='btn font--lg' onClick={like}>
+                    ) : (
                         <i className='fa fa-heart-o font--lg text--black-light'></i>
-                        <span className='font--sm font--lg text--black-light mg-l--xxs'>
-                            {likesCount}
-                        </span>
-                    </button>
-                )}
+                    )}
+
+                    <span
+                        className={`font--sm font--lg text--${
+                            liked ? 'danger-dark' : 'black-light'
+                        } mg-l--xxs`}>
+                        {likesCount}
+                    </span>
+                </button>
 
                 {props.render ? (
                     props.render(props.comments)

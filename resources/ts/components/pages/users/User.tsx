@@ -16,12 +16,12 @@ const User: FC<UserData> = ({
 
     async function followUser() {
         setIsFollowed(true);
-        await axios.post('/users/follow', { id });
+        await axios.post('/api/users/follow', { id });
     }
 
     async function unfollowUser() {
         setIsFollowed(false);
-        await axios.post('/users/unfollow', { id });
+        await axios.post('/api/users/unfollow', { id });
     }
 
     return (

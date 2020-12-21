@@ -15,7 +15,7 @@ const IndexComponent: FC = (): ReactElement => {
         setLoading(true);
 
         try {
-            const { data } = await axios.post('/sign-in', {
+            const { data } = await axios.post('/api/sign-in', {
                 username,
                 password,
             });

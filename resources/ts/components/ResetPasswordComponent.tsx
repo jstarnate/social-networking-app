@@ -33,7 +33,7 @@ const ResetPasswordComponent: FC = (): ReactElement => {
         setLoading(true);
 
         try {
-            const { data } = await axios.post('/reset-password', {
+            const { data } = await axios.post('/api/reset-password', {
                 password,
                 password_confirmation,
             });

@@ -75,7 +75,7 @@ const RegisterComponent: FC = (): ReactElement => {
         };
 
         try {
-            await axios.post('/sign-up', requests);
+            await axios.post('/api/sign-up', requests);
 
             openModal();
             setRegistered(true);

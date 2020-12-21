@@ -23,14 +23,14 @@ const Notifications: FC = (): ReactElement => {
     async function getNotifications() {
         setLoading(true);
 
-        const { data } = await axios.get('/notifications/get');
+        const { data } = await axios.get('/api/notifications/get');
 
         setNotifs(data.items);
         setLoading(false);
     }
 
     async function updateReadStatus(id: number) {
-        await axios.put('/notifications/read', { id });
+        await axios.put('/api/notifications/read', { id });
     }
 
     useEffect(() => {
