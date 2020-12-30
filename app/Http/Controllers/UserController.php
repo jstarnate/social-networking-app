@@ -23,6 +23,11 @@ class UserController extends Controller
         $this->notificationRepository = $notificationRepository;
     }
 
+    /**
+     * Get the auth user data.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function getAuthUser()
     {
         return response()->json([
@@ -38,11 +43,11 @@ class UserController extends Controller
      */
     public function getUser(string $username)
     {
-        $data = User::where('username', $username)->first();
-        $user = collect($data)->except('id', 'email', 'birth_month', 'birth_day', 'birth_year');
-        $user['birth_date'] = $data->birth_date;
+        $user = User::where('username', $username)->first();
         
-        return response()->json(compact('user'));
+        return response()->json([
+            'user' => $user->formatHeadlineInfo()
+        ]);
     }
 
     /**
@@ -261,7 +266,7 @@ class UserController extends Controller
      */
     public function follow(Request $request)
     {
-        $this->authorize('follow', User::find($request->id));
+        $this->authorize('followOrUnfollow', User::find($request->id));
 
         $user = auth()->user();
 
@@ -274,7 +279,8 @@ class UserController extends Controller
             route('profile', $user->only('username'))
         );
 
-        event(new NotifyUser($request->id));
+        // TODO: Database notification for following a user.
+        // event(new NotifyUser($request->id));
     }
 
     /**
@@ -285,7 +291,7 @@ class UserController extends Controller
      */
     public function unfollow(Request $request)
     {
-        $this->authorize('unfollow', User::find($request->id));
+        $this->authorize('followOrUnfollow', User::find($request->id));
         
         auth()->user()->following()->detach($request->id);
     }
