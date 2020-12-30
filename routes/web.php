@@ -63,9 +63,9 @@ Route::middleware('auth')->group(function() {
     Route::get('/api/users/suggested', [UserController::class, 'getSuggestedUsers']);
     Route::post('/api/users/follow', [UserController::class, 'follow']);
     Route::post('/api/users/unfollow', [UserController::class, 'unfollow']);
-    Route::get('/api/api/users/search', [UserController::class, 'search']);
-    Route::post('/api/api/users/search/results', [UserController::class, 'getSearchResults']);
-    Route::post('/api/api/users/filter', [UserController::class, 'filter']);
+    Route::get('/api/users/search', [UserController::class, 'search']);
+    Route::post('/api/users/search/results', [UserController::class, 'getSearchResults']);
+    Route::post('/api/users/filter', [UserController::class, 'filter']);
 
     Route::post('/api/posts/fetch', [PostController::class, 'fetch']);
     Route::post('/api/posts/friends', [PostController::class, 'get']);
