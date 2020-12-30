@@ -20,7 +20,7 @@ const Posts: FC<PostsProps> = ({ section }: PostsProps): ReactElement => {
 
     useEffect(() => {
         getPosts();
-    }, [section]);
+    }, [section, username]);
 
     async function getPosts() {
         setLoadingPosts(true);
