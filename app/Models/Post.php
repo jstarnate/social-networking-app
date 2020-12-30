@@ -79,7 +79,7 @@ class Post extends Model
         $post = collect($this);
         $authUser = auth()->user();
         $user = $this->user->only('full_name', 'username', 'gender', 'image_url');
-        $user['url'] = route('profile', ['username' => $user['username']]);
+        $user['url'] = "/u/{$user['username']}";
 
         $post['from_self'] = $authUser->id === $this->user_id;
         $post['is_liked'] = $authUser->likes->contains($this->id);

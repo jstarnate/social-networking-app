@@ -125,7 +125,7 @@ class User extends Authenticatable
     public function formatBasic($currentUser = null)
     {
         $user = $this->only('id', 'full_name', 'username', 'gender', 'image_url');
-        $user['url'] = route('profile', $this->only('username'));
+        $user['url'] = "/u/{$this->username}";
 
         if ($currentUser) {
             $user['followed'] = $currentUser->following()->where('id', $this->id)->exists();
@@ -134,21 +134,16 @@ class User extends Authenticatable
         return $user;
     }
 
-    public function formatHeadlineInfo($currentUser)
+    public function formatHeadlineInfo()
     {
-        $user = collect($this)->only([
-            'id', 'first_name', 'last_name', 'location',
-            'bio', 'username', 'gender', 'image_url'
-        ]);
+        $user = $this->only('id', 'full_name', 'username', 'gender', 'birth_date', 'bio', 'location', 'image_url');
 
-        $data = $user->merge([
-            'not_self' => $this->id !== $currentUser->id,
-            'followers' => $this->followers->count(),
-            'following' => $this->following->count(),
-            'is_followed' => $currentUser->following()->where('id', $this->id)->exists(),
-            'date_joined' => $this->created_at->format('F Y'),
-        ]);
+        $user['not_self'] = $this->id !== auth()->user()->id;
+        $user['followers'] = $this->followers->count();
+        $user['following'] = $this->following->count();
+        $user['is_followed'] = auth()->user()->following->contains($this->id);
+        $user['date_joined'] = $this->created_at->format('F Y');
 
-        return $data;
+        return $user;
     }
 }
