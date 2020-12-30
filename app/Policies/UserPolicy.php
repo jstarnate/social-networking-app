@@ -90,4 +90,16 @@ class UserPolicy
     {
         //
     }
+
+    /**
+     * Determine whether the user can follow or unfollow the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return mixed
+     */
+    public function followOrUnfollow(User $user, User $model)
+    {
+        return $user->id !== $model->id;
+    }
 }
