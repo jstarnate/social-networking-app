@@ -1,4 +1,11 @@
-import React, { FC, ReactElement, useState, useEffect } from 'react';
+import React, {
+    FC,
+    ReactElement,
+    useState,
+    useEffect,
+    useCallback,
+    useRef,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Post from 'pages/general/Post';
@@ -16,11 +23,8 @@ interface RouteParams {
 const Posts: FC<PostsProps> = ({ section }: PostsProps): ReactElement => {
     const [posts, setPosts] = useState<PostModel[]>([]);
     const [loadingPosts, setLoadingPosts] = useState<boolean>(false);
+    const scrollTarget = useRef<HTMLDivElement>(null);
     const { username }: RouteParams = useParams();
-
-    useEffect(() => {
-        getPosts();
-    }, [section, username]);
 
     async function getPosts() {
         setLoadingPosts(true);
@@ -28,11 +32,56 @@ const Posts: FC<PostsProps> = ({ section }: PostsProps): ReactElement => {
         const route = section
             ? `/api/users/u/${username}/${section}`
             : `/api/users/u/${username}/posts`;
-        const { data } = await axios.get(route);
+        const { data } = await axios.post(route);
 
-        setPosts(data.posts);
+        setPosts(data.items);
         setLoadingPosts(false);
     }
+
+    const ioCallback: IntersectionObserverCallback = useCallback(
+        async (entries, observer) => {
+            if (entries[0].isIntersecting) {
+                setLoadingPosts(true);
+
+                const date = posts[posts.length - 1].updated_at;
+                const route = `/api/users/u/${username}/${section || 'posts'}`;
+                const { data } = await axios.post(route, { date });
+
+                if (data.has_more) {
+                    setPosts(p => [...p, ...data.items]);
+                }
+
+                if (!data.has_more && scrollTarget && scrollTarget.current) {
+                    observer.unobserve(scrollTarget.current);
+                }
+
+                setLoadingPosts(false);
+            }
+        },
+        [posts]
+    );
+
+    useEffect(() => {
+        getPosts();
+    }, [section, username]);
+
+    useEffect(() => {
+        const options: IntersectionObserverInit = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 1.0,
+        };
+
+        const observer = new IntersectionObserver(ioCallback, options);
+
+        if (scrollTarget && scrollTarget.current) {
+            observer.observe(scrollTarget.current);
+        }
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [ioCallback]);
 
     if (!posts.length) {
         return (
@@ -52,17 +101,21 @@ const Posts: FC<PostsProps> = ({ section }: PostsProps): ReactElement => {
 
     return (
         <section className='pd-b--lg pd-l--sm pd-r--sm'>
-            {loadingPosts ? (
-                <div className='mg-t--md'>
-                    <Spinner size={40} color='#7EAEE7' />
-                </div>
-            ) : (
+            <div>
                 <div>
                     {posts.map((post: PostModel) => (
                         <Post key={post.id} namespace='profile' {...post} />
                     ))}
                 </div>
-            )}
+
+                <div ref={scrollTarget}></div>
+
+                {loadingPosts && (
+                    <div className='mg-t--md'>
+                        <Spinner size={40} color='#7EAEE7' />
+                    </div>
+                )}
+            </div>
         </section>
     );
 };

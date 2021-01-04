@@ -24,8 +24,7 @@ class RegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'string', 'regex:/^[A-Za-z ]+$/'],
-            'last_name' => ['required', 'string', 'regex:/^[A-Za-z ]+$/'],
+            'full_name' => ['required', 'string', 'min:2', 'regex:/^[A-Za-z ]+$/'],
             'email' => ['required', 'string', 'email', 'unique:users'],
             'username' => ['required', 'string', 'min:6', 'regex:/^[a-zA-Z0-9.]+$/', 'unique:users'],
             'birth_month' => ['required', 'string'],
@@ -50,6 +49,7 @@ class RegistrationRequest extends FormRequest
 
             'email.email' => 'Please enter a valid email address.',
 
+            'full_name.min' => 'Name must be at least 2 characters long.',
             'username.min' => 'Username must be at least 6 characters long.',
 
             'birth_day.between' => 'Birth day must range from 1 to 31.',

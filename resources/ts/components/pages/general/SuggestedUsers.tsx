@@ -13,7 +13,7 @@ const SuggestedUsers: FC = (): ReactElement => {
                 <h3 className='text--black-light'>Find friends</h3>
                 <Link
                     className='font--sm text--primary-dark text--bold mg-l--auto'
-                    to='/users'>
+                    to='/users/search'>
                     Show all
                 </Link>
             </div>

@@ -19,6 +19,7 @@ export interface Post {
     likes: number;
     comments: number;
     bookmarked: boolean;
+    updated_at?: string;
     user: User;
 }
 

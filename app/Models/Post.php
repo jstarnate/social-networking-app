@@ -23,7 +23,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $hidden = ['user_id', 'updated_at', 'pivot'];
+    protected $hidden = ['user_id', 'pivot'];
 
     /**
      * The attributes that should be cast to native types.
@@ -78,7 +78,7 @@ class Post extends Model
     {
         $post = collect($this);
         $authUser = auth()->user();
-        $user = $this->user->only('full_name', 'username', 'gender', 'image_url');
+        $user = $this->user->only('full_name', 'username', 'gender', 'image_url', 'updated_at');
         $user['url'] = "/u/{$user['username']}";
 
         $post['from_self'] = $authUser->id === $this->user_id;

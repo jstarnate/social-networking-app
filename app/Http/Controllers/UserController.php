@@ -53,11 +53,12 @@ class UserController extends Controller
     /**
      * Get a specific user model.
      *
+     * @param \Illuminate\Http\Response  $request
      * @param  string  $username
      * @param  string  $name
      * @return \Illuminate\Http\Response
      */
-    public function getConnectedPosts(string $username, string $name)
+    public function getConnectedPosts(Request $request, string $username, string $name)
     {
         $names = ['posts', 'likes', 'comments', 'bookmarks'];
 
@@ -66,9 +67,14 @@ class UserController extends Controller
         }
 
         $user = User::where('username', $username)->first();
-        $posts = $user->{$name}->map(fn($post) => $post->format());
-        
-        return response()->json(compact('posts'));
+        $payload = $user->{$name}()->orderBy('updated_at', 'desc')
+                    ->{$name === 'likes' ? 'wherePivot' : 'where'}('updated_at', '<', $request->date ?: now())
+                    ->get()
+                    ->take(5);
+        $items = $payload->map(fn($item) => $item->format());
+        $has_more = !$payload->isEmpty();
+
+        return response()->json(compact('items', 'has_more'));
     }
 
     /**
@@ -149,7 +155,7 @@ class UserController extends Controller
             ]);
         }
 
-        $results = User::whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$query%"])
+        $results = User::where('full_name', 'like', "%$query%")
                     ->orWhere('username', 'like', "%$query%")
                     ->get()
                     ->take(5);
@@ -166,14 +172,18 @@ class UserController extends Controller
      */
     public function getSearchResults(Request $request)
     {
-        $results = User::whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$request->sq%"])
-                    ->orWhere('username', 'like', "%$request->sq%")
-                    ->whereNotIn('id', $request->ids)
+        $ids = collect($request->ids)->merge(auth()->user()->id);
+        $results = User::where(function($query) use ($request) {
+                        $query->where('full_name', 'like', "%$request->sq%")
+                            ->orWhere('username', 'like', "%$request->sq%");
+                    })
+                    ->whereNotIn('id', $ids)
                     ->get()
                     ->take(10);
-        $users = $results->map(fn($u) => $u->formatBasic(auth()->user()));
+        $items = $results->map(fn($u) => $u->formatBasic(auth()->user()));
+        $has_more = !$results->isEmpty();
 
-        return response()->json(compact('users'));
+        return response()->json(compact('items', 'has_more'));
     }
 
     /**
@@ -185,7 +195,10 @@ class UserController extends Controller
     public function filter(Request $request)
     {
         $body = collect($request->all())->filter(fn($data) => $data);
-        $results = User::whereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%$request->sq%"])
+        $results = User::where(function($query) use ($request) {
+                        $query->where('full_name', 'like', "%$request->sq%")
+                            ->orWhere('username', 'like', "%$request->sq%");
+                    })
                     ->where($body->toArray())
                     ->get()
                     ->take(10);

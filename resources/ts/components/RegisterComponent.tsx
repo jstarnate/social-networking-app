@@ -15,8 +15,7 @@ import Modal from 'helpers/Modal';
 import { generateMonths, generateYears } from 'utilities/generators';
 
 const RegisterComponent: FC = (): ReactElement => {
-    const [first_name, firstNameData, setFirstnameError] = useInput(null);
-    const [last_name, lastNameData, setLastnameError] = useInput(null);
+    const [full_name, fullNameData, setFullNameError] = useInput(null);
     const [email, emailData, setEmailError] = useInput(null);
     const [username, usernameData, setUsernameError] = useInput(null);
     const [password, passwordData, setPasswordError] = useInput(null);
@@ -63,8 +62,7 @@ const RegisterComponent: FC = (): ReactElement => {
         setLoading(true);
 
         const requests = {
-            first_name,
-            last_name,
+            full_name,
             email,
             username,
             password,
@@ -83,8 +81,7 @@ const RegisterComponent: FC = (): ReactElement => {
             const e = error.response.data.errors;
             const bde = e.birth_month || e.birth_day || e.birth_year;
 
-            setFirstnameError(e.first_name);
-            setLastnameError(e.last_name);
+            setFullNameError(e.full_name);
             setEmailError(e.email);
             setUsernameError(e.username);
             setPasswordError(e.password);
@@ -103,16 +100,10 @@ const RegisterComponent: FC = (): ReactElement => {
 
             <form className='register' onSubmit={submit}>
                 <InputField
-                    id='first_name'
-                    label='First name'
+                    id='full_name'
+                    label='Name'
                     autoFocus={true}
-                    {...firstNameData}
-                />
-
-                <InputField
-                    id='last_name'
-                    label='Last name'
-                    {...lastNameData}
+                    {...fullNameData}
                 />
 
                 <InputField

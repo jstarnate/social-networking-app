@@ -84,7 +84,7 @@ const Filterer: FC = (): ReactElement => {
                         </label>
 
                         <select
-                            className='d--block full-width bg--white font--md text--black pd-t--xs pd-b--xs pd-l--sm pd-r--sm b-rad--sm b--1 brdr--gray'
+                            className='d--block full-width bg--white font--md text--black pd--xs b-rad--sm b--1 brdr--gray'
                             onChange={handleSelectValue.bind(
                                 null,
                                 setBirthMonth
@@ -102,7 +102,7 @@ const Filterer: FC = (): ReactElement => {
                         </label>
 
                         <select
-                            className='d--block full-width bg--white font--md text--black pd-t--xs pd-b--xs pd-l--sm pd-r--sm b-rad--sm b--1 brdr--gray'
+                            className='d--block full-width bg--white font--md text--black pd--xs b-rad--sm b--1 brdr--gray'
                             onChange={handleSelectValue.bind(
                                 null,
                                 setBirthYear
