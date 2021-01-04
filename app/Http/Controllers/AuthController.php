@@ -67,7 +67,7 @@ class AuthController extends Controller
     public function register(RegistrationRequest $request)
     {
         $body = $request->only([
-            'first_name', 'last_name', 'email', 'username',
+            'full_name', 'email', 'username',
             'gender', 'birth_day', 'birth_month', 'birth_year',
         ]);
 
