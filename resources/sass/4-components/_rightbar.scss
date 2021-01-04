@@ -7,6 +7,10 @@
         height: calc(100vw - 70px);
     }
 
+    &__profile-photo {
+        width: 55px;
+    }
+
     &__follow-button {
         border-radius: 0 0 $radius--sm $radius--sm;
     }

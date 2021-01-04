@@ -7,6 +7,10 @@
         height: calc(100vw - 70px);
     }
 
+    &__profile-photo {
+        width: 30px;
+    }
+
     &__active-link {
         color: $primary--dark;
     }

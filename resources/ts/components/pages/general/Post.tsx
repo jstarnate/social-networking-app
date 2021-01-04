@@ -51,7 +51,11 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
 
     return (
         <div className='d--block b--1 brdr--primary b-rad--md pd--md mg-t--md'>
-            <BasicUserInfo className='d--if ai--center' {...props.user} />
+            <BasicUserInfo
+                className='d--if ai--center'
+                imageClassName='home__id-photo'
+                {...props.user}
+            />
 
             <p
                 className={`text--black-light mg-t--sm ${props.namespace}__post-body`}>

@@ -7,12 +7,8 @@ interface UserData extends UserWithId {
     followed: boolean;
 }
 
-const User: FC<UserData> = ({
-    id,
-    followed,
-    ...user
-}: UserData): ReactElement => {
-    const [isFollowed, setIsFollowed] = useState<boolean>(followed);
+const User: FC<UserData> = ({ id, ...user }: UserData): ReactElement => {
+    const [isFollowed, setIsFollowed] = useState<boolean>(user.followed);
 
     async function followUser() {
         setIsFollowed(true);
@@ -26,7 +22,7 @@ const User: FC<UserData> = ({
 
     return (
         <div className='d--flex ai--center b--1 brdr--primary b-rad--md pd--xs mg-t--md'>
-            <BasicUserInfo {...user} />
+            <BasicUserInfo imageClassName='home__id-photo' {...user} />
 
             {isFollowed ? (
                 <button

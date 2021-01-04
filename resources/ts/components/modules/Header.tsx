@@ -20,6 +20,7 @@ const Header: FC = (): ReactElement => {
 
     function signOut() {
         logoutForm.current?.submit();
+        localStorage.clear();
     }
 
     return (

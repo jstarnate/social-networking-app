@@ -36,7 +36,10 @@ const Sidebar: FC<SidebarProps> = ({
                         ) : !user?.image_url && user?.gender === 'Female' ? (
                             <FemaleDefaultAvatar size={30} />
                         ) : (
-                            <img className='round' src={user?.image_url} />
+                            <img
+                                className='round sidebar__profile-photo'
+                                src={user?.image_url}
+                            />
                         )}
                         <span className='font--sm text--black-light text--bold mg-l--xs'>
                             {user?.full_name}

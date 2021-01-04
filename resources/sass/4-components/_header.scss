@@ -15,6 +15,10 @@
         color: $black--light;
     }
 
+    &__search-profile-photo {
+        width: 35px;
+    }
+
     &__search-input {
         border-radius: $radius--sm 0 0 $radius--sm;
     }

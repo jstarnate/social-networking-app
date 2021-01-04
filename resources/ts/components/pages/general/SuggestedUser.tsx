@@ -29,7 +29,7 @@ const SuggestedUser: FC<UserWithId> = ({
 
     return (
         <div className='bg--white b-rad--sm mg-t--md'>
-            <BasicUserInfo {...user} />
+            <BasicUserInfo imageClassName='rightbar__profile-photo' {...user} />
 
             <button
                 className={`full-width btn btn--${
