@@ -21,8 +21,8 @@ class FetchRepository implements FetchRepositoryInterface
                     ->take(5);
                     
         $items = $payload->map(fn($item) => $item->format());
-        $timestamp = $payload->count() ? $payload->last()->updated_at : null;
+        $has_more = !$payload->isEmpty();
 
-        return compact('items', 'timestamp');
+        return compact('items', 'has_more');
 	}
 }
