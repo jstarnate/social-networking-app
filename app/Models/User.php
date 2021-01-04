@@ -88,11 +88,6 @@ class User extends Authenticatable
     * GETTERS
     * ============================================
     */
-    public function getFullNameAttribute()
-    {
-        return "{$this->first_name} {$this->last_name}";
-    }
-
     public function getBirthDateAttribute()
     {
         $date = "{$this->birth_year}-{$this->birth_month}-{$this->birth_day}";
