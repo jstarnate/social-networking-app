@@ -6,11 +6,13 @@ import { User } from 'types/models';
 
 interface BasicUserInfoProps extends User {
     className?: string;
+    imageClassName: string;
     avatarSize?: number;
 }
 
 const BasicUserInfo: FC<BasicUserInfoProps> = ({
     className,
+    imageClassName,
     avatarSize,
     full_name,
     username,
@@ -25,7 +27,11 @@ const BasicUserInfo: FC<BasicUserInfoProps> = ({
             ) : gender === 'Female' && !image_url ? (
                 <FemaleDefaultAvatar size={avatarSize} />
             ) : (
-                <img className='circle' src={image_url} alt='Profile photo' />
+                <img
+                    className={`round ${imageClassName}`}
+                    src={image_url}
+                    alt='Profile photo'
+                />
             )}
 
             <div className='mg-l--xs'>

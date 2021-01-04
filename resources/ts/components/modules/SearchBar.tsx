@@ -72,6 +72,7 @@ const SearchBar: FC = (): ReactElement => {
                         {users.map((user: User, i) => (
                             <BasicUserInfo
                                 key={i}
+                                imageClassName='header__search-profile-photo'
                                 className='d--flex ai--center pd--xs bt--1 brdr--gray-light header__search-suggestion'
                                 avatarSize={35}
                                 {...user}
