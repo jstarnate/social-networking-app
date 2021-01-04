@@ -1,6 +1,10 @@
 .home {
     max-width: 1366px;
 
+    &__id-photo {
+        width: 55px;
+    }
+
     &__big-dot {
         @include size(5px);
     }
@@ -51,6 +55,10 @@
 }
 
 .profile {
+    &__headline-profile-photo {
+        width: 100px;
+    }
+    
     &__follow-button {
         border-radius: 2rem;
     }
