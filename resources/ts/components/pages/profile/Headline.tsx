@@ -80,7 +80,7 @@ const Headline: FC = (): ReactElement | null => {
                         <FemaleDefaultAvatar size={100} />
                     ) : (
                         <img
-                            className='circle'
+                            className='round profile__headline-profile-photo'
                             src={user?.image_url}
                             alt='Profile photo'
                         />
