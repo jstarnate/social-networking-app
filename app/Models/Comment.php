@@ -22,7 +22,7 @@ class Comment extends Model
      *
      * @var array
      */
-    protected $hidden = ['user_id', 'updated_at', 'pivot'];
+    protected $hidden = ['user_id', 'pivot'];
 
     /**
      * The attributes that should be cast to native types.
@@ -56,7 +56,7 @@ class Comment extends Model
     public function format()
     {
         $comment = collect($this);
-        $user = $this->user->only('full_name', 'username', 'gender', 'image_url');
+        $user = $this->user->only('full_name', 'username', 'gender', 'image_url', 'updated_at');
         $user['url'] = route('profile', ['username' => $user['username']]);
 
         $comment['from_self'] = auth()->user()->id === $this->user_id;
