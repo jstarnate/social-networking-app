@@ -1,0 +1,18 @@
+.modal {
+    @include coords(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+
+    &__main {
+        max-width: 480px;
+        margin-top: 5.5vw;
+    }
+    
+    &__head {
+        border-radius: $radius--md $radius--md 0 0;
+    }
+    
+    &__body {
+        line-height: 1.5;
+    }
+}
