@@ -208,7 +208,6 @@ const RegisterComponent: FC = (): ReactElement => {
             {registered && (
                 <Portal>
                     <Modal
-                        namespace='register'
                         title='Congratulations!'
                         type='success'
                         message={`You have successfully registered. Please check

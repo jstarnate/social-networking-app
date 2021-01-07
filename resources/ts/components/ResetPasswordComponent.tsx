@@ -95,7 +95,6 @@ const ResetPasswordComponent: FC = (): ReactElement => {
             {isSent && (
                 <Portal>
                     <Modal
-                        namespace='reset'
                         title='Congratulations!'
                         type='success'
                         message={successMessage}
