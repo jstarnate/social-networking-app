@@ -119,7 +119,7 @@ class User extends Authenticatable
     */
     public function formatBasic($currentUser = null)
     {
-        $user = $this->only('id', 'full_name', 'username', 'gender', 'image_url');
+        $user = $this->only('id', 'full_name', 'username', 'gender', 'location', 'bio', 'image_url');
         $user['url'] = "/u/{$this->username}";
 
         if ($currentUser) {
