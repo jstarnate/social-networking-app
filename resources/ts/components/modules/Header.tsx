@@ -52,7 +52,6 @@ const Header: FC = (): ReactElement => {
             {showModal && (
                 <Portal>
                     <Modal
-                        namespace='home'
                         type='primary'
                         title='Sign out'
                         message='Are you sure you want to sign out?'>
