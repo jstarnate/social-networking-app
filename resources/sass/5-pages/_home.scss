@@ -17,25 +17,6 @@
             background: $gray--light;
         }
     }
-
-    &__modal {
-        @include coords(0, 0, 0, 0);
-        background: rgba(0, 0, 0, 0.8);
-        z-index: 1000;
-    }
-
-    &__modal-main {
-        max-width: 480px;
-        margin-top: 7vw;
-    }
-
-    &__modal-head {
-        border-radius: $radius--md $radius--md 0 0;
-    }
-
-    &__modal-body {
-        line-height: 1.5;
-    }
 }
 
 .timeline {
@@ -55,6 +36,8 @@
 }
 
 .profile {
+    $this: &;
+
     &__headline-profile-photo {
         width: 100px;
     }
@@ -70,5 +53,31 @@
 
     &__post-body {
         line-height: 1.5;
+    }
+
+    &__edit-profile-form {
+        max-width: 480px;
+    }
+
+    &__change-photo-container {
+        overflow: hidden;
+
+        &:hover #{$this}__change-photo-button {
+            visibility: visible;
+        }
+    }
+
+    &__change-photo-button {
+        @include coords(null, null, 0, 0);
+        background: rgba(0, 0, 0, 0.5);
+        visibility: hidden;
+    }
+
+    &__edit-bio {
+        resize: none;
+    }
+
+    &__modal-submit-container {
+        border-radius: 0 0 $radius--md $radius--md;
     }
 }

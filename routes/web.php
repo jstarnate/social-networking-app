@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function() {
     Route::get('/u/{username}/likes', [UserController::class, 'show']);
     Route::get('/u/{username}/comments', [UserController::class, 'show']);
     Route::get('/u/{username}/bookmarks', [UserController::class, 'show']);
+    Route::get('/profile/{username}/edit', [UserController::class, 'show']);
     
     Route::view('/notifications', 'home');
     Route::view('/users', 'home');
@@ -58,6 +59,7 @@ Route::middleware('auth')->group(function() {
 Route::middleware('auth')->group(function() {
     Route::post('/api/users', [UserController::class, 'fetchUsers']);
     Route::get('/api/users/auth', [UserController::class, 'getAuthUser']);
+    Route::put('/api/users/auth/update', [UserController::class, 'update']);
     Route::get('/api/users/u/{username}', [UserController::class, 'getUser']);
     Route::post('/api/users/u/{username}/{name}', [UserController::class, 'getConnectedPosts']);
     Route::get('/api/users/suggested', [UserController::class, 'getSuggestedUsers']);

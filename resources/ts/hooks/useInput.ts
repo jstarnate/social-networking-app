@@ -1,18 +1,22 @@
 import { ChangeEvent, useState } from 'react';
 
 interface DataObject {
-    value: string | null;
+    value: string | null | undefined;
     error: string | null;
-    onChangeEvent: (event: ChangeEvent<HTMLInputElement>) => void;
+    onChangeEvent: (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
 }
 
 export default function (
-    initialValue: string | null
-): [string | null, DataObject, CallableFunction] {
-    const [value, setValue] = useState<string | null>(initialValue);
+    initialValue: string | null | undefined
+): [string | null | undefined, DataObject, CallableFunction] {
+    const [value, setValue] = useState<string | null | undefined>(initialValue);
     const [error, setError] = useState<string | null>(null);
 
-    function handleValue(event: ChangeEvent<HTMLInputElement>) {
+    function handleValue(
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) {
         setValue(event.target.value);
     }
 

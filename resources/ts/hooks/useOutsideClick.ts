@@ -1,8 +1,8 @@
 import { useEffect, RefObject } from 'react';
 
 export default function (ref: RefObject<HTMLElement>, fn: VoidFunction): void {
-    function checkClicked(event: MouseEvent) {
-        if (ref.current && ref.current.contains(event.target as Node)) {
+    function outsideClick(event: MouseEvent) {
+        if (ref.current && ref.current.contains(event.target as HTMLElement)) {
             return;
         }
 
@@ -10,10 +10,10 @@ export default function (ref: RefObject<HTMLElement>, fn: VoidFunction): void {
     }
 
     useEffect(() => {
-        document.addEventListener('click', checkClicked);
+        document.addEventListener('click', outsideClick);
 
         return () => {
-            document.removeEventListener('click', checkClicked);
+            document.removeEventListener('click', outsideClick);
         };
-    });
+    }, []);
 }

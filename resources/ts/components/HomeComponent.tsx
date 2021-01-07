@@ -13,6 +13,7 @@ import Echo from 'laravel-echo';
 import Header from './modules/Header';
 import Sidebar from './modules/Sidebar';
 import Rightbar from './modules/Rightbar';
+import EditProfile from 'pages/profile/EditProfile';
 import Timeline from './pages/home/Timeline';
 import Notifications from './pages/notifications/Notifications';
 import Users from './pages/users/index';
@@ -20,6 +21,11 @@ import PostView from 'pages/general/PostView';
 import Spinner from 'helpers/Spinner';
 import { UserWithId } from 'types/models';
 import 'pusher-js';
+
+interface AuthUser extends UserWithId {
+    location: string | null;
+    bio: string | null;
+}
 
 interface EchoData {
     count: number;
@@ -34,7 +40,7 @@ const ProfileLoader = () => (
 );
 
 const HomeComponent: FC = (): ReactElement => {
-    const [user, setUser] = useState<UserWithId | null>(null);
+    const [user, setUser] = useState<AuthUser | null>(null);
     const [notifCount, setNotifCount] = useState<number>(0);
     const echo = new Echo({
         broadcaster: 'pusher',
@@ -104,8 +110,11 @@ const HomeComponent: FC = (): ReactElement => {
                         <Route path='/home' component={Timeline} />
                         <Route path='/u/:username'>
                             <Suspense fallback={<ProfileLoader />}>
-                                <Profile />
+                                <Profile name={user?.full_name} />
                             </Suspense>
+                        </Route>
+                        <Route exact path='/profile/:username/edit'>
+                            <EditProfile user={user} />
                         </Route>
                         <Route
                             path='/notifications'

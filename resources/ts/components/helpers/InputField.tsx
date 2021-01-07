@@ -6,7 +6,7 @@ interface Props {
     id: string;
     label: string;
     type?: string;
-    value: string | null;
+    value: string | null | undefined;
     onChangeEvent: (event: ChangeEvent<HTMLInputElement>) => void;
     error?: string | null;
     autoFocus?: boolean;

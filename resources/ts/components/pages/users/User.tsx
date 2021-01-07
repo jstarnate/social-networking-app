@@ -4,11 +4,11 @@ import BasicUserInfo from 'helpers/BasicUserInfo';
 import { UserWithId } from 'types/models';
 
 interface UserData extends UserWithId {
-    followed: boolean;
+    followed?: boolean;
 }
 
 const User: FC<UserData> = ({ id, ...user }: UserData): ReactElement => {
-    const [isFollowed, setIsFollowed] = useState<boolean>(user.followed);
+    const [isFollowed, setIsFollowed] = useState(user.followed);
 
     async function followUser() {
         setIsFollowed(true);

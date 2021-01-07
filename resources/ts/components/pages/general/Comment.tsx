@@ -70,7 +70,6 @@ const Comment: FC<CommentProps> = ({
             {showModal && (
                 <Portal>
                     <Modal
-                        namespace='home'
                         type='primary'
                         title='Confirm deletion'
                         message='Are you sure you want to delete your comment?'>

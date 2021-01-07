@@ -260,15 +260,13 @@ class UserController extends Controller
         $this->authorize('update', User::find($request->id));
 
         $user = User::where('id', auth()->user()->id);
-        $body = $request->except('id', 'username');
-
-        if ($request->username !== $user->first()->username) {
-            $body['username'] = $request->username;
-        }
+        $body = $request->only('full_name', 'username', 'location', 'bio');
 
         $user->update($body);
 
-        return response()->json(['message' => 'Success']);
+        return response()->json([
+            'user' => auth()->user()->formatBasic()
+        ]);
     }
 
     /**

@@ -4,13 +4,17 @@ import { Helmet } from 'react-helmet';
 import Headline from './Headline';
 import Posts from './Posts';
 
-const Profile: FC = (): ReactElement => {
+interface ProfileProps {
+    name: string | undefined;
+}
+
+const Profile: FC<ProfileProps> = ({ name }: ProfileProps): ReactElement => {
     const { url, path } = useRouteMatch();
 
     return (
         <section className='flex--1 profile'>
             <Helmet>
-                <title>Hello World</title>
+                <title>{name}</title>
             </Helmet>
 
             <Headline />
@@ -55,10 +59,6 @@ const Profile: FC = (): ReactElement => {
                     <Posts section='bookmarks' />
                 </Route>
             </Switch>
-
-            {/* <p className='mg-t--md text--center text--gray text--bold'>
-                You don't have any post.
-            </p> */}
         </section>
     );
 };

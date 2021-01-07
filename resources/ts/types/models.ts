@@ -1,10 +1,10 @@
 export interface User {
-    full_name: string;
-    username: string;
-    gender: 'Male' | 'Female';
+    full_name: string | undefined;
+    username: string | undefined;
+    gender: 'Male' | 'Female' | undefined;
     image_url: string | undefined;
-    url: string;
-    followed: boolean;
+    url?: string;
+    followed?: boolean;
 }
 
 export interface UserWithId extends User {

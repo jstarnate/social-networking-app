@@ -17,7 +17,7 @@ import { UserWithId } from 'types/models';
 import { pushSpread } from 'actions';
 
 interface UserType extends UserWithId {
-    followed: boolean;
+    followed?: boolean;
 }
 
 const useQuery = () => new URLSearchParams(useLocation().search);
