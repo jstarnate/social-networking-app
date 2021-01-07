@@ -1,8 +1,8 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import MaleDefaultAvatar from 'helpers/MaleDefaultAvatar';
-import FemaleDefaultAvatar from 'helpers/FemaleDefaultAvatar';
+import BasicUserInfo from 'helpers/BasicUserInfo';
+import InfoLabel from './InfoLabel';
 import { UserWithId } from 'types/models';
 import useDebounce from 'hooks/useDebounce';
 
@@ -73,30 +73,16 @@ const Headline: FC = (): ReactElement | null => {
         <section className='pd-t--lg pd-l--sm pd-r--sm'>
             {/* Basic info and follow/unfollow button */}
             <div className='d--flex ai--center'>
-                <div className='d--flex ai--center'>
-                    {user?.gender === 'Male' && !user?.image_url ? (
-                        <MaleDefaultAvatar size={100} />
-                    ) : user?.gender === 'Female' && !user?.image_url ? (
-                        <FemaleDefaultAvatar size={100} />
-                    ) : (
-                        <img
-                            className='round profile__headline-profile-photo'
-                            src={user?.image_url}
-                            alt='Profile photo'
-                        />
-                    )}
+                <BasicUserInfo
+                    className='d--flex ai--center'
+                    avatarSize={100}
+                    full_name={user?.full_name}
+                    username={user?.username}
+                    gender={user?.gender}
+                    image_url={user?.image_url}
+                />
 
-                    <div className='mg-l--sm'>
-                        <span className='d--block font--lg text--black text--bold'>
-                            {user?.full_name}
-                        </span>
-                        <span className='font--md text--gray'>
-                            @{user?.username}
-                        </span>
-                    </div>
-                </div>
-
-                {user?.not_self && (
+                {user?.not_self ? (
                     <button
                         className={`btn ${
                             followed ? 'btn--danger-o' : 'btn--primary-o'
@@ -104,6 +90,12 @@ const Headline: FC = (): ReactElement | null => {
                         onClick={followEvent}>
                         {followed ? 'Unfollow' : 'Follow'}
                     </button>
+                ) : (
+                    <Link
+                        to={`/profile/${username}/edit`}
+                        className='btn btn--primary-o b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-l--auto'>
+                        Edit profile
+                    </Link>
                 )}
             </div>
 
@@ -117,24 +109,20 @@ const Headline: FC = (): ReactElement | null => {
             {/* Location, birth date, and date joined */}
             <div className='mg-t--sm'>
                 {!!user?.location && (
-                    <label className='font--md text--gray'>
-                        <i className='fa fa-map-marker'></i>
-                        <span className='mg-l--xxs'>{user.location}</span>
-                    </label>
+                    <InfoLabel icon='map-marker' label={user.location} />
                 )}
 
-                <label
-                    className={`font--md text--gray ${
-                        user?.location ? 'mg-l--lg' : ''
-                    }`}>
-                    <i className='fa fa-gift'></i>
-                    <span className='mg-l--xxs'>{user?.birth_date}</span>
-                </label>
+                <InfoLabel
+                    containerClassName={user?.location ? 'mg-l--lg' : null}
+                    icon='gift'
+                    label={user?.birth_date}
+                />
 
-                <label className='font--md text--gray mg-l--lg'>
-                    <i className='fa fa-calendar'></i>
-                    <span className='mg-l--xxs'>{user?.date_joined}</span>
-                </label>
+                <InfoLabel
+                    containerClassName='mg-l--lg'
+                    icon='calendar'
+                    label={user?.date_joined}
+                />
             </div>
 
             {/* Followers and following users */}
