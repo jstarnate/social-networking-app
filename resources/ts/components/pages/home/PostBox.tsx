@@ -1,24 +1,16 @@
-import React, { ChangeEvent, FC, ReactElement, useState } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { unshiftAdd } from 'actions';
-
-const totalChars = 170;
+import useLimitedChars from 'hooks/useLimitedChars';
 
 const PostBox: FC = (): ReactElement => {
     const [body, setBody] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    const [charsLeft, setCharsLeft] = useState<number>(totalChars);
     const dispatch = useDispatch();
+    const [charsLeft, checkLength] = useLimitedChars(170, handleBodyValue);
 
-    function handleBodyValue(event: ChangeEvent<HTMLTextAreaElement>) {
-        const { value } = event.target;
-
-        if (value.length === totalChars + 1) {
-            return false;
-        }
-
-        setCharsLeft(totalChars - value.length);
+    function handleBodyValue(value: string | null) {
         setBody(value);
     }
 
@@ -43,7 +35,7 @@ const PostBox: FC = (): ReactElement => {
                 className='font--md text--black-light pd--sm timeline__post-input'
                 placeholder="What's on your mind?"
                 value={body || ''}
-                onChange={handleBodyValue}></textarea>
+                onChange={checkLength}></textarea>
 
             <div className='bt--1 brdr--primary d--flex ai--center pd-l--md'>
                 <label>
