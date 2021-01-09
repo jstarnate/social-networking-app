@@ -1,12 +1,17 @@
 import { useEffect, RefObject } from 'react';
 
-export default function (ref: RefObject<HTMLElement>, fn: VoidFunction): void {
+export default function (
+    ref: RefObject<HTMLElement>,
+    fn: CallableFunction | undefined
+): void {
     function outsideClick(event: MouseEvent) {
-        if (ref.current && ref.current.contains(event.target as HTMLElement)) {
-            return;
+        if (
+            fn &&
+            ref.current &&
+            ref.current.contains(event.target as HTMLElement)
+        ) {
+            fn();
         }
-
-        fn();
     }
 
     useEffect(() => {

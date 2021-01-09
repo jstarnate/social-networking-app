@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
 
-export default function (fn: CallableFunction): void {
+export default function (fn: CallableFunction | undefined): void {
     function closeOnEscape(event: KeyboardEvent) {
-        if (event.key !== 'Escape') {
-            return;
+        if (fn && event.key === 'Escape') {
+            fn();
         }
-
-        fn();
     }
 
     useEffect(() => {
