@@ -1,11 +1,4 @@
-import React, {
-    FC,
-    ReactElement,
-    useState,
-    useEffect,
-    useRef,
-    useCallback,
-} from 'react';
+import { FC, ReactElement, useState, useEffect, useRef, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';

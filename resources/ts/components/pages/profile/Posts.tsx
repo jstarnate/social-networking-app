@@ -1,11 +1,4 @@
-import React, {
-    FC,
-    ReactElement,
-    useState,
-    useEffect,
-    useCallback,
-    useRef,
-} from 'react';
+import { FC, ReactElement, useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Post from 'pages/general/Post';

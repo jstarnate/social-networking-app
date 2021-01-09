@@ -1,11 +1,4 @@
-import React, {
-    FC,
-    ReactElement,
-    useState,
-    useEffect,
-    ChangeEvent,
-    KeyboardEvent,
-} from 'react';
+import { FC, ReactElement, useState, useEffect, ChangeEvent, KeyboardEvent } from 'react';
 import axios from 'axios';
 import Spinner from 'helpers/Spinner';
 import MaleDefaultAvatar from 'helpers/MaleDefaultAvatar';

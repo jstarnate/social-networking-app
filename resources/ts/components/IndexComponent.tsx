@@ -1,4 +1,4 @@
-import React, { FC, FormEvent, ReactElement, useState } from 'react';
+import { FC, FormEvent, ReactElement, useState } from 'react';
 import axios from 'axios';
 import useInput from 'hooks/useInput';
 import InputField from 'helpers/InputField';

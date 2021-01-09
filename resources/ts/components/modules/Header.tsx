@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState, useRef } from 'react';
+import { FC, ReactElement, useState, useRef } from 'react';
 import SearchBar from './SearchBar';
 import Modal from 'helpers/Modal';
 

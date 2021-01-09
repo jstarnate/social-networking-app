@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import { FC, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import SuggestedUser from './SuggestedUser';

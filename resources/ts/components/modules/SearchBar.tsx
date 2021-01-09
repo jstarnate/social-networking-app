@@ -1,10 +1,4 @@
-import React, {
-    ChangeEvent,
-    FC,
-    FormEvent,
-    ReactElement,
-    useState,
-} from 'react';
+import { ChangeEvent, FC, FormEvent, ReactElement, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios';
 import { User } from 'types/models';

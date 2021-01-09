@@ -1,11 +1,4 @@
-import React, {
-    FC,
-    ReactElement,
-    useEffect,
-    useState,
-    lazy,
-    Suspense,
-} from 'react';
+import { FC, ReactElement, useEffect, useState, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';

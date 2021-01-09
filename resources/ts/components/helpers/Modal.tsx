@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useRef } from 'react';
+import { FC, ReactElement, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import useCloseOnEscape from 'hooks/useCloseOnEscape';
 import useOutsideClick from 'hooks/useOutsideClick';

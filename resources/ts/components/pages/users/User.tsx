@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState } from 'react';
+import { FC, ReactElement, useState } from 'react';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
 import { UserWithId } from 'types/models';

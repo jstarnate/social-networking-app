@@ -1,10 +1,4 @@
-import React, {
-    ChangeEvent,
-    FC,
-    FormEvent,
-    ReactElement,
-    useState,
-} from 'react';
+import { ChangeEvent, FC, FormEvent, ReactElement, useState } from 'react';
 import axios from 'axios';
 import InputField from 'helpers/InputField';
 import useInput from 'hooks/useInput';

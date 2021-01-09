@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, ReactElement } from 'react';
+import { ChangeEvent, FC, ReactElement } from 'react';
 
 interface RadioButtonProps {
     id: string;

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import { FC, ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import MaleDefaultAvatar from './MaleDefaultAvatar';
 import FemaleDefaultAvatar from './FemaleDefaultAvatar';

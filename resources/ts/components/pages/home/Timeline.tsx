@@ -1,11 +1,4 @@
-import React, {
-    FC,
-    ReactElement,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import { FC, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import Post from 'pages/general/Post';

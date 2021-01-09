@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useRef } from 'react';
+import { FC, ReactElement, useRef } from 'react';
 import useOutsideClick from 'hooks/useOutsideClick';
 import useCloseOnEscape from 'hooks/useCloseOnEscape';
 

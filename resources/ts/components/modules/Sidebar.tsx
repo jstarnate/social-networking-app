@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect } from 'react';
+import { FC, ReactElement, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import MaleDefaultAvatar from 'helpers/MaleDefaultAvatar';
 import FemaleDefaultAvatar from 'helpers/FemaleDefaultAvatar';

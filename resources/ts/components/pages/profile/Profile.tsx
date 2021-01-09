@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import { FC, ReactElement } from 'react';
 import { Switch, Route, NavLink, useRouteMatch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Headline from './Headline';
