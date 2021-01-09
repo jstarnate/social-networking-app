@@ -10,7 +10,6 @@ import axios from 'axios';
 import InputField from 'helpers/InputField';
 import useInput from 'hooks/useInput';
 import RadioButton from 'helpers/RadioButton';
-import Portal from 'helpers/Portal';
 import Modal from 'helpers/Modal';
 import { generateMonths, generateYears } from 'utilities/generators';
 
@@ -206,15 +205,13 @@ const RegisterComponent: FC = (): ReactElement => {
             </form>
 
             {registered && (
-                <Portal>
-                    <Modal
-                        title='Congratulations!'
-                        type='success'
-                        message={`You have successfully registered. Please check
-                                your email (${email}) for the verification of
-                                your account.`}
-                    />
-                </Portal>
+                <Modal
+                    title='Congratulations!'
+                    type='success'
+                    message={`You have successfully registered. Please check
+                            your email (${email}) for the verification of
+                            your account.`}
+                />
             )}
         </section>
     );

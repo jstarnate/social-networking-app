@@ -1,7 +1,6 @@
 import React, { FC, ReactElement, useState } from 'react';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
-import Portal from 'helpers/Portal';
 import Modal from 'helpers/Modal';
 import { User } from 'types/models';
 
@@ -68,25 +67,24 @@ const Comment: FC<CommentProps> = ({
             </div>
 
             {showModal && (
-                <Portal>
-                    <Modal
-                        type='primary'
-                        title='Confirm deletion'
-                        message='Are you sure you want to delete your comment?'>
-                        <div className='d--flex'>
-                            <button
-                                className='btn btn--primary-o pd-t--xs pd-b--xs pd-l--sm pd-r--sm b-rad--md mg-l--auto'
-                                onClick={hideDeleteCommentConfirmation}>
-                                Cancel
-                            </button>
-                            <button
-                                className='btn btn--danger text--bold pd--xs b-rad--md mg-l--sm'
-                                onClick={deleteComment}>
-                                Delete comment
-                            </button>
-                        </div>
-                    </Modal>
-                </Portal>
+                <Modal
+                    type='primary'
+                    title='Confirm deletion'
+                    message='Are you sure you want to delete your comment?'
+                    closeEvent={hideDeleteCommentConfirmation}>
+                    <div className='d--flex'>
+                        <button
+                            className='btn btn--primary-o pd-t--xs pd-b--xs pd-l--sm pd-r--sm b-rad--md mg-l--auto'
+                            onClick={hideDeleteCommentConfirmation}>
+                            Cancel
+                        </button>
+                        <button
+                            className='btn btn--danger text--bold pd--xs b-rad--md mg-l--sm'
+                            onClick={deleteComment}>
+                            Delete comment
+                        </button>
+                    </div>
+                </Modal>
             )}
         </>
     );

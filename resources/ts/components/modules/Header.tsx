@@ -1,6 +1,5 @@
 import React, { FC, ReactElement, useState, useRef } from 'react';
 import SearchBar from './SearchBar';
-import Portal from 'helpers/Portal';
 import Modal from 'helpers/Modal';
 
 const Header: FC = (): ReactElement => {
@@ -50,38 +49,37 @@ const Header: FC = (): ReactElement => {
             </div>
 
             {showModal && (
-                <Portal>
-                    <Modal
-                        type='primary'
-                        title='Sign out'
-                        message='Are you sure you want to sign out?'>
-                        <>
-                            <button
-                                className='btn btn--secondary font--sm b-ra--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-r--sm'
-                                onClick={disableModal}>
-                                Cancel
-                            </button>
-                            <button
-                                className='btn btn--primary font--sm text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md'
-                                onClick={signOut}>
-                                Sign out
-                            </button>
+                <Modal
+                    type='primary'
+                    title='Sign out'
+                    message='Are you sure you want to sign out?'
+                    closeEvent={disableModal}>
+                    <>
+                        <button
+                            className='btn btn--secondary font--sm b-ra--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-r--sm'
+                            onClick={disableModal}>
+                            Cancel
+                        </button>
+                        <button
+                            className='btn btn--primary font--sm text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md'
+                            onClick={signOut}>
+                            Sign out
+                        </button>
 
-                            <form
-                                ref={logoutForm}
-                                className='d--none'
-                                method='POST'
-                                action='/api/sign-out'>
-                                <input
-                                    type='hidden'
-                                    name='_token'
-                                    value={csrfToken || ''}
-                                />
-                                <input type='submit' />
-                            </form>
-                        </>
-                    </Modal>
-                </Portal>
+                        <form
+                            ref={logoutForm}
+                            className='d--none'
+                            method='POST'
+                            action='/api/sign-out'>
+                            <input
+                                type='hidden'
+                                name='_token'
+                                value={csrfToken || ''}
+                            />
+                            <input type='submit' />
+                        </form>
+                    </>
+                </Modal>
             )}
         </header>
     );

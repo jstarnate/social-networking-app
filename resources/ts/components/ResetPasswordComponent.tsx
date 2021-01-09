@@ -8,7 +8,6 @@ import React, {
 import axios from 'axios';
 import InputField from 'helpers/InputField';
 import useInput from 'hooks/useInput';
-import Portal from 'helpers/Portal';
 import Modal from 'helpers/Modal';
 
 const ResetPasswordComponent: FC = (): ReactElement => {
@@ -93,13 +92,11 @@ const ResetPasswordComponent: FC = (): ReactElement => {
             </form>
 
             {isSent && (
-                <Portal>
-                    <Modal
-                        title='Congratulations!'
-                        type='success'
-                        message={successMessage}
-                    />
-                </Portal>
+                <Modal
+                    title='Congratulations!'
+                    type='success'
+                    message={successMessage}
+                />
             )}
         </section>
     );

@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import axios from 'axios';
 import InputField from 'helpers/InputField';
-import Portal from 'helpers/Portal';
 import Modal from 'helpers/Modal';
 
 const ForgotPasswordComponent: FC = (): ReactElement => {
@@ -64,13 +63,11 @@ const ForgotPasswordComponent: FC = (): ReactElement => {
             </form>
 
             {isSent && (
-                <Portal>
-                    <Modal
-                        title='Request sent!'
-                        type='primary'
-                        message='Please check your email for the sent request. Thank you!'
-                    />
-                </Portal>
+                <Modal
+                    title='Request sent!'
+                    type='primary'
+                    message='Please check your email for the sent request. Thank you!'
+                />
             )}
         </section>
     );
