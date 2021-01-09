@@ -1,7 +1,7 @@
-const path = require('path');
-const Dotenv = require('dotenv-webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const BrowsersyncPlugin = require('browser-sync-webpack-plugin');
+import path from 'path';
+import Dotenv from 'dotenv-webpack';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import BrowsersyncPlugin from 'browser-sync-webpack-plugin';
 
 module.exports = {
     entry: {
@@ -28,7 +28,10 @@ module.exports = {
                         options: {
                             presets: [
                                 '@babel/preset-env',
-                                '@babel/preset-react',
+                                [
+                                    '@babel/preset-react',
+                                    { runtime: 'automatic' },
+                                ],
                             ],
                             plugins: ['@babel/plugin-syntax-dynamic-import'],
                         },
