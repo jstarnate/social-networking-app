@@ -58,6 +58,8 @@
         "no-self-assign": "error",
         "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
         "@typescript-eslint/no-var-requires": "off",
-        "import/no-unresolved": "off"
+        "import/no-unresolved": "off",
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-uses-react": "off"
     }
 }
