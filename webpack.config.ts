@@ -1,7 +1,9 @@
-import path from 'path';
-import Dotenv from 'dotenv-webpack';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import BrowsersyncPlugin from 'browser-sync-webpack-plugin';
+const path = require('path');
+const glob = require('glob');
+const Dotenv = require('dotenv-webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const BrowsersyncPlugin = require('browser-sync-webpack-plugin');
+const PurgeCssPlugin = require('purgecss-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -62,6 +64,11 @@ module.exports = {
         new Dotenv(),
         new MiniCssExtractPlugin({
             filename: '../css/[name].css',
+        }),
+        new PurgeCssPlugin({
+            paths: glob.sync(`${path.join(__dirname, 'resources')}/**/*`, {
+                nodir: true,
+            }),
         }),
         new BrowsersyncPlugin({
             port: 3000,
