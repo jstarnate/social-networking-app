@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import axios from 'axios';
-import IndexComponent from '../components/IndexComponent';
+import Index from '../components/Index';
 import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('axios', () => ({
@@ -22,14 +22,14 @@ describe('Login Form', () => {
     afterEach(cleanup);
 
     test('Displaying the login form after loading', () => {
-        const { getByTestId } = render(<IndexComponent />);
+        const { getByTestId } = render(<Index />);
         const loginForm = getByTestId('login-form');
 
         expect(loginForm).toBeTruthy();
     });
 
     test('Handling username and password values', () => {
-        const { getByTestId } = render(<IndexComponent />);
+        const { getByTestId } = render(<Index />);
         const username = getByTestId('username-input');
         const password = getByTestId('password-input');
 
@@ -47,7 +47,7 @@ describe('Login Form', () => {
             axiosReject('Please enter your username.')
         );
 
-        const { getByTestId, queryByTestId } = render(<IndexComponent />);
+        const { getByTestId, queryByTestId } = render(<Index />);
         const password = getByTestId('password-input');
         const form = getByTestId('login-form');
 
@@ -69,7 +69,7 @@ describe('Login Form', () => {
             axiosReject('Please enter your password.')
         );
 
-        const { getByTestId, queryByTestId } = render(<IndexComponent />);
+        const { getByTestId, queryByTestId } = render(<Index />);
         const username = getByTestId('username-input');
         const form = getByTestId('login-form');
 
@@ -91,7 +91,7 @@ describe('Login Form', () => {
             axiosReject('The combination you entered does not exist.')
         );
 
-        const { getByTestId, queryByTestId } = render(<IndexComponent />);
+        const { getByTestId, queryByTestId } = render(<Index />);
 
         act(() => {
             fireEvent.submit(getByTestId('login-form'));

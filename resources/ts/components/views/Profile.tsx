@@ -1,8 +1,8 @@
 import { FC, ReactElement } from 'react';
 import { Switch, Route, NavLink, useRouteMatch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import Headline from './Headline';
-import Posts from './Posts';
+import Headline from 'modules/profile/Headline';
+import Posts from 'modules/profile/Posts';
 
 interface ProfileProps {
     name: string | undefined;

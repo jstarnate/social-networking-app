@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from 'helpers/Spinner';
-import SuggestedUsers from 'pages/general/SuggestedUsers';
-import Filterer from 'pages/users/Filterer';
+import SuggestedUsers from 'modules/rightbar/SuggestedUsers';
+import Filterer from 'modules/rightbar/Filterer';
 import { set } from 'actions';
 
 const Rightbar: FC = (): ReactElement => {

@@ -1,4 +1,4 @@
 import { render } from 'react-dom';
-import RegisterComponent from './components/RegisterComponent';
+import Register from './components/Register';
 
-render(<RegisterComponent />, document.querySelector('#register'));
+render(<Register />, document.querySelector('#register'));

@@ -6,11 +6,11 @@ import Echo from 'laravel-echo';
 import Header from './modules/Header';
 import Sidebar from './modules/Sidebar';
 import Rightbar from './modules/Rightbar';
-import EditProfile from 'pages/profile/EditProfile';
-import Timeline from './pages/home/Timeline';
-import Notifications from './pages/notifications/Notifications';
-import Users from './pages/users/index';
-import PostView from 'pages/general/PostView';
+import EditProfile from './views/EditProfile';
+import Timeline from './views/Timeline';
+import Notifications from './views/Notifications';
+import Users from './views/Users';
+import PostView from './views/PostView';
 import Spinner from 'helpers/Spinner';
 import { UserWithId } from 'types/models';
 import 'pusher-js';
@@ -25,7 +25,7 @@ interface EchoData {
 }
 
 const storageUser = localStorage.getItem('user');
-const Profile = lazy(() => import('./pages/profile/Profile'));
+const Profile = lazy(() => import('./views/Profile'));
 const ProfileLoader = () => (
     <div className='flex--1 mg-t--lg'>
         <Spinner />

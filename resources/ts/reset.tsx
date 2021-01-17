@@ -1,4 +1,4 @@
 import { render } from 'react-dom';
-import ResetPasswordComponent from './components/ResetPasswordComponent';
+import ResetPassword from './components/ResetPassword';
 
-render(<ResetPasswordComponent />, document.querySelector('#reset'));
+render(<ResetPassword />, document.querySelector('#reset'));

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Provider } from 'react-redux';
 import { render, cleanup, act } from '@testing-library/react';
-import HomeComponent from '../components/HomeComponent';
+import Home from '../components/Home';
 import store from '../data/store';
 
 jest.mock('axios', () => ({
@@ -13,7 +13,7 @@ describe('Homepage', () => {
     const renderComponent = () =>
         render(
             <Provider store={store}>
-                <HomeComponent />
+                <Home />
             </Provider>
         );
 

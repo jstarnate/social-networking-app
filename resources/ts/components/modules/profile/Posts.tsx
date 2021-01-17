@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import Post from 'pages/general/Post';
+import Post from 'modules/Post';
 import Spinner from 'helpers/Spinner';
 import { Post as PostModel } from 'types/models';
 

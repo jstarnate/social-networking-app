@@ -1,4 +1,4 @@
 import { render } from 'react-dom';
-import ForgotPasswordComponent from './components/ForgotPasswordComponent';
+import ForgotPassword from './components/ForgotPassword';
 
-render(<ForgotPasswordComponent />, document.querySelector('#forgot'));
+render(<ForgotPassword />, document.querySelector('#forgot'));

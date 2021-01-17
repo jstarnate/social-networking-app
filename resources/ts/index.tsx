@@ -1,4 +1,4 @@
 import { render } from 'react-dom';
-import IndexComponent from './components/IndexComponent';
+import Index from './components/Index';
 
-render(<IndexComponent />, document.querySelector('#index'));
+render(<Index />, document.querySelector('#index'));

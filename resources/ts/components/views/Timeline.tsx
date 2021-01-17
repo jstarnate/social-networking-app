@@ -8,8 +8,8 @@ import {
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import Post from 'pages/general/Post';
-import PostBox from './PostBox';
+import PostBox from 'modules/timeline/PostBox';
+import Post from 'modules/Post';
 import Spinner from 'helpers/Spinner';
 import { State } from 'types/redux';
 import { Post as PostProps } from 'types/models';

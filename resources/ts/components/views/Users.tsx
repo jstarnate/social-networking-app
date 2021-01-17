@@ -1,9 +1,16 @@
-import { FC, ReactElement, useState, useEffect, useRef, useCallback } from 'react';
+import {
+    FC,
+    ReactElement,
+    useState,
+    useEffect,
+    useRef,
+    useCallback,
+} from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import User from './User';
+import User from 'modules/users/User';
 import Spinner from 'helpers/Spinner';
 import { State } from 'types/redux';
 import { UserWithId } from 'types/models';

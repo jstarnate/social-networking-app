@@ -23,7 +23,20 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
+                test: /\.ts$/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@babel/preset-env'],
+                        },
+                    },
+                    'ts-loader',
+                ],
+                exclude: '/node_modules/',
+            },
+            {
+                test: /\.tsx$/,
                 use: [
                     {
                         loader: 'babel-loader',
@@ -51,7 +64,7 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
         alias: {
-            pages: path.resolve(__dirname, 'resources/ts/components/pages'),
+            views: path.resolve(__dirname, 'resources/ts/components/views'),
             helpers: path.resolve(__dirname, 'resources/ts/components/helpers'),
             modules: path.resolve(__dirname, 'resources/ts/components/modules'),
             hooks: path.resolve(__dirname, 'resources/ts/hooks'),

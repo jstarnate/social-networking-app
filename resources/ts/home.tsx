@@ -1,11 +1,11 @@
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import HomeComponent from './components/HomeComponent';
+import Home from './components/Home';
 import store from './data/store';
 
 render(
     <Provider store={store}>
-        <HomeComponent />
+        <Home />
     </Provider>,
     document.querySelector('#home')
 );
