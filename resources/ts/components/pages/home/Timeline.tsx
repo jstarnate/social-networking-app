@@ -1,4 +1,11 @@
-import { FC, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import {
+    FC,
+    ReactElement,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import Post from 'pages/general/Post';
@@ -20,9 +27,7 @@ const Timeline: FC = (): ReactElement => {
                 setLoadingPosts(true);
 
                 const date = posts[posts.length - 1].updated_at;
-                const { data } = await axios.post('/api/posts/friends', {
-                    date,
-                });
+                const { data } = await axios.post('/api/posts', { date });
 
                 if (data.has_more) {
                     dispatch(pushSpread('posts', data.items));
@@ -41,7 +46,7 @@ const Timeline: FC = (): ReactElement => {
     async function getPosts() {
         setLoadingPosts(true);
 
-        const { data } = await axios.post('/api/posts/friends');
+        const { data } = await axios.post('/api/posts');
 
         dispatch(pushSpread('posts', data.items));
         setLoadingPosts(false);

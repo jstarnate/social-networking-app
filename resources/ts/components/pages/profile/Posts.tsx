@@ -1,4 +1,11 @@
-import { FC, ReactElement, useState, useEffect, useCallback, useRef } from 'react';
+import {
+    FC,
+    ReactElement,
+    useState,
+    useEffect,
+    useCallback,
+    useRef,
+} from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Post from 'pages/general/Post';
@@ -18,14 +25,12 @@ const Posts: FC<PostsProps> = ({ section }: PostsProps): ReactElement => {
     const [loadingPosts, setLoadingPosts] = useState<boolean>(false);
     const scrollTarget = useRef<HTMLDivElement>(null);
     const { username }: RouteParams = useParams();
+    const postRoute = `/api/posts/u/${username}/${section || 'posts'}`;
 
     async function getPosts() {
         setLoadingPosts(true);
 
-        const route = section
-            ? `/api/users/u/${username}/${section}`
-            : `/api/users/u/${username}/posts`;
-        const { data } = await axios.post(route);
+        const { data } = await axios.post(postRoute);
 
         setPosts(data.items);
         setLoadingPosts(false);
@@ -37,8 +42,7 @@ const Posts: FC<PostsProps> = ({ section }: PostsProps): ReactElement => {
                 setLoadingPosts(true);
 
                 const date = posts[posts.length - 1].updated_at;
-                const route = `/api/users/u/${username}/${section || 'posts'}`;
-                const { data } = await axios.post(route, { date });
+                const { data } = await axios.post(postRoute, { date });
 
                 if (data.has_more) {
                     setPosts(p => [...p, ...data.items]);
