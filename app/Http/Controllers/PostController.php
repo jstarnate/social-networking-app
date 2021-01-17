@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Post, Comment, Notification};
+use App\Models\{User, Post, Comment, Notification};
 use Illuminate\Http\Request;
 use App\Events\NotifyUser;
 use App\Repositories\{FetchRepository, NotificationRepository};
@@ -41,6 +41,27 @@ class PostController extends Controller
         $body = $this->fetchRepository->fetch($posts, $request->date);
 
         return response()->json($body);
+    }
+
+    /**
+     * Get a specific user model.
+     *
+     * @param \Illuminate\Http\Response  $request
+     * @param string  $username
+     * @param string  $section
+     * @return \Illuminate\Http\Response
+     */
+    public function getFromProfile(Request $request, string $username, string $section)
+    {
+        $user = User::where('username', $username)->first();
+        $payload = $user->{$section}()->orderBy('updated_at', 'desc')
+                    ->{$section === 'likes' ? 'wherePivot' : 'where'}('updated_at', '<', $request->date ?: now())
+                    ->get()
+                    ->take(5);
+        $items = $payload->map(fn($item) => $item->format());
+        $has_more = !$payload->isEmpty();
+
+        return response()->json(compact('items', 'has_more'));
     }
 
     /**
