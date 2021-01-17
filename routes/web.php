@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     AuthController,
+    HomeController,
     UserController,
     PostController,
     CommentController,
@@ -37,14 +38,17 @@ Route::middleware('guest')->group(function() {
 });
 
 
+// ===============================================
+//  Auth view routes
+// ===============================================
 Route::middleware('auth')->group(function() {
     Route::view('/home', 'home')->name('home');
 
-    Route::get('/u/{username}', [UserController::class, 'show'])->name('profile');
-    Route::get('/u/{username}/likes', [UserController::class, 'show']);
-    Route::get('/u/{username}/comments', [UserController::class, 'show']);
-    Route::get('/u/{username}/bookmarks', [UserController::class, 'show']);
-    Route::get('/profile/{username}/edit', [UserController::class, 'show']);
+    Route::get('/u/{username}', [HomeController::class, 'show'])->name('profile');
+    Route::get('/u/{username}/likes', [HomeController::class, 'show']);
+    Route::get('/u/{username}/comments', [HomeController::class, 'show']);
+    Route::get('/u/{username}/bookmarks', [HomeController::class, 'show']);
+    Route::get('/profile/{username}/edit', [HomeController::class, 'show']);
     
     Route::view('/notifications', 'home');
     Route::view('/users', 'home');
@@ -56,36 +60,67 @@ Route::middleware('auth')->group(function() {
 // ===============================================
 //  API routes
 // ===============================================
-Route::middleware('auth')->group(function() {
-    Route::post('/api/users', [UserController::class, 'fetchUsers']);
-    Route::get('/api/users/auth', [UserController::class, 'getAuthUser']);
-    Route::put('/api/users/auth/update', [UserController::class, 'update']);
-    Route::get('/api/users/u/{username}', [UserController::class, 'getUser']);
-    Route::post('/api/users/u/{username}/{name}', [UserController::class, 'getConnectedPosts']);
-    Route::get('/api/users/suggested', [UserController::class, 'getSuggestedUsers']);
-    Route::post('/api/users/follow', [UserController::class, 'follow']);
-    Route::post('/api/users/unfollow', [UserController::class, 'unfollow']);
-    Route::get('/api/users/search', [UserController::class, 'search']);
-    Route::post('/api/users/search/results', [UserController::class, 'getSearchResults']);
-    Route::post('/api/users/filter', [UserController::class, 'filter']);
 
-    Route::post('/api/posts/fetch', [PostController::class, 'fetch']);
-    Route::post('/api/posts/friends', [PostController::class, 'get']);
-    Route::post('/api/posts/create', [PostController::class, 'store']);
-    Route::delete('/api/posts/delete/{post}', [PostController::class, 'destroy']);
-    Route::post('/api/posts/like', [PostController::class, 'like']);
-    Route::post('/api/posts/dislike', [PostController::class, 'dislike']);
-    Route::post('/api/posts/bookmark', [PostController::class, 'bookmark']);
-    Route::post('/api/posts/unbookmark', [PostController::class, 'unbookmark']);
-
-    Route::post('/api/comments/get', [CommentController::class, 'get']);
-    Route::post('/api/comments/store', [CommentController::class, 'store']);
-    Route::delete('/api/comments/{comment}/destroy', [CommentController::class, 'destroy']);
-
-    Route::get('/api/notifications/get', [NotificationController::class, 'get']);
-    Route::get('/api/notifications/count', [NotificationController::class, 'getCount']);
-    Route::put('/api/notifications/status/update', [NotificationController::class, 'updateStatus']);
-    Route::put('/api/notifications/read', [NotificationController::class, 'read']);
-
-    Route::post('/api/sign-out', [AuthController::class, 'logout']);
+// ==== Users ====
+Route::group([
+    'middleware' => 'auth',
+    'prefix' => 'api/users'
+], function() {
+    Route::post('/', [UserController::class, 'getAll']);
+    Route::get('/auth', [UserController::class, 'getAuth']);
+    Route::put('/auth/update', [UserController::class, 'update']);
+    Route::get('/u/{username}', [UserController::class, 'get']);
+    Route::post(
+        '/u/{username}/connected/{name}',
+        [UserController::class, 'getConnectedUsers']
+    )->where('name', '(followers|following)');
+    Route::get('/suggested', [UserController::class, 'getSuggestedUsers']);
+    Route::post('/follow', [UserController::class, 'follow']);
+    Route::post('/unfollow', [UserController::class, 'unfollow']);
+    Route::get('/search', [UserController::class, 'search']);
+    Route::post('/search/results', [UserController::class, 'getSearchResults']);
+    Route::post('/filter', [UserController::class, 'filter']);
 });
+
+// ==== Posts ====
+Route::group([
+    'middleware' => 'auth',
+    'prefix' => 'api/posts'
+], function() {
+    Route::post('/', [PostController::class, 'get']);
+    Route::post(
+        '/u/{username}/{section}',
+        [PostController::class, 'getFromProfile']
+    )->where('section', '(posts|likes|comments|bookmarks)');
+    Route::post('/fetch', [PostController::class, 'fetch']);
+    Route::post('/create', [PostController::class, 'store']);
+    Route::delete('/delete/{post}', [PostController::class, 'destroy']);
+    Route::post('/like', [PostController::class, 'like']);
+    Route::post('/dislike', [PostController::class, 'dislike']);
+    Route::post('/bookmark', [PostController::class, 'bookmark']);
+    Route::post('/unbookmark', [PostController::class, 'unbookmark']);
+});
+
+// ==== Comments ====
+Route::group([
+    'middleware' => 'auth',
+    'prefix' => 'api/comments'
+], function() {
+    Route::post('/get', [CommentController::class, 'get']);
+    Route::post('/store', [CommentController::class, 'store']);
+    Route::delete('/{comment}/destroy', [CommentController::class, 'destroy']);
+});
+
+// ==== Notifications ====
+Route::group([
+    'middleware' => 'auth',
+    'prefix' => 'api/notifications'
+], function() {
+    Route::get('/get', [NotificationController::class, 'get']);
+    Route::get('/count', [NotificationController::class, 'getCount']);
+    Route::put('/status/update', [NotificationController::class, 'updateStatus']);
+    Route::put('/read', [NotificationController::class, 'read']);
+});
+
+// ==== Others ====
+Route::post('/api/sign-out', [AuthController::class, 'logout'])->middleware('auth');

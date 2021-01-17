@@ -24,24 +24,12 @@ class UserController extends Controller
     }
 
     /**
-     * Get the auth user data.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getAuthUser()
-    {
-        return response()->json([
-            'user' => auth()->user()->formatBasic()
-        ]);
-    }
-
-    /**
      * Get a specific user model.
      *
      * @param  string  $username
      * @return \Illuminate\Http\Response
      */
-    public function getUser(string $username)
+    public function get(string $username)
     {
         $user = User::where('username', $username)->first();
         
@@ -51,30 +39,15 @@ class UserController extends Controller
     }
 
     /**
-     * Get a specific user model.
+     * Get the auth user data.
      *
-     * @param \Illuminate\Http\Response  $request
-     * @param  string  $username
-     * @param  string  $name
      * @return \Illuminate\Http\Response
      */
-    public function getConnectedPosts(Request $request, string $username, string $name)
+    public function getAuth()
     {
-        $names = ['posts', 'likes', 'comments', 'bookmarks'];
-
-        if (!in_array($name, $names)) {
-            abort(400);
-        }
-
-        $user = User::where('username', $username)->first();
-        $payload = $user->{$name}()->orderBy('updated_at', 'desc')
-                    ->{$name === 'likes' ? 'wherePivot' : 'where'}('updated_at', '<', $request->date ?: now())
-                    ->get()
-                    ->take(5);
-        $items = $payload->map(fn($item) => $item->format());
-        $has_more = !$payload->isEmpty();
-
-        return response()->json(compact('items', 'has_more'));
+        return response()->json([
+            'user' => auth()->user()->formatBasic()
+        ]);
     }
 
     /**
@@ -83,7 +56,7 @@ class UserController extends Controller
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function fetchUsers(Request $request)
+    public function getAll(Request $request)
     {
         $user = auth()->user();
         $notIds = $user->following->pluck('id')->merge($user->id, $request->ids);
@@ -104,21 +77,15 @@ class UserController extends Controller
      */
     public function getConnectedUsers(Request $request, string $username, string $name)
     {
-        if ($name !== 'followers' && $name !== 'following') {
-            abort(400);
-        }
-
-        $payload = User::where('username', $username)->first()
-                        ->{$name}()->latest()
+        $payload = User::where('username', $username)
+                        ->first()
+                        ->{$name}()
+                        ->latest()
                         ->whereNotIn('id', $request->ids)
-                        ->get()->take(10);
+                        ->get()
+                        ->take(10);
 
-        $users = $payload->map(function($user) {
-            $u = $user->only('id', 'full_name', 'username', 'gender', 'image_url');
-            $u['url'] = route('profile', $user->only('username'));
-
-            return $u;
-        });
+        $users = $payload->map(fn($user) => $user->formatBasic());
 
         return response()->json(compact('users'));
     }
@@ -133,119 +100,11 @@ class UserController extends Controller
         $user = auth()->user();
         $exceptions = $user->following->pluck('id')->merge($user->id);
         $users = User::whereNotIn('id', $exceptions)
-                    ->get()->random(3)
+                    ->get()
+                    ->random(3)
                     ->map(fn($u) => $u->formatBasic());
 
         return response()->json(compact('users'));
-    }
-
-    /**
-     * Search the specified users
-     *
-     * @return \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        $query = $request->query('sq');
-
-        if (!isset($query)) {
-            return response()->json([
-                'users' => []
-            ]);
-        }
-
-        $results = User::where('full_name', 'like', "%$query%")
-                    ->orWhere('username', 'like', "%$query%")
-                    ->get()
-                    ->take(5);
-        $users = $results->map(fn($user) => collect($user->formatBasic())->except('id'));
-
-        return response()->json(compact('users'));
-    }
-
-    /**
-     * Search the specified searched users
-     *
-     * @return \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function getSearchResults(Request $request)
-    {
-        $ids = collect($request->ids)->merge(auth()->user()->id);
-        $results = User::where(function($query) use ($request) {
-                        $query->where('full_name', 'like', "%$request->sq%")
-                            ->orWhere('username', 'like', "%$request->sq%");
-                    })
-                    ->whereNotIn('id', $ids)
-                    ->get()
-                    ->take(10);
-        $items = $results->map(fn($u) => $u->formatBasic(auth()->user()));
-        $has_more = !$results->isEmpty();
-
-        return response()->json(compact('items', 'has_more'));
-    }
-
-    /**
-     * Filter users according to sent requests body
-     *
-     * @return \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function filter(Request $request)
-    {
-        $body = collect($request->all())->filter(fn($data) => $data);
-        $results = User::where(function($query) use ($request) {
-                        $query->where('full_name', 'like', "%$request->sq%")
-                            ->orWhere('username', 'like', "%$request->sq%");
-                    })
-                    ->where($body->toArray())
-                    ->get()
-                    ->take(10);
-        $users = $results->map(fn($u) => $u->formatBasic(auth()->user()));
-
-        return response()->json(compact('users'));
-    }
-
-    /**
-     * Show a specific user's profile.
-     *
-     * @param  string  $username
-     * @return \Illuminate\View\View
-     */
-    public function show(string $username)
-    {
-        if (!User::where('username', $username)->exists()) {
-            abort(404);
-        }
-
-        return view('home');
-    }
-
-    /**
-     * Display image and get its output url
-     *
-     * @param \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function upload(Request $request)
-    {
-        $this->authorize('update', User::find($request->id));
-
-        $image = $request->file('image');
-        $size = 240;
-        list($width, $height) = getimagesize($image);
-
-        if ($width > $size || $height > $size) {
-            throw ValidationException::withMessages(['image' => "Maximum is {$size}x{$size}."]);
-        }
-
-        Cloudder::upload($image->getRealPath(), null, ['folder' => 'social']);
-
-        $url = Cloudder::show(Cloudder::getPublicId(), ['width' => $size, 'height' => $size]);
-
-        return response()->json(compact('url'));
     }
 
     /**
@@ -305,6 +164,101 @@ class UserController extends Controller
         $this->authorize('followOrUnfollow', User::find($request->id));
         
         auth()->user()->following()->detach($request->id);
+    }
+
+    /**
+     * Search the specified users
+     *
+     * @return \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $query = $request->query('sq');
+
+        if (!isset($query)) {
+            return response()->json([
+                'users' => []
+            ]);
+        }
+
+        $results = User::where('full_name', 'like', "%$query%")
+                    ->orWhere('username', 'like', "%$query%")
+                    ->get()
+                    ->take(5);
+        $users = $results->map(fn($user) => collect($user->formatBasic())
+                        ->except('id'));
+
+        return response()->json(compact('users'));
+    }
+
+    /**
+     * Search the specified searched users
+     *
+     * @return \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getSearchResults(Request $request)
+    {
+        $ids = collect($request->ids)->merge(auth()->user()->id);
+        $results = User::where(function($query) use ($request) {
+                        $query->where('full_name', 'like', "%$request->sq%")
+                            ->orWhere('username', 'like', "%$request->sq%");
+                    })
+                    ->whereNotIn('id', $ids)
+                    ->get()
+                    ->take(10);
+        $items = $results->map(fn($u) => $u->formatBasic(auth()->user()));
+        $has_more = !$results->isEmpty();
+
+        return response()->json(compact('items', 'has_more'));
+    }
+
+    /**
+     * Filter users according to sent requests body
+     *
+     * @return \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Request $request)
+    {
+        $body = collect($request->all())->filter(fn($data) => $data);
+        $results = User::where(function($query) use ($request) {
+                        $query->where('full_name', 'like', "%$request->sq%")
+                            ->orWhere('username', 'like', "%$request->sq%");
+                    })
+                    ->where($body->toArray())
+                    ->get()
+                    ->take(10);
+        $users = $results->map(fn($u) => $u->formatBasic(auth()->user()));
+
+        return response()->json(compact('users'));
+    }
+
+    /**
+     * Display image and get its output url
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function upload(Request $request)
+    {
+        $this->authorize('update', User::find($request->id));
+
+        $image = $request->file('image');
+        $size = 240;
+        list($width, $height) = getimagesize($image);
+
+        if ($width > $size || $height > $size) {
+            throw ValidationException::withMessages(['image' => "Maximum is {$size}x{$size}."]);
+        }
+
+        Cloudder::upload($image->getRealPath(), null, ['folder' => 'social']);
+
+        $url = Cloudder::show(Cloudder::getPublicId(), ['width' => $size, 'height' => $size]);
+
+        return response()->json(compact('url'));
     }
 
 }
