@@ -67,7 +67,7 @@ const EditProfile: FC<EditProfileProps> = ({
         <section className='flex--1'>
             <header className='d--flex ai--center bb--1 brdr--primary'>
                 <Link
-                    to='/'
+                    to={`/u/${user?.username}`}
                     className='btn text--primary pd-t--sm pd-b--sm pd-l--md pd-r--md'>
                     <i className='fa fa-arrow-left'></i>
                 </Link>
