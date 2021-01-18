@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { State } from 'types/redux';
 import { Post as PostInterface } from 'types/models';
-import Post from './Post';
-import CommentsSection from './CommentsSection';
+import Post from 'modules/Post';
+import CommentsSection from 'modules/postView/CommentsSection';
 
 interface RouteParams {
     id?: (number & string) | undefined;
