@@ -1,4 +1,4 @@
-import { FC, FormEvent, ReactElement, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import InputField from 'helpers/InputField';
@@ -17,9 +17,7 @@ interface EditProfileProps {
     user: AuthUser | null;
 }
 
-const EditProfile: FC<EditProfileProps> = ({
-    user,
-}: EditProfileProps): ReactElement => {
+function EditProfile({ user }: EditProfileProps) {
     const [full_name, fullNameData, setFullNameError] = useInput(
         user?.full_name
     );
@@ -166,6 +164,6 @@ const EditProfile: FC<EditProfileProps> = ({
             </form>
         </section>
     );
-};
+}
 
 export default EditProfile;

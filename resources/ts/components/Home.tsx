@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect, useState, lazy, Suspense } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
@@ -33,7 +33,7 @@ const ProfileLoader = () => (
     </div>
 );
 
-const HomeComponent: FC = (): ReactElement => {
+function HomeComponent() {
     const [user, setUser] = useState<AuthUser | null>(null);
     const [notifCount, setNotifCount] = useState<number>(0);
     const echo = new Echo({
@@ -132,6 +132,6 @@ const HomeComponent: FC = (): ReactElement => {
             </Router>
         </>
     );
-};
+}
 
 export default HomeComponent;

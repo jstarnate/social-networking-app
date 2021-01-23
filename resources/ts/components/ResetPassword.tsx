@@ -1,10 +1,10 @@
-import { ChangeEvent, FC, FormEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import axios from 'axios';
 import InputField from 'helpers/InputField';
 import useInput from 'hooks/useInput';
 import Modal from 'helpers/Modal';
 
-const ResetPasswordComponent: FC = (): ReactElement => {
+function ResetPasswordComponent() {
     const [password, passwordData, setPasswordError] = useInput(null);
     const [password_confirmation, setPasswordConfirmation] = useState<
         string | null
@@ -94,6 +94,6 @@ const ResetPasswordComponent: FC = (): ReactElement => {
             )}
         </section>
     );
-};
+}
 
 export default ResetPasswordComponent;

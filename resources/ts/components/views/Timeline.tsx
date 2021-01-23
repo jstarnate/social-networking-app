@@ -1,11 +1,4 @@
-import {
-    FC,
-    ReactElement,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import PostBox from 'modules/timeline/PostBox';
@@ -15,7 +8,7 @@ import { State } from 'types/redux';
 import { Post as PostProps } from 'types/models';
 import { pushSpread } from 'actions';
 
-const Timeline: FC = (): ReactElement => {
+function Timeline() {
     const [loadingPosts, setLoadingPosts] = useState<boolean>(false);
     const posts = useSelector((state: State) => state.posts);
     const scrollTarget = useRef<HTMLDivElement>(null);
@@ -101,6 +94,6 @@ const Timeline: FC = (): ReactElement => {
             )}
         </section>
     );
-};
+}
 
 export default Timeline;

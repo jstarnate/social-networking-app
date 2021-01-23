@@ -1,11 +1,4 @@
-import {
-    FC,
-    ReactElement,
-    useState,
-    useEffect,
-    useRef,
-    useCallback,
-} from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -22,7 +15,7 @@ interface UserType extends UserWithId {
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
-const Users: FC = (): ReactElement => {
+function Users() {
     const [ids, setIds] = useState<number[]>([]);
     const [scrollLoading, setScrollLoading] = useState<boolean>(false);
     const scrollTarget = useRef<HTMLDivElement>(null);
@@ -104,6 +97,6 @@ const Users: FC = (): ReactElement => {
             )}
         </section>
     );
-};
+}
 
 export default Users;

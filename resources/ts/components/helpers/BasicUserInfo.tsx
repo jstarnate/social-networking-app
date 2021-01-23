@@ -1,4 +1,3 @@
-import { FC, ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 import MaleDefaultAvatar from './MaleDefaultAvatar';
 import FemaleDefaultAvatar from './FemaleDefaultAvatar';
@@ -19,41 +18,30 @@ interface ContentProps {
     image_url: string | undefined;
 }
 
-const Content = ({
-    imageClassName,
-    avatarSize,
-    full_name,
-    username,
-    gender,
-    image_url,
-}: ContentProps) => (
+const Content = (props: ContentProps) => (
     <>
-        {gender === 'Male' && !image_url ? (
-            <MaleDefaultAvatar size={avatarSize} />
-        ) : gender === 'Female' && !image_url ? (
-            <FemaleDefaultAvatar size={avatarSize} />
+        {props.gender === 'Male' && !props.image_url ? (
+            <MaleDefaultAvatar size={props.avatarSize} />
+        ) : props.gender === 'Female' && !props.image_url ? (
+            <FemaleDefaultAvatar size={props.avatarSize} />
         ) : (
             <img
-                className={`round ${imageClassName}`}
-                src={image_url}
+                className={`round ${props.imageClassName}`}
+                src={props.image_url}
                 alt='Profile photo'
             />
         )}
 
         <div className='mg-l--xs'>
             <span className='d--block font--sm text--black-light text--bold'>
-                {full_name}
+                {props.full_name}
             </span>
-            <span className='font--sm text--gray'>@{username}</span>
+            <span className='font--sm text--gray'>@{props.username}</span>
         </div>
     </>
 );
 
-const BasicUserInfo: FC<BasicUserInfoProps> = ({
-    className,
-    url,
-    ...props
-}: BasicUserInfoProps): ReactElement => {
+function BasicUserInfo({ className, url, ...props }: BasicUserInfoProps) {
     if (!url) {
         return (
             <div className={className}>
@@ -67,10 +55,6 @@ const BasicUserInfo: FC<BasicUserInfoProps> = ({
             <Content {...props} />
         </Link>
     );
-};
-
-BasicUserInfo.defaultProps = {
-    className: 'd--flex ai--center pd--xs',
-};
+}
 
 export default BasicUserInfo;

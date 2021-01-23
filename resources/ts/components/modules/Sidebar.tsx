@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import MaleDefaultAvatar from 'helpers/MaleDefaultAvatar';
 import FemaleDefaultAvatar from 'helpers/FemaleDefaultAvatar';
@@ -10,11 +10,7 @@ interface SidebarProps {
     updateNotifStatus: () => void;
 }
 
-const Sidebar: FC<SidebarProps> = ({
-    user,
-    notifCount,
-    updateNotifStatus,
-}: SidebarProps): ReactElement => {
+function Sidebar({ user, notifCount, updateNotifStatus }: SidebarProps) {
     const { pathname } = useLocation();
 
     useEffect(() => {
@@ -83,6 +79,6 @@ const Sidebar: FC<SidebarProps> = ({
             </div>
         </aside>
     );
-};
+}
 
 export default Sidebar;

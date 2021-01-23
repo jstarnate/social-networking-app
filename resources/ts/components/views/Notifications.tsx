@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
@@ -16,7 +16,7 @@ interface NotifType {
     created_at: string;
 }
 
-const Notifications: FC = (): ReactElement => {
+function Notifications() {
     const [loading, setLoading] = useState<boolean>(false);
     const [notifs, setNotifs] = useState([]);
 
@@ -94,6 +94,6 @@ const Notifications: FC = (): ReactElement => {
             )}
         </section>
     );
-};
+}
 
 export default Notifications;

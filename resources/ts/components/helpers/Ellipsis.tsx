@@ -1,11 +1,6 @@
-import { FC } from 'react';
 import { LoaderInterface } from 'types/components';
 
-const Ellipsis: FC<LoaderInterface> = ({
-    className,
-    size,
-    color,
-}: LoaderInterface) => {
+function Ellipsis({ className, size, color }: LoaderInterface) {
     return (
         <svg
             style={{
@@ -119,7 +114,7 @@ const Ellipsis: FC<LoaderInterface> = ({
             </circle>
         </svg>
     );
-};
+}
 
 Ellipsis.defaultProps = {
     size: 40,

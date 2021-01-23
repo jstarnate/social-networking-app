@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import axios from 'axios';
@@ -7,7 +7,7 @@ import SuggestedUsers from 'modules/rightbar/SuggestedUsers';
 import Filterer from 'modules/rightbar/Filterer';
 import { set } from 'actions';
 
-const Rightbar: FC = (): ReactElement => {
+function Rightbar() {
     const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
 
@@ -48,6 +48,6 @@ const Rightbar: FC = (): ReactElement => {
             </div>
         </aside>
     );
-};
+}
 
 export default Rightbar;

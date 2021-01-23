@@ -1,4 +1,4 @@
-import { FC, ReactElement, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
@@ -10,7 +10,7 @@ interface PostProps extends PostExtension {
     render?: (comments: number) => ReactElement;
 }
 
-const Post: FC<PostProps> = (props: PostProps): ReactElement => {
+function Post(props: PostProps) {
     const [liked, setLiked] = useState<boolean>(props.is_liked);
     const [bookmarked, setBookmarked] = useState<boolean>(props.bookmarked);
     const [likesCount, setLikesCount] = useState<number>(props.likes);
@@ -103,6 +103,6 @@ const Post: FC<PostProps> = (props: PostProps): ReactElement => {
             </div>
         </div>
     );
-};
+}
 
 export default Post;

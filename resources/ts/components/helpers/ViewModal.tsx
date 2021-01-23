@@ -1,4 +1,4 @@
-import { FC, ReactElement, useRef } from 'react';
+import { ReactElement, useRef } from 'react';
 import useOutsideClick from 'hooks/useOutsideClick';
 import useCloseOnEscape from 'hooks/useCloseOnEscape';
 
@@ -8,7 +8,7 @@ interface ViewModalProps {
     children: ReactElement;
 }
 
-const ViewModal: FC<ViewModalProps> = (props: ViewModalProps): ReactElement => {
+function ViewModal(props: ViewModalProps) {
     const modal = useRef<HTMLDivElement>(null);
 
     useCloseOnEscape(props.closeEvent);
@@ -32,6 +32,6 @@ const ViewModal: FC<ViewModalProps> = (props: ViewModalProps): ReactElement => {
             </div>
         </div>
     );
-};
+}
 
 export default ViewModal;

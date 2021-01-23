@@ -1,9 +1,9 @@
-import { FC, FormEvent, ReactElement, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import axios from 'axios';
 import useInput from 'hooks/useInput';
 import InputField from 'helpers/InputField';
 
-const IndexComponent: FC = (): ReactElement => {
+function IndexComponent() {
     const [username, usernameData] = useInput(null);
     const [password, passwordData] = useInput(null);
     const [error, setError] = useState<string | null>(null);
@@ -73,6 +73,6 @@ const IndexComponent: FC = (): ReactElement => {
             </div>
         </section>
     );
-};
+}
 
 export default IndexComponent;

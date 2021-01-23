@@ -1,10 +1,8 @@
-import { FC, ReactElement } from 'react';
-
 interface Props {
     size?: number;
 }
 
-const MaleDefaultAvatar: FC<Props> = ({ size }: Props): ReactElement => {
+function MaleDefaultAvatar({ size }: Props) {
     return (
         <svg
             className='d--block'
@@ -36,7 +34,7 @@ const MaleDefaultAvatar: FC<Props> = ({ size }: Props): ReactElement => {
             </g>
         </svg>
     );
-};
+}
 
 MaleDefaultAvatar.defaultProps = {
     size: 55,

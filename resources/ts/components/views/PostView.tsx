@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -11,7 +11,7 @@ interface RouteParams {
     id?: (number & string) | undefined;
 }
 
-const PostView: FC = (): ReactElement => {
+function PostView() {
     const { id } = useParams<RouteParams>();
     const post = useSelector((state: State) =>
         state.posts.find(p => p.id === Number(id))
@@ -59,6 +59,6 @@ const PostView: FC = (): ReactElement => {
             />
         </section>
     );
-};
+}
 
 export default PostView;

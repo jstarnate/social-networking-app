@@ -1,8 +1,8 @@
-import { FC, ReactElement, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import SearchBar from './SearchBar';
 import Modal from 'helpers/Modal';
 
-const Header: FC = (): ReactElement => {
+function Header() {
     const [showModal, setShowModal] = useState<boolean>(false);
     const logoutForm = useRef<HTMLFormElement>(null);
     const csrfToken = document
@@ -83,6 +83,6 @@ const Header: FC = (): ReactElement => {
             )}
         </header>
     );
-};
+}
 
 export default Header;

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, ReactElement } from 'react';
+import { ChangeEvent } from 'react';
 
 interface RadioButtonProps {
     id: string;
@@ -10,36 +10,30 @@ interface RadioButtonProps {
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const RadioButton: FC<RadioButtonProps> = ({
-    id,
-    className,
-    label,
-    condition,
-    name,
-    value,
-    onChange,
-}: RadioButtonProps): ReactElement => {
+function RadioButton(props: RadioButtonProps) {
     return (
         <label
-            className={`d--if ai--center cursor--pointer ${className || ''}`}
-            htmlFor={id}>
-            {condition ? (
+            className={`d--if ai--center cursor--pointer ${
+                props.className || ''
+            }`}
+            htmlFor={props.id}>
+            {props.condition ? (
                 <i className='fa fa-dot-circle-o text--black-light'></i>
             ) : (
                 <i className='fa fa-circle-o text--black-light'></i>
             )}
 
-            <span className='text--black mg-l--xxs'>{label}</span>
+            <span className='text--black mg-l--xxs'>{props.label}</span>
             <input
-                id={id}
+                id={props.id}
                 className='d--none'
                 type='radio'
-                name={name}
-                value={value}
-                onChange={onChange}
+                name={props.name}
+                value={props.value}
+                onChange={props.onChange}
             />
         </label>
     );
-};
+}
 
 export default RadioButton;

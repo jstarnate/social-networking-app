@@ -1,11 +1,11 @@
-import { ChangeEvent, FC, FormEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios';
 import { User } from 'types/models';
 import BasicUserInfo from 'helpers/BasicUserInfo';
 import Ellipsis from 'helpers/Ellipsis';
 
-const SearchBar: FC = (): ReactElement => {
+function SearchBar() {
     const [users, setUsers] = useState<User[]>([]);
     const [query, setQuery] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
@@ -83,6 +83,6 @@ const SearchBar: FC = (): ReactElement => {
             )}
         </form>
     );
-};
+}
 
 export default SearchBar;

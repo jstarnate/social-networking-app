@@ -1,9 +1,9 @@
-import { ChangeEvent, FC, FormEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import axios from 'axios';
 import InputField from 'helpers/InputField';
 import Modal from 'helpers/Modal';
 
-const ForgotPasswordComponent: FC = (): ReactElement => {
+function ForgotPasswordComponent() {
     const [email, setEmail] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [isSent, setIsSent] = useState<boolean>(false);
@@ -65,6 +65,6 @@ const ForgotPasswordComponent: FC = (): ReactElement => {
             )}
         </section>
     );
-};
+}
 
 export default ForgotPasswordComponent;

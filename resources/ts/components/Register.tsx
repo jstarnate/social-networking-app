@@ -1,11 +1,4 @@
-import {
-    ChangeEvent,
-    FC,
-    FormEvent,
-    ReactElement,
-    useState,
-    Children,
-} from 'react';
+import { ChangeEvent, FormEvent, useState, Children } from 'react';
 import axios from 'axios';
 import InputField from 'helpers/InputField';
 import useInput from 'hooks/useInput';
@@ -13,7 +6,7 @@ import RadioButton from 'helpers/RadioButton';
 import Modal from 'helpers/Modal';
 import { generateMonths, generateYears } from 'utilities/generators';
 
-const RegisterComponent: FC = (): ReactElement => {
+function RegisterComponent() {
     const [full_name, fullNameData, setFullNameError] = useInput(null);
     const [email, emailData, setEmailError] = useInput(null);
     const [username, usernameData, setUsernameError] = useInput(null);
@@ -215,6 +208,6 @@ const RegisterComponent: FC = (): ReactElement => {
             )}
         </section>
     );
-};
+}
 
 export default RegisterComponent;

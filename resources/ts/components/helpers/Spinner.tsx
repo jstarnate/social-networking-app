@@ -1,11 +1,6 @@
-import { FC } from 'react';
 import { LoaderInterface } from 'types/components';
 
-const Spinner: FC<LoaderInterface> = ({
-    className,
-    size,
-    color,
-}: LoaderInterface) => {
+function Spinner({ className, size, color }: LoaderInterface) {
     return (
         <div className='d--flex jc--center'>
             <svg
@@ -38,11 +33,6 @@ const Spinner: FC<LoaderInterface> = ({
             </svg>
         </div>
     );
-};
-
-Spinner.defaultProps = {
-    size: 40,
-    color: '#7EAEE7',
-};
+}
 
 export default Spinner;

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, ReactElement } from 'react';
+import { ChangeEvent, ReactElement } from 'react';
 
 interface Props {
     containerClassName?: string;
@@ -13,7 +13,7 @@ interface Props {
     children?: ReactElement;
 }
 
-const InputField: FC<Props> = (props: Props): ReactElement => {
+function InputField(props: Props) {
     return (
         <div className={props.containerClassName}>
             <div className='d--flex ai--center jc--between'>
@@ -39,14 +39,6 @@ const InputField: FC<Props> = (props: Props): ReactElement => {
             />
         </div>
     );
-};
-
-InputField.defaultProps = {
-    containerClassName: 'mg-t--lg',
-    inputClassName:
-        'font--md text--black b--1 b-rad--sm full-width pd--sm mg-t--xxs',
-    type: 'text',
-    autoFocus: false,
-};
+}
 
 export default InputField;

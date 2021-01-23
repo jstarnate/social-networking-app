@@ -1,4 +1,3 @@
-import { FC, ReactElement } from 'react';
 import { Switch, Route, NavLink, useRouteMatch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Headline from 'modules/profile/Headline';
@@ -8,7 +7,7 @@ interface ProfileProps {
     name: string | undefined;
 }
 
-const Profile: FC<ProfileProps> = ({ name }: ProfileProps): ReactElement => {
+function Profile({ name }: ProfileProps) {
     const { url, path } = useRouteMatch();
 
     return (
@@ -61,6 +60,6 @@ const Profile: FC<ProfileProps> = ({ name }: ProfileProps): ReactElement => {
             </Switch>
         </section>
     );
-};
+}
 
 export default Profile;
