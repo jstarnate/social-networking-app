@@ -57,6 +57,7 @@
         "no-redeclare": "error",
         "no-self-assign": "error",
         "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
+        "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-var-requires": "off",
         "import/no-unresolved": "off",
         "react/react-in-jsx-scope": "off",
