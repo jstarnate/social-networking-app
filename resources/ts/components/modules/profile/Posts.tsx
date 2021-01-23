@@ -1,11 +1,4 @@
-import {
-    FC,
-    ReactElement,
-    useState,
-    useEffect,
-    useCallback,
-    useRef,
-} from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Post from 'modules/Post';
@@ -20,7 +13,7 @@ interface RouteParams {
     username: string;
 }
 
-const Posts: FC<PostsProps> = ({ section }: PostsProps): ReactElement => {
+function Posts({ section }: PostsProps) {
     const [posts, setPosts] = useState<PostModel[]>([]);
     const [loadingPosts, setLoadingPosts] = useState<boolean>(false);
     const scrollTarget = useRef<HTMLDivElement>(null);
@@ -115,6 +108,6 @@ const Posts: FC<PostsProps> = ({ section }: PostsProps): ReactElement => {
             </div>
         </section>
     );
-};
+}
 
 export default Posts;

@@ -1,13 +1,10 @@
-import { FC, ReactElement, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
 import { UserWithId } from 'types/models';
 import useDebounce from 'hooks/useDebounce';
 
-const SuggestedUser: FC<UserWithId> = ({
-    id,
-    ...user
-}: UserWithId): ReactElement => {
+function SuggestedUser({ id, ...user }: UserWithId) {
     const [isFollowed, setIsFollowed] = useState<boolean>(false);
     const followEvent = useDebounce(
         toggleFollowButton,
@@ -48,6 +45,6 @@ const SuggestedUser: FC<UserWithId> = ({
             </button>
         </div>
     );
-};
+}
 
 export default SuggestedUser;

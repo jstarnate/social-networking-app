@@ -1,10 +1,10 @@
-import { FC, ReactElement, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { unshiftAdd } from 'actions';
 import useLimitedChars from 'hooks/useLimitedChars';
 
-const PostBox: FC = (): ReactElement => {
+function PostBox() {
     const [body, setBody] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
@@ -53,6 +53,6 @@ const PostBox: FC = (): ReactElement => {
             </div>
         </div>
     );
-};
+}
 
 export default PostBox;

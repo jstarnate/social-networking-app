@@ -1,10 +1,9 @@
-import { FC, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import SuggestedUser from './SuggestedUser';
 import { State } from 'types/redux';
 
-const SuggestedUsers: FC = (): ReactElement => {
+function SuggestedUsers() {
     const suggestedUsers = useSelector((state: State) => state.suggestedUsers);
 
     return (
@@ -25,6 +24,6 @@ const SuggestedUsers: FC = (): ReactElement => {
             </div>
         </section>
     );
-};
+}
 
 export default SuggestedUsers;

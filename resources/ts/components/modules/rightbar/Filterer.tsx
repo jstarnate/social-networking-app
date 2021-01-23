@@ -1,11 +1,4 @@
-import {
-    ChangeEvent,
-    Children,
-    FC,
-    FormEvent,
-    ReactElement,
-    useState,
-} from 'react';
+import { ChangeEvent, Children, FormEvent, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -15,7 +8,7 @@ import { generateMonths, generateYears } from 'utilities/generators';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
-const Filterer: FC = (): ReactElement => {
+function Filterer() {
     const [email, setEmail] = useState<string | null>(null);
     const [location, setLocation] = useState<string | null>(null);
     const [birth_month, setBirthMonth] = useState<string | null>(null);
@@ -121,6 +114,6 @@ const Filterer: FC = (): ReactElement => {
             </form>
         </section>
     );
-};
+}
 
 export default Filterer;

@@ -1,4 +1,4 @@
-import { FC, ReactElement, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
 import Modal from 'helpers/Modal';
@@ -12,13 +12,7 @@ interface CommentProps {
     deleteEvent: (commentId: number) => void;
 }
 
-const Comment: FC<CommentProps> = ({
-    id,
-    body,
-    from_self,
-    user,
-    deleteEvent,
-}: CommentProps): ReactElement => {
+function Comment({ id, body, from_self, user, deleteEvent }: CommentProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [loadingDelete, setLoadingDelete] = useState<boolean>(false);
 
@@ -88,6 +82,6 @@ const Comment: FC<CommentProps> = ({
             )}
         </>
     );
-};
+}
 
 export default Comment;

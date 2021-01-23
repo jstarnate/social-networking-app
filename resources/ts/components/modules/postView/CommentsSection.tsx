@@ -1,11 +1,4 @@
-import {
-    FC,
-    ReactElement,
-    useState,
-    useEffect,
-    ChangeEvent,
-    KeyboardEvent,
-} from 'react';
+import { useState, useEffect, ChangeEvent, KeyboardEvent } from 'react';
 import axios from 'axios';
 import Spinner from 'helpers/Spinner';
 import MaleDefaultAvatar from 'helpers/MaleDefaultAvatar';
@@ -19,11 +12,11 @@ interface CommentsSectionProps {
     avatarLink: string | undefined;
 }
 
-const CommentsSection: FC<CommentsSectionProps> = ({
+function CommentsSection({
     postId,
     userGender,
     avatarLink,
-}: CommentsSectionProps): ReactElement => {
+}: CommentsSectionProps) {
     const [comments, setComments] = useState<CommentType[]>([]);
     const [commentBody, setCommentBody] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -140,6 +133,6 @@ const CommentsSection: FC<CommentsSectionProps> = ({
             )}
         </div>
     );
-};
+}
 
 export default CommentsSection;

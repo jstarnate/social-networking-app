@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
@@ -21,7 +21,7 @@ interface AuthUser extends UserWithId {
     date_joined: string;
 }
 
-const Headline: FC = (): ReactElement | null => {
+function Headline() {
     const [user, setUser] = useState<AuthUser | null>(null);
     const [followed, setFollowed] = useState<boolean | undefined>(
         user?.is_followed
@@ -147,6 +147,6 @@ const Headline: FC = (): ReactElement | null => {
             </div>
         </section>
     );
-};
+}
 
 export default Headline;

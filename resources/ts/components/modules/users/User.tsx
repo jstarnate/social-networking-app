@@ -1,4 +1,4 @@
-import { FC, ReactElement, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
 import { UserWithId } from 'types/models';
@@ -7,7 +7,7 @@ interface UserData extends UserWithId {
     followed?: boolean;
 }
 
-const User: FC<UserData> = ({ id, ...user }: UserData): ReactElement => {
+function User({ id, ...user }: UserData) {
     const [isFollowed, setIsFollowed] = useState(user.followed);
 
     async function followUser() {
@@ -39,6 +39,6 @@ const User: FC<UserData> = ({ id, ...user }: UserData): ReactElement => {
             )}
         </div>
     );
-};
+}
 
 export default User;
