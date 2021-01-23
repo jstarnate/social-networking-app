@@ -65,12 +65,12 @@ class User extends Authenticatable
 
     public function followers()
     {
-        return $this->belongsToMany(self::class, 'follower_following', 'follower_id', 'following_id');
+        return $this->belongsToMany(self::class, 'follower_following', 'follower_id', 'following_id')->withTimestamps();
     }
 
     public function following()
     {
-        return $this->belongsToMany(self::class, 'follower_following', 'following_id', 'follower_id');
+        return $this->belongsToMany(self::class, 'follower_following', 'following_id', 'follower_id')->withTimestamps();
     }
 
     public function likes()

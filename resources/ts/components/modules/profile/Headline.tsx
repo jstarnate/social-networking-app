@@ -127,19 +127,23 @@ const Headline: FC = (): ReactElement | null => {
 
             {/* Followers and following users */}
             <div className='mg-t--sm'>
-                <button className='btn font--md'>
+                <Link
+                    to={`/${username}/connected/following`}
+                    className='btn font--md'>
                     <span className='text--black-light text--bold'>
                         {user?.following}
                     </span>
                     <span className='text--gray mg-l--xxs'>following</span>
-                </button>
+                </Link>
 
-                <button className='btn font--md mg-l--lg'>
+                <Link
+                    to={`/${username}/connected/followers`}
+                    className='btn font--md mg-l--lg'>
                     <span className='text--black-light text--bold'>
                         {user?.followers}
                     </span>
                     <span className='text--gray mg-l--xxs'>followers</span>
-                </button>
+                </Link>
             </div>
         </section>
     );

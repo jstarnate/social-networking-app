@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function() {
     Route::get('/u/{username}/likes', [HomeController::class, 'show']);
     Route::get('/u/{username}/comments', [HomeController::class, 'show']);
     Route::get('/u/{username}/bookmarks', [HomeController::class, 'show']);
+    Route::get('/{username}/connected/{name}', [HomeController::class, 'show']);
     Route::get('/profile/{username}/edit', [HomeController::class, 'show']);
     
     Route::view('/notifications', 'home');

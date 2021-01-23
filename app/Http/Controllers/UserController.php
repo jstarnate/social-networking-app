@@ -71,23 +71,29 @@ class UserController extends Controller
      * Get 5 followers or followed users
      *
      * @param \Illuminate\Http\Request  $request
-     * @param string  $username
-     * @param string  $name
      * @return \Illuminate\Http\Response
      */
     public function getConnectedUsers(Request $request, string $username, string $name)
     {
+        $date = $request->date ?? now();
         $payload = User::where('username', $username)
                         ->first()
                         ->{$name}()
-                        ->latest()
-                        ->whereNotIn('id', $request->ids)
+                        ->orderBy('pivot_created_at', 'desc')
+                        ->wherePivot('created_at', '<', $date)
                         ->get()
-                        ->take(10);
+                        ->take(5);
 
-        $users = $payload->map(fn($user) => $user->formatBasic());
+        $users = $payload->map(function($user) {
+            $body = $user->formatBasic(auth()->user());
+            $body['connected_at'] = $user->pivot->created_at;
 
-        return response()->json(compact('users'));
+            return $body;
+        });
+
+        $has_more = !$payload->isEmpty();
+
+        return response()->json(compact('users', 'has_more'));
     }
 
     /**

@@ -11,6 +11,7 @@ import Timeline from './views/Timeline';
 import Notifications from './views/Notifications';
 import Users from './views/Users';
 import PostView from './views/PostView';
+import ConnectedUsers from './views/ConnectedUsers';
 import Spinner from 'helpers/Spinner';
 import { UserWithId } from 'types/models';
 import 'pusher-js';
@@ -118,6 +119,12 @@ const HomeComponent: FC = (): ReactElement => {
                             path='/posts/:id/comments'
                             component={PostView}
                         />
+                        <Route path='/:username/connected/followers'>
+                            <ConnectedUsers name='followers' />
+                        </Route>
+                        <Route path='/:username/connected/following'>
+                            <ConnectedUsers name='following' />
+                        </Route>
                     </Switch>
 
                     <Rightbar />
