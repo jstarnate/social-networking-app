@@ -21,8 +21,12 @@ function User({ id, ...user }: UserData) {
     }
 
     return (
-        <div className='d--flex ai--center b--1 brdr--primary b-rad--md pd--xs mg-t--md'>
-            <BasicUserInfo imageClassName='home__id-photo' {...user} />
+        <div className='d--flex ai--center b--1 brdr--primary b-rad--md pd--sm mg-t--md'>
+            <BasicUserInfo
+                className='d--if ai--center'
+                imageClassName='home__id-photo'
+                {...user}
+            />
 
             {isFollowed ? (
                 <button

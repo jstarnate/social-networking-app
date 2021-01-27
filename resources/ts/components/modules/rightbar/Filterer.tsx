@@ -55,7 +55,6 @@ function Filterer() {
 
             <form className='mg-t--md' onSubmit={filterUsers}>
                 <InputField
-                    inputClassName='d--block full-width b--1 brdr--gray b-rad--sm text--black-light pd--xxs'
                     id='filter-email'
                     label='Email address'
                     value={email}
@@ -63,7 +62,7 @@ function Filterer() {
                 />
 
                 <InputField
-                    inputClassName='d--block full-width b--1 brdr--gray b-rad--sm text--black-light pd--xxs'
+                    containerClassName='mg-t--md'
                     id='filter-location'
                     label='Location'
                     value={location}

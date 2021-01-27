@@ -26,7 +26,11 @@ function SuggestedUser({ id, ...user }: UserWithId) {
 
     return (
         <div className='bg--white b-rad--sm mg-t--md'>
-            <BasicUserInfo imageClassName='rightbar__profile-photo' {...user} />
+            <BasicUserInfo
+                className='d--flex ai--center pd--xs'
+                imageClassName='rightbar__profile-photo'
+                {...user}
+            />
 
             <button
                 className={`full-width btn btn--${
