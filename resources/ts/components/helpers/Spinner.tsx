@@ -35,4 +35,10 @@ function Spinner({ className, size, color }: LoaderInterface) {
     );
 }
 
+Spinner.defaultProps = {
+    className: 'd--block',
+    size: 35,
+    color: '#7EAEE7',
+};
+
 export default Spinner;
