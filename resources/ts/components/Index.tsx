@@ -19,11 +19,10 @@ function IndexComponent() {
                 username,
                 password,
             });
+
             location = data.url;
         } catch (err) {
-            const { message } = err.response.data.errors;
-
-            setError(message);
+            setError(err.response.data.errors.message);
             setLoading(false);
         }
     }
@@ -41,7 +40,10 @@ function IndexComponent() {
                     </div>
                 )}
 
-                <form data-testid='login-form' onSubmit={submit}>
+                <form
+                    data-testid='login-form'
+                    className='mg-t--md'
+                    onSubmit={submit}>
                     <InputField
                         id='username'
                         label='Username'
@@ -50,6 +52,7 @@ function IndexComponent() {
                     />
 
                     <InputField
+                        containerClassName='mg-t--md'
                         id='password'
                         type='password'
                         label='Password'
