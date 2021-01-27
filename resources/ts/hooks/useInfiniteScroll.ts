@@ -1,35 +1,18 @@
-import { RefObject, useState, useCallback, useEffect } from 'react';
-import axios from 'axios';
-import { Post } from 'types/models';
+import { RefObject, useCallback, useEffect } from 'react';
+import { UserWithId, Post } from 'types/models';
 
 export default function (
-    fn: CallableFunction,
-    target: RefObject<HTMLElement>,
-    route: string,
-    list: Post[]
-): boolean {
-    const [loading, setLoading] = useState<boolean>(false);
-
+    target: RefObject<HTMLDivElement>,
+    fn: (observer: IntersectionObserver) => void,
+    dependency: (UserWithId | Post | number)[]
+) {
     const ioCallback: IntersectionObserverCallback = useCallback(
         async (entries, observer) => {
             if (entries[0].isIntersecting) {
-                setLoading(false);
-
-                const date = list[list.length - 1].updated_at;
-                const { data } = await axios.post(route, { date });
-
-                if (data.has_more) {
-                    fn(data);
-                }
-
-                if (!data.has_more && target && target.current) {
-                    observer.unobserve(target.current);
-                }
-
-                setLoading(false);
+                fn(observer);
             }
         },
-        [list]
+        [dependency]
     );
 
     useEffect(() => {
@@ -49,6 +32,4 @@ export default function (
             observer.disconnect();
         };
     }, [ioCallback]);
-
-    return loading;
 }
