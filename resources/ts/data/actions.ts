@@ -10,27 +10,31 @@ import {
     DeletePost,
 } from 'types/redux';
 
-type SingleData = UserWithId | Post;
-
 export const set = (name: string, payload: Payload): SetItem => ({
     type: 'SET',
     name,
     payload,
 });
 
-export const pushAdd = (name: string, payload: SingleData): PushAdd => ({
+export const pushAdd = (name: string, payload: UserWithId | Post): PushAdd => ({
     type: 'PUSH_ADD',
     name,
     payload,
 });
 
-export const unshiftAdd = (name: string, payload: SingleData): UnshiftAdd => ({
+export const unshiftAdd = (
+    name: string,
+    payload: UserWithId | Post
+): UnshiftAdd => ({
     type: 'UNSHIFT_ADD',
     name,
     payload,
 });
 
-export const pushSpread = (name: string, payload: Payload): PushSpread => ({
+export const pushSpread = (
+    name: string,
+    payload: (UserWithId | Post)[]
+): PushSpread => ({
     type: 'PUSH_SPREAD',
     name,
     payload,
@@ -38,7 +42,7 @@ export const pushSpread = (name: string, payload: Payload): PushSpread => ({
 
 export const unshiftSpread = (
     name: string,
-    payload: Payload
+    payload: (UserWithId | Post)[]
 ): UnshiftSpread => ({
     type: 'UNSHIFT_SPREAD',
     name,
