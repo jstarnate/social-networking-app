@@ -16,7 +16,9 @@ function RegisterComponent() {
     const [birth_day, setBirthDay] = useState<string | null>(null);
     const [birth_year, setBirthYear] = useState<string | null>(null);
     const [birthdate_error, setBirthdateError] = useState<string | null>(null);
-    const [passwordType, setPasswordType] = useState<string>('password');
+    const [passwordType, setPasswordType] = useState<'password' | 'text'>(
+        'password'
+    );
     const [loading, setLoading] = useState<boolean>(false);
     const [registered, setRegistered] = useState<boolean>(false);
 
@@ -90,7 +92,7 @@ function RegisterComponent() {
         <section className='pd-t--lg pd-b--lg mg-l--auto mg-r--auto register__wrap'>
             <h2 className='text--black-light'>Create your account</h2>
 
-            <form className='register' onSubmit={submit}>
+            <form className='mg-t--md register' onSubmit={submit}>
                 <InputField
                     id='full_name'
                     label='Name'
@@ -99,15 +101,22 @@ function RegisterComponent() {
                 />
 
                 <InputField
+                    containerClassName='mg-t--md'
                     id='email'
                     type='email'
                     label='Email address'
                     {...emailData}
                 />
 
-                <InputField id='username' label='Username' {...usernameData} />
+                <InputField
+                    id='username'
+                    containerClassName='mg-t--md'
+                    label='Username'
+                    {...usernameData}
+                />
 
                 <InputField
+                    containerClassName='mg-t--md'
                     id='password'
                     type={passwordType}
                     label='Password'
@@ -120,7 +129,7 @@ function RegisterComponent() {
                     </button>
                 </InputField>
 
-                <div className='mg-t--lg'>
+                <div className='mg-t--md'>
                     <label
                         className={`text--bold ${
                             genderData.error
@@ -151,7 +160,7 @@ function RegisterComponent() {
                     </div>
                 </div>
 
-                <div className='mg-t--lg'>
+                <div className='mg-t--md'>
                     <label
                         className={`text--bold ${
                             birthdate_error
