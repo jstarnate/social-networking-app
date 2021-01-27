@@ -3,7 +3,7 @@ import { useEffect, RefObject } from 'react';
 export default function (
     ref: RefObject<HTMLElement>,
     fn: CallableFunction | undefined
-): void {
+) {
     function outsideClick(event: MouseEvent) {
         if (
             fn &&

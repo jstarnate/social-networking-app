@@ -1,10 +1,12 @@
 import { useRef, MouseEvent } from 'react';
 
+type DebounceReturnType = (event: MouseEvent<HTMLButtonElement>) => void;
+
 function useDebounce(
     stateFn: CallableFunction,
     requestFn: CallableFunction,
     delay: number
-): (event: MouseEvent<HTMLButtonElement>) => void {
+): DebounceReturnType {
     const timeout = useRef<number | undefined>();
 
     return () => {

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export default function (fn: CallableFunction | undefined): void {
+export default function (fn: CallableFunction | undefined) {
     function closeOnEscape(event: KeyboardEvent) {
         if (fn && event.key === 'Escape') {
             fn();
