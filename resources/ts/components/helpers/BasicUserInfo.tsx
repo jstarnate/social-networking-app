@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import MaleDefaultAvatar from './MaleDefaultAvatar';
-import FemaleDefaultAvatar from './FemaleDefaultAvatar';
+import DefaultAvatar from './DefaultAvatar';
 import { User } from 'types/models';
 
 interface BasicUserInfoProps extends User {
@@ -9,21 +8,15 @@ interface BasicUserInfoProps extends User {
     avatarSize?: number;
 }
 
-interface ContentProps {
+interface ContentProps extends User {
     imageClassName?: string;
     avatarSize?: number;
-    full_name: string | undefined;
-    username: string | undefined;
-    gender: 'Male' | 'Female' | undefined;
-    image_url: string | undefined;
 }
 
 const Content = (props: ContentProps) => (
     <>
-        {props.gender === 'Male' && !props.image_url ? (
-            <MaleDefaultAvatar size={props.avatarSize} />
-        ) : props.gender === 'Female' && !props.image_url ? (
-            <FemaleDefaultAvatar size={props.avatarSize} />
+        {!props.image_url ? (
+            <DefaultAvatar gender={props.gender} />
         ) : (
             <img
                 className={`round ${props.imageClassName}`}
