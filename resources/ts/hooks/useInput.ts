@@ -1,17 +1,18 @@
 import { ChangeEvent, useState } from 'react';
 
+type InputValueType = string | null | undefined;
+type UseInputReturnType = [InputValueType, DataObject, CallableFunction];
+
 interface DataObject {
-    value: string | null | undefined;
+    value: InputValueType;
     error: string | null;
     onChangeEvent: (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => void;
 }
 
-export default function (
-    initialValue: string | null | undefined
-): [string | null | undefined, DataObject, CallableFunction] {
-    const [value, setValue] = useState<string | null | undefined>(initialValue);
+export default function (initialValue: InputValueType): UseInputReturnType {
+    const [value, setValue] = useState<InputValueType>(initialValue);
     const [error, setError] = useState<string | null>(null);
 
     function handleValue(
