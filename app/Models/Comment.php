@@ -59,6 +59,7 @@ class Comment extends Model
         $user = $this->user->only('full_name', 'username', 'gender', 'image_url', 'updated_at');
         $user['url'] = route('profile', ['username' => $user['username']]);
 
+        $comment['kind'] = 'comment';
         $comment['from_self'] = auth()->user()->id === $this->user_id;
         $comment['user'] = $user;
 
