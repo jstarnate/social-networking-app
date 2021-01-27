@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import User from 'modules/users/User';
@@ -17,9 +17,9 @@ interface RouteParams {
     username: string;
 }
 
-const cachedUser: UserWithId = JSON.parse(localStorage.getItem('user') || '');
+const cachedUser = JSON.parse(localStorage.getItem('user') || '{}');
 
-function ConnectedUsers({ name }: Props): ReactElement {
+function ConnectedUsers({ name }: Props) {
     const [users, setUsers] = useState<ConnectedUser[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const scrollTarget = useRef<HTMLDivElement>(null);
