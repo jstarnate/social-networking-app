@@ -31,13 +31,13 @@ export interface UnshiftAdd {
 export interface PushSpread {
     type: 'PUSH_SPREAD';
     name: string;
-    payload: Payload;
+    payload: (UserWithId | Post)[];
 }
 
 export interface UnshiftSpread {
     type: 'UNSHIFT_SPREAD';
     name: string;
-    payload: Payload;
+    payload: (UserWithId | Post)[];
 }
 
 export interface UpdatePost {
