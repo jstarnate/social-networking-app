@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import MaleDefaultAvatar from 'helpers/MaleDefaultAvatar';
-import FemaleDefaultAvatar from 'helpers/FemaleDefaultAvatar';
+import DefaultAvatar from 'helpers/DefaultAvatar';
 import Spinner from 'helpers/Spinner';
 import { User } from 'types/models';
 
@@ -69,12 +68,11 @@ function Notifications() {
                                     !notif.read ? 'bg--gray-light' : ''
                                 }`}
                                 onClick={updateReadStatus.bind(null, notif.id)}>
-                                {!notif.user.image_url &&
-                                notif.user.gender === 'Male' ? (
-                                    <MaleDefaultAvatar size={40} />
-                                ) : !notif.user.image_url &&
-                                  notif.user.gender === 'Female' ? (
-                                    <FemaleDefaultAvatar size={40} />
+                                {!notif.user.image_url ? (
+                                    <DefaultAvatar
+                                        gender={notif.user.gender}
+                                        size={40}
+                                    />
                                 ) : (
                                     <img
                                         className='round'

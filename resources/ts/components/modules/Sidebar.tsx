@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import MaleDefaultAvatar from 'helpers/MaleDefaultAvatar';
-import FemaleDefaultAvatar from 'helpers/FemaleDefaultAvatar';
+import DefaultAvatar from 'helpers/DefaultAvatar';
 import { UserWithId } from 'types/models';
 
 interface SidebarProps {
@@ -27,16 +26,18 @@ function Sidebar({ user, notifCount, updateNotifStatus }: SidebarProps) {
                         to={`/u/${user?.username}`}
                         className='d--flex ai--center mg-t--lg'
                         href=''>
-                        {!user?.image_url && user?.gender === 'Male' ? (
-                            <MaleDefaultAvatar size={30} />
-                        ) : !user?.image_url && user?.gender === 'Female' ? (
-                            <FemaleDefaultAvatar size={30} />
+                        {!user?.image_url ? (
+                            <DefaultAvatar
+                                gender={user?.gender || null}
+                                size={30}
+                            />
                         ) : (
                             <img
                                 className='round sidebar__profile-photo'
                                 src={user?.image_url}
                             />
                         )}
+
                         <span className='font--sm text--black-light text--bold mg-l--xs'>
                             {user?.full_name}
                         </span>

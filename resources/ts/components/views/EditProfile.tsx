@@ -2,8 +2,7 @@ import { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import InputField from 'helpers/InputField';
-import MaleDefaultAvatar from 'helpers/MaleDefaultAvatar';
-import FemaleDefaultAvatar from 'helpers/FemaleDefaultAvatar';
+import DefaultAvatar from 'helpers/DefaultAvatar';
 import useInput from 'hooks/useInput';
 import useLimitedChars from 'hooks/useLimitedChars';
 import { UserWithId } from 'types/models';
@@ -77,10 +76,11 @@ function EditProfile({ user }: EditProfileProps) {
                 onSubmit={updateUser}>
                 <div className='d--flex ai--center'>
                     <div className='pos--rel d--ib round profile__change-photo-container'>
-                        {!user?.image_url && user?.gender === 'Male' ? (
-                            <MaleDefaultAvatar size={100} />
-                        ) : !user?.image_url && user?.gender === 'Female' ? (
-                            <FemaleDefaultAvatar size={100} />
+                        {!user?.image_url ? (
+                            <DefaultAvatar
+                                gender={user?.gender || null}
+                                size={100}
+                            />
                         ) : (
                             <img
                                 className='round profile__headline-profile-photo'
@@ -145,7 +145,7 @@ function EditProfile({ user }: EditProfileProps) {
                     <textarea
                         id='bio'
                         className={`text--black b--1 ${
-                            bioError ? 'brdr-danger' : 'brdr-black-light'
+                            bioError ? 'brdr-danger' : 'brdr--gray'
                         } b-rad--sm full-width pd--xs mg-t--xxs profile__edit-bio`}
                         rows={3}
                         value={bio || ''}

@@ -1,22 +1,17 @@
 import { useState, useEffect, ChangeEvent, KeyboardEvent } from 'react';
 import axios from 'axios';
 import Spinner from 'helpers/Spinner';
-import MaleDefaultAvatar from 'helpers/MaleDefaultAvatar';
-import FemaleDefaultAvatar from 'helpers/FemaleDefaultAvatar';
+import DefaultAvatar from 'helpers/DefaultAvatar';
 import Comment from './Comment';
 import { Comment as CommentType } from 'types/models';
 
-interface CommentsSectionProps {
-    postId: number | string | undefined;
-    userGender: string | null;
-    avatarLink: string | undefined;
+interface Props {
+    postId?: number | string;
+    userGender: 'Male' | 'Female' | null;
+    avatarLink: string | null;
 }
 
-function CommentsSection({
-    postId,
-    userGender,
-    avatarLink,
-}: CommentsSectionProps) {
+function CommentsSection({ postId, userGender, avatarLink }: Props) {
     const [comments, setComments] = useState<CommentType[]>([]);
     const [commentBody, setCommentBody] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
@@ -97,10 +92,8 @@ function CommentsSection({
             </h4>
 
             <div className='d--flex ai--start mg-t--md'>
-                {userGender === 'Male' && !avatarLink ? (
-                    <MaleDefaultAvatar size={45} />
-                ) : userGender === 'Female' && !avatarLink ? (
-                    <FemaleDefaultAvatar size={45} />
+                {!avatarLink ? (
+                    <DefaultAvatar gender={userGender} size={45} />
                 ) : (
                     <img
                         className='circle'
