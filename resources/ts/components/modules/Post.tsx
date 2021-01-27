@@ -2,10 +2,10 @@ import { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
-import { Post as PostExtension } from 'types/models';
+import { Post as PostType } from 'types/models';
 import useDebounce from 'hooks/useDebounce';
 
-interface PostProps extends PostExtension {
+interface PostProps extends PostType {
     namespace: string;
     render?: (comments: number) => ReactElement;
 }
