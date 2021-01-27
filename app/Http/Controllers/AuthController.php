@@ -17,7 +17,7 @@ class AuthController extends Controller
     /**
      * Handle a login request to the application.
      *
-     * @param \Illumiate\Http\RHashequest  $request
+     * @param \Illumiate\Http\Request  $request
      * @return \Illumiate\Http\RedirectResponse
      * @throws \Illuminate\Validation\ValidationException
      */
