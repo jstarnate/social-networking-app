@@ -1,8 +1,8 @@
 export interface User {
-    full_name: string | undefined;
-    username: string | undefined;
-    gender: 'Male' | 'Female' | undefined;
-    image_url: string | undefined;
+    full_name: string | null;
+    username: string | null;
+    gender: 'Male' | 'Female' | null;
+    image_url: string | null;
     url?: string;
     followed?: boolean;
 }
