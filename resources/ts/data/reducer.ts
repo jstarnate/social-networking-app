@@ -28,25 +28,29 @@ export default (state = initialState, action: ActionType): State => {
     }
 
     if (action.type === 'PUSH_ADD') {
-        state[action.name] = [...state[action.name], action.payload];
+        const name = action.name === 'users' ? 'users' : 'posts';
+        state[action.name] = [...state[name], action.payload];
 
         return state;
     }
 
     if (action.type === 'UNSHIFT_ADD') {
-        state[action.name] = [action.payload, ...state[action.name]];
+        const name = action.name === 'users' ? 'users' : 'posts';
+        state[action.name] = [action.payload, ...state[name]];
 
         return state;
     }
 
     if (action.type === 'PUSH_SPREAD') {
-        state[action.name] = [...state[action.name], ...action.payload];
+        const name = action.name === 'users' ? 'users' : 'posts';
+        state[action.name] = [...state[name], ...action.payload];
 
         return state;
     }
 
     if (action.type === 'UNSHIFT_SPREAD') {
-        state[action.name] = [...action.payload, ...state[action.name]];
+        const name = action.name === 'users' ? 'users' : 'posts';
+        state[action.name] = [...action.payload, ...state[name]];
 
         return state;
     }
