@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import PostBox from 'modules/timeline/PostBox';
@@ -7,6 +7,7 @@ import Spinner from 'helpers/Spinner';
 import { State } from 'types/redux';
 import { Post as PostProps } from 'types/models';
 import { pushSpread } from 'actions';
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 function Timeline() {
     const [loadingPosts, setLoadingPosts] = useState<boolean>(false);
@@ -14,84 +15,44 @@ function Timeline() {
     const scrollTarget = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
 
-    const ioCallback: IntersectionObserverCallback = useCallback(
-        async (entries, observer) => {
-            if (entries[0].isIntersecting) {
-                setLoadingPosts(true);
-
-                const date = posts[posts.length - 1].updated_at;
-                const { data } = await axios.post('/api/posts', { date });
-
-                if (data.has_more) {
-                    dispatch(pushSpread('posts', data.items));
-                }
-
-                if (!data.has_more && scrollTarget && scrollTarget.current) {
-                    observer.unobserve(scrollTarget.current);
-                }
-
-                setLoadingPosts(false);
-            }
-        },
-        [posts]
-    );
-
-    async function getPosts() {
+    async function ioFunction(observer: IntersectionObserver) {
         setLoadingPosts(true);
 
-        const { data } = await axios.post('/api/posts');
+        const date = posts[posts.length - 1]?.updated_at || null;
+        const { data } = await axios.post('/api/posts', { date });
 
-        dispatch(pushSpread('posts', data.items));
+        if (data.has_more) {
+            dispatch(pushSpread('posts', data.items));
+        }
+
+        if (!data.has_more && scrollTarget && scrollTarget.current) {
+            observer.unobserve(scrollTarget.current);
+        }
+
         setLoadingPosts(false);
     }
 
-    useEffect(() => {
-        getPosts();
-    }, []);
-
-    useEffect(() => {
-        const options: IntersectionObserverInit = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 1.0,
-        };
-
-        const observer = new IntersectionObserver(ioCallback, options);
-
-        if (scrollTarget && scrollTarget.current) {
-            observer.observe(scrollTarget.current);
-        }
-
-        return () => {
-            observer.disconnect();
-        };
-    }, [ioCallback]);
+    useInfiniteScroll(scrollTarget, ioFunction, posts);
 
     return (
         <section className='flex--1 pd-t--lg pd-b--lg pd-l--sm pd-r--sm timeline'>
             <PostBox />
 
-            {!posts.length ? (
+            {!loadingPosts && !posts.length ? (
                 <h4 className='text--gray text--center mg-t--md'>
                     Find some people to follow to fill up your timeline.
                 </h4>
             ) : (
                 <div>
-                    <div>
-                        {posts.map((post: PostProps) => (
-                            <Post
-                                key={post.id}
-                                namespace='timeline'
-                                {...post}
-                            />
-                        ))}
-                    </div>
-
-                    <div ref={scrollTarget}></div>
-
-                    {loadingPosts && <Spinner />}
+                    {posts.map((post: PostProps) => (
+                        <Post key={post.id} namespace='timeline' {...post} />
+                    ))}
                 </div>
             )}
+
+            <div ref={scrollTarget}></div>
+
+            {loadingPosts && <Spinner />}
         </section>
     );
 }

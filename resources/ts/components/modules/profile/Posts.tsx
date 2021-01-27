@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Post from 'modules/Post';
 import Spinner from 'helpers/Spinner';
 import { Post as PostModel } from 'types/models';
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 interface PostsProps {
     section?: string;
@@ -29,49 +30,28 @@ function Posts({ section }: PostsProps) {
         setLoadingPosts(false);
     }
 
-    const ioCallback: IntersectionObserverCallback = useCallback(
-        async (entries, observer) => {
-            if (entries[0].isIntersecting) {
-                setLoadingPosts(true);
+    async function ioFunction(observer: IntersectionObserver) {
+        setLoadingPosts(true);
 
-                const date = posts[posts.length - 1].updated_at;
-                const { data } = await axios.post(postRoute, { date });
+        const date = posts[posts.length - 1].updated_at;
+        const { data } = await axios.post(postRoute, { date });
 
-                if (data.has_more) {
-                    setPosts(p => [...p, ...data.items]);
-                }
+        if (data.has_more) {
+            setPosts(p => [...p, ...data.items]);
+        }
 
-                if (!data.has_more && scrollTarget && scrollTarget.current) {
-                    observer.unobserve(scrollTarget.current);
-                }
+        if (!data.has_more && scrollTarget && scrollTarget.current) {
+            observer.unobserve(scrollTarget.current);
+        }
 
-                setLoadingPosts(false);
-            }
-        },
-        [posts]
-    );
+        setLoadingPosts(false);
+    }
+
+    useInfiniteScroll(scrollTarget, ioFunction, posts);
 
     useEffect(() => {
         getPosts();
     }, [section, username]);
-
-    useEffect(() => {
-        const options: IntersectionObserverInit = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 1.0,
-        };
-
-        const observer = new IntersectionObserver(ioCallback, options);
-
-        if (scrollTarget && scrollTarget.current) {
-            observer.observe(scrollTarget.current);
-        }
-
-        return () => {
-            observer.disconnect();
-        };
-    }, [ioCallback]);
 
     if (!posts.length) {
         return (
