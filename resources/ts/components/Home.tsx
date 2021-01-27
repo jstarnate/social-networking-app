@@ -104,7 +104,7 @@ function HomeComponent() {
                         <Route path='/home' component={Timeline} />
                         <Route path='/u/:username'>
                             <Suspense fallback={<ProfileLoader />}>
-                                <Profile name={user?.full_name} />
+                                <Profile name={user?.full_name || null} />
                             </Suspense>
                         </Route>
                         <Route exact path='/profile/:username/edit'>

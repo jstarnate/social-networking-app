@@ -76,10 +76,10 @@ function Headline() {
                 <BasicUserInfo
                     className='d--flex ai--center'
                     avatarSize={100}
-                    full_name={user?.full_name}
-                    username={user?.username}
-                    gender={user?.gender}
-                    image_url={user?.image_url}
+                    full_name={user?.full_name || null}
+                    username={user?.username || null}
+                    gender={user?.gender || null}
+                    image_url={user?.image_url || null}
                 />
 
                 {user?.not_self ? (
