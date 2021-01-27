@@ -81,6 +81,7 @@ class Post extends Model
         $user = $this->user->only('full_name', 'username', 'gender', 'image_url', 'updated_at');
         $user['url'] = "/u/{$user['username']}";
 
+        $post['kind'] = 'post';
         $post['from_self'] = $authUser->id === $this->user_id;
         $post['is_liked'] = $authUser->likes->contains($this->id);
         $post['likes'] = $this->likers->count();

@@ -133,6 +133,7 @@ class User extends Authenticatable
     {
         $user = $this->only('id', 'full_name', 'username', 'gender', 'birth_date', 'bio', 'location', 'image_url');
 
+        $user['kind'] = 'user';
         $user['not_self'] = $this->id !== auth()->user()->id;
         $user['followers'] = $this->followers->count();
         $user['following'] = $this->following->count();
