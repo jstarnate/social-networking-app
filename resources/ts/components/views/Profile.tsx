@@ -4,7 +4,7 @@ import Headline from 'modules/profile/Headline';
 import Posts from 'modules/profile/Posts';
 
 interface ProfileProps {
-    name: string | undefined;
+    name: string | null;
 }
 
 function Profile({ name }: ProfileProps) {

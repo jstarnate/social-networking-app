@@ -1,7 +1,7 @@
 interface Props {
     containerClassName?: string | null;
     icon: string;
-    label: string | undefined;
+    label?: string;
 }
 
 function InfoLabel({ containerClassName, icon, label }: Props) {

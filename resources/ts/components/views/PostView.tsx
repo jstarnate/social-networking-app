@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { State } from 'types/redux';
-import { Post as PostInterface } from 'types/models';
+import { Post as PostType } from 'types/models';
 import Post from 'modules/Post';
 import CommentsSection from 'modules/postView/CommentsSection';
 
 interface RouteParams {
-    id?: (number & string) | undefined;
+    id?: number & string;
 }
 
 function PostView() {
@@ -16,7 +16,7 @@ function PostView() {
     const post = useSelector((state: State) =>
         state.posts.find(p => p.id === Number(id))
     );
-    const [tweet, setTweet] = useState<PostInterface | undefined>(post);
+    const [tweet, setTweet] = useState<PostType | undefined>(post);
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -55,7 +55,7 @@ function PostView() {
             <CommentsSection
                 postId={id}
                 userGender={tweet?.user.gender || null}
-                avatarLink={tweet?.user.image_url || undefined}
+                avatarLink={tweet?.user.image_url || null}
             />
         </section>
     );
