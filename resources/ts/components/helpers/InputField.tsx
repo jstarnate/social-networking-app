@@ -41,4 +41,10 @@ function InputField(props: Props) {
     );
 }
 
+InputField.defaultProps = {
+    inputClassName:
+        'full-width font--md text--black b--1 brdr--gray b-rad--sm pd--xs mg-t--xxs',
+    type: 'text',
+};
+
 export default InputField;
