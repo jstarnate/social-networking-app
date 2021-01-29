@@ -2,27 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{User, Notification};
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateUserRequest;
-use App\Events\NotifyUser;
-use App\Repositories\NotificationRepository;
+use App\Events\SendUnreadNotifsCount;
+use App\Notifications\FollowUser;
 use Illuminate\Validation\ValidationException;
 use JD\Cloudder\Facades\Cloudder;
 
 class UserController extends Controller
 {
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct(NotificationRepository $notificationRepository)
-    {
-        $this->notificationRepository = $notificationRepository;
-    }
-
     /**
      * Get a specific user model.
      *
@@ -142,21 +131,14 @@ class UserController extends Controller
      */
     public function follow(Request $request)
     {
-        $this->authorize('followOrUnfollow', User::find($request->id));
+        $this->authorize('followOrUnfollow', $followedUser = User::find($request->id));
 
         $user = auth()->user();
-
-        $user->following()->attach($request->id);
         
-        $this->notificationRepository->store(
-            $user,
-            $request->id,
-            Notification::FOLLOWED,
-            route('profile', $user->only('username'))
-        );
+        $user->following()->attach($request->id);
 
-        // TODO: Database notification for following a user.
-        // event(new NotifyUser($request->id));
+        $followedUser->notify(new FollowUser($user));
+        broadcast(new SendUnreadNotifsCount($followedUser));
     }
 
     /**

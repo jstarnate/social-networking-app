@@ -119,7 +119,6 @@ Route::group([
 ], function() {
     Route::get('/get', [NotificationController::class, 'get']);
     Route::get('/count', [NotificationController::class, 'getCount']);
-    Route::put('/status/update', [NotificationController::class, 'updateStatus']);
     Route::put('/read', [NotificationController::class, 'read']);
 });
 

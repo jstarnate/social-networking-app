@@ -1,6 +1,6 @@
 @extends('_layout')
 
-@section('title', 'Index')
+@section('title', 'Sign up')
 
 @section('css')
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">

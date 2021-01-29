@@ -88,7 +88,10 @@ module.exports = {
             open: false,
             notify: false,
             ghostMode: false,
-            proxy: 'http://localhost:8000',
+            proxy: {
+                target: 'http://localhost:8000',
+                ws: true,
+            },
         }),
     ],
 };

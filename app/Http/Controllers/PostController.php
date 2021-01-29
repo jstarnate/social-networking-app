@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{User, Post, Comment, Notification};
+use App\Models\{User, Post, Comment};
 use Illuminate\Http\Request;
-use App\Events\NotifyUser;
-use App\Repositories\{FetchRepository, NotificationRepository};
+use App\Events\SendUnreadNotifsCount;
+use App\Notifications\PostLiked;
+use App\Repositories\FetchRepository;
 
 class PostController extends Controller
 {
@@ -14,16 +15,11 @@ class PostController extends Controller
      * Create a new controller instance.
      *
      * @param App\Repositories\FetchRepository  $fetchRepository
-     * @param App\Repositories\NotificationRepository  $notificationRepository
      * @return void
      */
-    public function __construct(
-        FetchRepository $fetchRepository,
-        NotificationRepository $notificationRepository
-    )
+    public function __construct(FetchRepository $fetchRepository)
     {
         $this->fetchRepository = $fetchRepository;
-        $this->notificationRepository = $notificationRepository;
     }
 
     /**
@@ -132,19 +128,13 @@ class PostController extends Controller
             return;
         }
 
-        $posterId = Post::find($request->id)->user->id;
+        $op = Post::find($request->id)->user;
 
         $user->likes()->attach($request->id);
 
-        if ($posterId !== $user->id) {
-            $this->notificationRepository->store(
-                $user,
-                $posterId,
-                Notification::LIKED_POST,
-                "/home/post/{$request->id}"
-            );
-            
-            event(new NotifyUser($posterId));
+        if ($op->id !== $user->id) { // If the liked post is not from the auth user, notify OP.
+            event(new SendUnreadNotifsCount($op));
+            $op->notify(new PostLiked($user, $request->id));
         }
 
         return response()->json(['message' => 'Post liked!']);
@@ -173,7 +163,7 @@ class PostController extends Controller
     {
         auth()->user()->bookmarks()->attach($request->id);
         
-        return response()->json(['message' => 'Bookmarked!']);
+        return response()->json(['message' => 'Post successfully bookmarked.']);
     }
 
     /**
@@ -186,7 +176,7 @@ class PostController extends Controller
     {
         auth()->user()->bookmarks()->detach($request->id);
         
-        return response()->json(['message' => 'Unbookmarked!']);
+        return response()->json(['message' => 'Unbookmarked.']);
     }
 
 }

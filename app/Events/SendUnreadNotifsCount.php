@@ -11,7 +11,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserCommented implements ShouldBroadcast
+class SendUnreadNotifsCount implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -35,7 +35,7 @@ class UserCommented implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('comment.count.' . $this->user->id);
+        return new Channel('notify.user.' . $this->user->id);
     }
 
     /**
@@ -46,11 +46,7 @@ class UserCommented implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'count' => $this->user->notificationStatuses
-                            ->where('opened', false)
-                            ->first()
-                            ->notifications()
-                            ->count()
+            'count' => $this->user->unreadNotifications->count(),
         ];
     }
 }

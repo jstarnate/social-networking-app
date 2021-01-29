@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{User, Notification};
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Repositories\FetchRepository;
 
 class NotificationController extends Controller
 {
-
 	/**
      * Create a new controller instance.
      *
@@ -19,17 +18,6 @@ class NotificationController extends Controller
     {
         $this->fetchRepository = $fetchRepository;
     }
-    
-	/**
-	* Change the status of "opened" to true.
-	*
-	* @return \Illuminate\View\View
-    */
-	public function updateStatus()
-	{
-		$statuses = auth()->user()->notificationStatuses();
-		$statuses->where('opened', false)->update(['opened' => true]);
-	}
 
 	/**
 	* Get 5 notification models from storage.
@@ -39,12 +27,22 @@ class NotificationController extends Controller
     */
 	public function get(Request $request)
 	{
-		$statusIds = auth()->user()->notificationStatuses->pluck('id');
-		$notifications = Notification::orderBy('updated_at', 'desc')
-									->whereIn('notification_status_id', $statusIds);
+		$notifications = auth()->user()->notifications();
 		$body = $this->fetchRepository->fetch($notifications, $request->date);
 
 		return response()->json($body);
+	}
+
+	/**
+	* Get the number of unread notifications.
+	*
+	* @return array
+    */
+	public function getCount()
+	{
+		$count = auth()->user()->unreadNotifications->count();
+		
+		return compact('count');
 	}
 
 	/**
@@ -55,27 +53,6 @@ class NotificationController extends Controller
     */
 	public function read(Request $request)
 	{
-		$ids = auth()->user()->notificationStatuses->pluck('id');
-		$notification = Notification::whereIn('notification_status_id', $ids)->where('id', $request->id);
-
-		if (!$notification->first()->read) {
-			$notification->update(['read' => true]);
-		}
-
-		return;
+		auth()->user()->notifications->find($request->id)->markAsRead();
 	}
-
-	/**
-	* Get the number of unread notifications.
-	*
-	* @return array
-    */
-	public function getCount()
-	{
-		$status = auth()->user()->notificationStatuses()->where('opened', false)->first();
-		$count = !$status ? 0 : $status->notifications()->where('read', false)->count();
-		
-		return compact('count');
-	}
-    
 }
