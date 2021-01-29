@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Post, Comment, Notification};
+use App\Models\{User, Post, Comment};
 use Illuminate\Http\Request;
-use App\Events\UserCommented;
-use App\Repositories\{FetchRepository, NotificationRepository};
+use App\Events\SendUnreadNotifsCount;
+use App\Notifications\NewComment;
+use App\Repositories\FetchRepository;
 
 class CommentController extends Controller
 {
@@ -14,16 +15,11 @@ class CommentController extends Controller
      * Create a new controller instance.
      *
      * @param App\Repositories\FetchRepository  $fetchRepository
-     * @param App\Repositories\NotificationRepository  $notificationRepository
      * @return void
      */
-    public function __construct(
-        FetchRepository $fetchRepository,
-        NotificationRepository $notificationRepository
-    )
+    public function __construct(FetchRepository $fetchRepository)
     {
         $this->fetchRepository = $fetchRepository;
-        $this->notificationRepository = $notificationRepository;
     }
 
     /**
@@ -35,12 +31,33 @@ class CommentController extends Controller
     public function get(Request $request)
     {
         $post = Post::find($request->postId);
-        $body = $this->fetchRepository->fetch(
-                    $post->comments(),
-                    $request->date
-                );
+        $body = $this->fetchRepository->fetch($post->comments(), $request->date);
 
         return response()->json($body);
+    }
+
+    /**
+     * Notify the original poster or other commenters.
+     * 
+     * @param \App\Models\User  $op
+     * @param number  $postId
+     * @param \App\Models\User  $user
+     * @return void
+     */
+    private function notifyUser(User $op, number $postId, User $user)
+    {
+        if ($op->id !== $user->id) { // If the commenter is not the OP, notify the OP.
+            event(new SendUnreadNotifsCount($op));
+            $op->notify(new NewComment($user, $postId, 'COMMENT'));
+        }
+        else { // If the OP commented on his own post, notify each commenter.
+            $commenters = User::whereNotIn('id', [$op->id])->get();
+
+            $commenters->each(function($commenter) use ($user) {
+                event(new SendUnreadNotifsCount($commenter));
+                $commenter->notify(new NewComment($user, $postId, 'OP_COMMENT'));
+            });
+        }
     }
 
     /**
@@ -56,40 +73,14 @@ class CommentController extends Controller
         ]);
         
         $user = auth()->user();
-        $post = Post::find($request->id);
-        $op = $post->user;
+        $op = Post::find($request->id)->user;
         $comment = $user->comments()->create([
             'user_id' => auth()->user()->id,
             'post_id' => $request->id,
             'body' => $request->body,
         ]);
 
-        if ($op->id !== $user->id) {
-            // If the commenter is not the auth user, notify the auth user.
-            $this->notificationRepository->store(
-                $user,
-                $op->id,
-                Notification::COMMENTED,
-                "/posts/{$request->id}/comments"
-            );
-            
-            event(new UserCommented($op));
-        }
-        else {
-            // If the auth user commented on his own post, notify each commenter.
-            $otherUsersComments = $post->comments()->whereNotIn('user_id', [$op->id])->get();
-
-            $otherUsersComments->each(function($c) use ($post, $request) {
-                $this->notificationRepository->store(
-                    $post->user,
-                    $c->user_id,
-                    Notification::COMMENTED_ON_OWN,
-                    "/posts/{$request->id}/comments"
-                );
-
-                event(new UserCommented($c->user));
-            });
-        }
+        $this->notifyUser($op, $request->id, $user);
 
         return response()->json([
             'comment' => $comment->format()
