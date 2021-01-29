@@ -49,11 +49,6 @@ function HomeComponent() {
         localStorage.setItem('user', JSON.stringify(data.user));
     }
 
-    async function updateNotifStatus() {
-        await axios.put('/api/notifications/status/update');
-        setNotifCount(0);
-    }
-
     async function getNotifCount() {
         const { data } = await axios.get('/api/notifications/count');
         setNotifCount(data.count);
@@ -73,14 +68,14 @@ function HomeComponent() {
         if (storageUser) {
             const { id } = JSON.parse(storageUser);
 
-            echo.channel(`comment.count.${id}`).listen(
-                'UserCommented',
+            echo.channel(`notify.user.${id}`).listen(
+                'SendUnreadNotifsCount',
                 (data: EchoData) => {
                     setNotifCount(data.count);
                 }
             );
         }
-    }, [user]);
+    }, [storageUser]);
 
     return (
         <>
@@ -94,11 +89,7 @@ function HomeComponent() {
                 <section
                     className='d--flex mg-l--auto mg-r--auto home'
                     data-testid='container'>
-                    <Sidebar
-                        user={user}
-                        notifCount={notifCount}
-                        updateNotifStatus={updateNotifStatus}
-                    />
+                    <Sidebar user={user} notifCount={notifCount} />
 
                     <Switch>
                         <Route path='/home' component={Timeline} />
