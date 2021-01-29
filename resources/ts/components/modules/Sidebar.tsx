@@ -1,23 +1,13 @@
-import { useEffect } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import DefaultAvatar from 'helpers/DefaultAvatar';
 import { UserWithId } from 'types/models';
 
 interface SidebarProps {
     user: UserWithId | null;
     notifCount: number;
-    updateNotifStatus: () => void;
 }
 
-function Sidebar({ user, notifCount, updateNotifStatus }: SidebarProps) {
-    const { pathname } = useLocation();
-
-    useEffect(() => {
-        if (pathname === '/notifications') {
-            updateNotifStatus();
-        }
-    }, [pathname]);
-
+function Sidebar({ user, notifCount }: SidebarProps) {
     return (
         <aside className='sidebar'>
             <div className='pos--fixed bg--primary-pale br--1 brdr--primary sidebar__wrap'>
