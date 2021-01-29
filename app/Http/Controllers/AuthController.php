@@ -75,8 +75,6 @@ class AuthController extends Controller
         $body['token'] = hash('sha256', Str::random(10));
         $user = User::create($body);
 
-        $user->notificationStatuses()->create();
-
         $user->notify(new VerifyUserEmail($user->token));
 
         return response()->json(['url' => route('index')]);
