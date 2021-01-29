@@ -58,11 +58,6 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Comment');
     }
 
-    public function notificationStatuses()
-    {
-        return $this->hasMany('App\Models\NotificationStatus');
-    }
-
     public function followers()
     {
         return $this->belongsToMany(self::class, 'follower_following', 'follower_id', 'following_id')->withTimestamps();
