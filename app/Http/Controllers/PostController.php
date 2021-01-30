@@ -133,8 +133,8 @@ class PostController extends Controller
         $user->likes()->attach($request->id);
 
         if ($op->id !== $user->id) { // If the liked post is not from the auth user, notify OP.
-            event(new SendUnreadNotifsCount($op));
             $op->notify(new PostLiked($user, $request->id));
+            broadcast(new SendUnreadNotifsCount($op));
         }
 
         return response()->json(['message' => 'Post liked!']);
