@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
 import { UserWithId } from 'types/models';
+import useDebounce from 'hooks/useDebounce';
 
 interface UserData extends UserWithId {
     followed?: boolean;
@@ -9,15 +10,22 @@ interface UserData extends UserWithId {
 
 function User({ id, ...user }: UserData) {
     const [isFollowed, setIsFollowed] = useState(user.followed);
+    const followEvent = useDebounce(
+        toggleFollowButton,
+        toggleFollowRequest,
+        2000
+    );
 
-    async function followUser() {
-        setIsFollowed(true);
-        await axios.post('/api/users/follow', { id });
+    function toggleFollowButton() {
+        setIsFollowed(followed => !followed);
     }
 
-    async function unfollowUser() {
-        setIsFollowed(false);
-        await axios.post('/api/users/unfollow', { id });
+    async function toggleFollowRequest() {
+        if (!isFollowed) {
+            await axios.post('/api/users/follow', { id });
+        } else {
+            await axios.post('/api/users/unfollow', { id });
+        }
     }
 
     return (
@@ -28,19 +36,13 @@ function User({ id, ...user }: UserData) {
                 {...user}
             />
 
-            {isFollowed ? (
-                <button
-                    className='btn btn--danger-o text--bold curved pd-t--xxs pd-b--xxs pd-l--lg pd-r--lg mg-l--auto'
-                    onChange={unfollowUser}>
-                    Unfollow
-                </button>
-            ) : (
-                <button
-                    className='btn btn--primary-o text--bold curved pd-t--xxs pd-b--xxs pd-l--lg pd-r--lg mg-l--auto'
-                    onChange={followUser}>
-                    Follow
-                </button>
-            )}
+            <button
+                className={`btn ${
+                    isFollowed ? 'btn--danger-o' : 'btn--primary-o'
+                } text--bold curved pd-t--xxs pd-b--xxs pd-l--lg pd-r--lg mg-l--auto`}
+                onChange={followEvent}>
+                {isFollowed ? 'Unfollow' : 'Follow'}
+            </button>
         </div>
     );
 }
