@@ -47,15 +47,15 @@ class CommentController extends Controller
     private function notifyUser(User $op, number $postId, User $user)
     {
         if ($op->id !== $user->id) { // If the commenter is not the OP, notify the OP.
-            event(new SendUnreadNotifsCount($op));
             $op->notify(new NewComment($user, $postId, 'COMMENT'));
+            broadcast(new SendUnreadNotifsCount($op));
         }
         else { // If the OP commented on his own post, notify each commenter.
-            $commenters = User::whereNotIn('id', [$op->id])->get();
+            $commenters = User::where('id', '!=', $op->id)->get();
 
             $commenters->each(function($commenter) use ($user) {
-                event(new SendUnreadNotifsCount($commenter));
                 $commenter->notify(new NewComment($user, $postId, 'OP_COMMENT'));
+                broadcast(new SendUnreadNotifsCount($commenter));
             });
         }
     }
