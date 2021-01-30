@@ -55,7 +55,7 @@ class AuthController extends Controller
 
         auth()->login($request->user());
 
-        return response()->json(['url' => route('home')]);
+        return response()->json(['url' => '/home']);
     }
 
     /**
