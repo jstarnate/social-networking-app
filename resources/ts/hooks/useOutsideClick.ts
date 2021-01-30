@@ -8,7 +8,7 @@ export default function (
         if (
             fn &&
             ref.current &&
-            ref.current.contains(event.target as HTMLElement)
+            !ref.current.contains(event.target as HTMLElement)
         ) {
             fn();
         }
