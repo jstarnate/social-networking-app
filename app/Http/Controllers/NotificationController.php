@@ -3,22 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Events\SendUnreadNotifsCount;
 use Illuminate\Http\Request;
-use App\Repositories\FetchRepository;
 
 class NotificationController extends Controller
 {
-	/**
-     * Create a new controller instance.
-     *
-     * @param App\Repositories\FetchRepository  $fetchRepository
-     * @return void
-     */
-    public function __construct(FetchRepository $fetchRepository)
-    {
-        $this->fetchRepository = $fetchRepository;
-    }
-
 	/**
 	* Get 5 notification models from storage.
 	*
@@ -27,10 +16,20 @@ class NotificationController extends Controller
     */
 	public function get(Request $request)
 	{
-		$notifications = auth()->user()->notifications();
-		$body = $this->fetchRepository->fetch($notifications, $request->date);
+		$notifications = auth()->user()->notifications()
+							->orderBy('created_at', 'desc')
+							->where('created_at', '<', $request->date ?: now())
+							->get()
+							->take(5);
 
-		return response()->json($body);
+		$items = $notifications->map(function($notif) {
+			$notif->time_diff = $notif->created_at->diffForHumans();
+			return $notif;
+		});
+
+		$has_more = !$items->isEmpty();
+
+		return response()->json(compact('items', 'has_more'));
 	}
 
 	/**
@@ -54,5 +53,6 @@ class NotificationController extends Controller
 	public function read(Request $request)
 	{
 		auth()->user()->notifications->find($request->id)->markAsRead();
+		broadcast(new SendUnreadNotifsCount(auth()->user()));
 	}
 }
