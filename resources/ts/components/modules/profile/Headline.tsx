@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
+import Modal from 'helpers/Modal';
 import InfoLabel from './InfoLabel';
 import { UserWithId } from 'types/models';
-import useDebounce from 'hooks/useDebounce';
 
 interface RouteParams {
     username: string;
@@ -26,24 +26,26 @@ function Headline() {
     const [followed, setFollowed] = useState<boolean | undefined>(
         user?.is_followed
     );
+    const [
+        showUnfollowConfirmation,
+        toggleUnfollowConfirmation,
+    ] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const { username }: RouteParams = useParams();
-    const followEvent = useDebounce(
-        toggleFollowButton,
-        toggleFollowRequest,
-        2000
-    );
 
-    function toggleFollowButton() {
-        setFollowed(isFollowed => !isFollowed);
+    function closeUnfollowModal() {
+        toggleUnfollowConfirmation(false);
     }
 
-    async function toggleFollowRequest() {
-        if (!followed) {
-            await axios.post('/api/users/follow', { id: user?.id || null });
-        } else {
-            await axios.post('/api/users/unfollow', { id: user?.id || null });
-        }
+    function follow() {
+        setFollowed(true);
+        axios.post('/api/users/follow', { id: user?.id || null });
+    }
+
+    function unfollow() {
+        setFollowed(false);
+        toggleUnfollowConfirmation(false);
+        axios.post('/api/users/unfollow', { id: user?.id || null });
     }
 
     async function getAuthUser() {
@@ -83,13 +85,22 @@ function Headline() {
                 />
 
                 {user?.not_self ? (
-                    <button
-                        className={`btn ${
-                            followed ? 'btn--danger-o' : 'btn--primary-o'
-                        } font--md text--bold pd-t--xs pd-b--xs pd-l--lg pd-r--lg mg-l--auto profile__follow-button`}
-                        onClick={followEvent}>
-                        {followed ? 'Unfollow' : 'Follow'}
-                    </button>
+                    followed ? (
+                        <button
+                            className='btn btn--danger-o font--md text--bold pd-t--xs pd-b--xs pd-l--lg pd-r--lg mg-l--auto profile__follow-button'
+                            onClick={toggleUnfollowConfirmation.bind(
+                                null,
+                                true
+                            )}>
+                            Unfollow
+                        </button>
+                    ) : (
+                        <button
+                            className='btn btn--primary-o font--md text--bold pd-t--xs pd-b--xs pd-l--lg pd-r--lg mg-l--auto profile__follow-button'
+                            onClick={follow}>
+                            Follow
+                        </button>
+                    )
                 ) : (
                     <Link
                         to={`/profile/${username}/edit`}
@@ -145,6 +156,27 @@ function Headline() {
                     <span className='text--gray mg-l--xxs'>followers</span>
                 </Link>
             </div>
+
+            {showUnfollowConfirmation && (
+                <Modal
+                    title='Confirm unfollow'
+                    type='primary'
+                    message={`You will no longer see posts from ${username}. Continue?`}
+                    closeEvent={closeUnfollowModal}>
+                    <>
+                        <button
+                            className='btn btn--secondary font--sm b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-r--sm'
+                            onClick={closeUnfollowModal}>
+                            Cancel
+                        </button>
+                        <button
+                            className='btn btn--danger font--sm text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md'
+                            onClick={unfollow}>
+                            Yes, unfollow
+                        </button>
+                    </>
+                </Modal>
+            )}
         </section>
     );
 }
