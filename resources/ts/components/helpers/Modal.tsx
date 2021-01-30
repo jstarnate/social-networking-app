@@ -7,7 +7,7 @@ interface ModalProps {
     title: string;
     type: string;
     message: string | null;
-    closeEvent?: CallableFunction;
+    closeEvent?: () => void;
     children?: ReactElement;
 }
 
