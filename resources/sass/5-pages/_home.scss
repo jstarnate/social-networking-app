@@ -81,3 +81,9 @@
         border-radius: 0 0 $radius--md $radius--md;
     }
 }
+
+.notification {
+    &__profile-photo {
+        width: 40px;
+    }
+}
