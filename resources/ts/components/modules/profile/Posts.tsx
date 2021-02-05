@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Post from 'modules/Post';
 import Spinner from 'helpers/Spinner';
-import { Post as PostModel } from 'types/models';
+import { Post as PostType } from 'types/models';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
-interface PostsProps {
+interface Props {
     section?: string;
 }
 
@@ -14,8 +14,8 @@ interface RouteParams {
     username: string;
 }
 
-function Posts({ section }: PostsProps) {
-    const [posts, setPosts] = useState<PostModel[]>([]);
+function Posts({ section }: Props) {
+    const [posts, setPosts] = useState<PostType[]>([]);
     const [loadingPosts, setLoadingPosts] = useState<boolean>(false);
     const scrollTarget = useRef<HTMLDivElement>(null);
     const { username }: RouteParams = useParams();
@@ -73,18 +73,14 @@ function Posts({ section }: PostsProps) {
         <section className='pd-b--lg pd-l--sm pd-r--sm'>
             <div>
                 <div>
-                    {posts.map((post: PostModel) => (
+                    {posts.map((post: PostType) => (
                         <Post key={post.id} namespace='profile' {...post} />
                     ))}
                 </div>
 
                 <div ref={scrollTarget}></div>
 
-                {loadingPosts && (
-                    <div className='mg-t--md'>
-                        <Spinner size={40} color='#7EAEE7' />
-                    </div>
-                )}
+                {loadingPosts && <Spinner containerClassName='mg-t--md' />}
             </div>
         </section>
     );
