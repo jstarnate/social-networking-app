@@ -1,10 +1,43 @@
-import { ChangeEvent, FormEvent, useState, Children } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import axios from 'axios';
+import eachMonthOfInterval from 'date-fns/eachMonthOfInterval';
+import eachYearOfInterval from 'date-fns/eachYearOfInterval';
 import InputField from 'helpers/InputField';
+import Select from 'helpers/Select';
 import useInput from 'hooks/useInput';
 import RadioButton from 'helpers/RadioButton';
 import Modal from 'helpers/Modal';
-import { generateMonths, generateYears } from 'utilities/generators';
+
+const currentYear = new Date().getFullYear();
+const generateYears = eachYearOfInterval({
+    start: new Date(currentYear - 100, 0),
+    end: new Date(currentYear, 0),
+});
+const generateMonths = eachMonthOfInterval({
+    start: new Date(currentYear, 0),
+    end: new Date(currentYear, 11),
+});
+const years = generateYears.map(date => date.getFullYear()).reverse();
+const months = generateMonths.map(date =>
+    date.toLocaleDateString('default', { month: 'long' })
+);
+
+function openModal() {
+    const coord = window.scrollY;
+
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${coord}px`;
+    document.body.style.right = '0';
+    document.body.style.left = '0';
+    document.body.style.bottom = '0';
+}
+
+function handleSelectValue(
+    fn: CallableFunction,
+    event: ChangeEvent<HTMLSelectElement>
+) {
+    fn(event.target.value);
+}
 
 function RegisterComponent() {
     const [full_name, fullNameData, setFullNameError] = useInput(null);
@@ -22,26 +55,8 @@ function RegisterComponent() {
     const [loading, setLoading] = useState<boolean>(false);
     const [registered, setRegistered] = useState<boolean>(false);
 
-    function handleBirthMonthValue(event: ChangeEvent<HTMLSelectElement>) {
-        setBirthMonth(event.target.value);
-    }
-
     function handleBirthDayValue(event: ChangeEvent<HTMLInputElement>) {
         setBirthDay(event.target.value);
-    }
-
-    function handleBirthYearValue(event: ChangeEvent<HTMLSelectElement>) {
-        setBirthYear(event.target.value);
-    }
-
-    function openModal() {
-        const coord = window.scrollY;
-
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${coord}px`;
-        document.body.style.right = '0';
-        document.body.style.left = '0';
-        document.body.style.bottom = '0';
     }
 
     function togglePasswordType() {
@@ -171,14 +186,15 @@ function RegisterComponent() {
                     </label>
 
                     <div className='d--flex mg-t--xs'>
-                        <select
+                        <Select
                             className='bg--none font--md text--black pd-t--xs pd-b--xs pd-l--sm pd-r--sm b-rad--sm b--1 brdr--gray'
-                            placeholder='Select month'
-                            onChange={handleBirthMonthValue}>
-                            {Children.map(generateMonths(), (month: string) => (
-                                <option value={month}>{month}</option>
-                            ))}
-                        </select>
+                            defaultOption='Select month'
+                            items={months}
+                            changeEvent={handleSelectValue.bind(
+                                null,
+                                setBirthMonth
+                            )}
+                        />
 
                         <input
                             className='font--md text--black b--1 brdr--gray b-rad--sm pd-l--sm pd-r--sm mg-l--sm register__birthday-input'
@@ -188,14 +204,15 @@ function RegisterComponent() {
                             onChange={handleBirthDayValue}
                         />
 
-                        <select
+                        <Select
                             className='bg--none font--md text--black b-rad--sm b--1 brdr--gray pd-t--xs pd-b--xs pd-l--sm pd-r--sm mg-l--sm'
-                            placeholder='Select year'
-                            onChange={handleBirthYearValue}>
-                            {Children.map(generateYears(), year => (
-                                <option value={year}>{year}</option>
-                            ))}
-                        </select>
+                            defaultOption='Select year'
+                            items={years}
+                            changeEvent={handleSelectValue.bind(
+                                null,
+                                setBirthYear
+                            )}
+                        />
                     </div>
                 </div>
 
