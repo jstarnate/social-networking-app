@@ -23,6 +23,7 @@
         "@types/react-redux": "^7.1.9",
         "@types/react-router-dom": "^5.1.6",
         "axios": "^0.21.0",
+        "date-fns": "^2.16.1",
         "laravel-echo": "^1.10",
         "pusher-js": "^7.0",
         "react": "^17.0",
