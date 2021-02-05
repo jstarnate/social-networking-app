@@ -1,14 +1,16 @@
-import { LoaderInterface } from 'types/components';
+interface Props {
+    size?: number;
+    color?: string;
+}
 
-function Ellipsis({ className, size, color }: LoaderInterface) {
+function Ellipsis({ size, color }: Props) {
     return (
         <svg
             style={{
                 margin: 'auto',
-                background: 'rgb(255, 255, 255)',
                 shapeRendering: 'auto',
             }}
-            className={className}
+            className='d--block bg--white'
             width={`${size}px`}
             height={`${size}px`}
             viewBox='0 0 100 100'

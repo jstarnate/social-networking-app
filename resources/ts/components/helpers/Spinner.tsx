@@ -1,14 +1,18 @@
-import { LoaderInterface } from 'types/components';
+interface Props {
+    containerClassName?: string;
+    size?: number;
+    color?: string;
+}
 
-function Spinner({ className, size, color }: LoaderInterface) {
+function Spinner({ containerClassName, size, color }: Props) {
     return (
-        <div className='d--flex jc--center'>
+        <div className={`d--flex jc--center ${containerClassName}`}>
             <svg
                 style={{
                     margin: 'auto',
                     shapeRendering: 'auto',
                 }}
-                className={className}
+                className='d--block'
                 width={`${size}px`}
                 height={`${size}px`}
                 viewBox='0 0 100 100'
@@ -36,7 +40,6 @@ function Spinner({ className, size, color }: LoaderInterface) {
 }
 
 Spinner.defaultProps = {
-    className: 'd--block',
     size: 35,
     color: '#7EAEE7',
 };
