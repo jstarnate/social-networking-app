@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent, KeyboardEvent } from 'react';
 import axios from 'axios';
 import Spinner from 'helpers/Spinner';
-import DefaultAvatar from 'helpers/DefaultAvatar';
+import ProfilePhoto from 'helpers/ProfilePhoto';
 import Comment from './Comment';
 import { Comment as CommentType } from 'types/models';
 
@@ -92,15 +92,12 @@ function CommentsSection({ postId, userGender, avatarLink }: Props) {
             </h4>
 
             <div className='d--flex ai--start mg-t--md'>
-                {!avatarLink ? (
-                    <DefaultAvatar gender={userGender} size={45} />
-                ) : (
-                    <img
-                        className='circle'
-                        src={avatarLink}
-                        alt='Profile photo'
-                    />
-                )}
+                <ProfilePhoto
+                    src={avatarLink}
+                    gender={userGender}
+                    size={45}
+                    alt='Profile photo'
+                />
 
                 <textarea
                     className='full-width flex--1 font--md text--black pd-t--xs pd-b--xs pd-l--sm pd-r--sm b--1 brdr--gray mg-l--xs home__comment-box'

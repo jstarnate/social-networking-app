@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import DefaultAvatar from 'helpers/DefaultAvatar';
+import ProfilePhoto from 'helpers/ProfilePhoto';
 import { UserWithId } from 'types/models';
 
 interface SidebarProps {
@@ -16,17 +16,12 @@ function Sidebar({ user, notifCount }: SidebarProps) {
                         to={`/u/${user?.username}`}
                         className='d--flex ai--center mg-t--lg'
                         href=''>
-                        {!user?.image_url ? (
-                            <DefaultAvatar
-                                gender={user?.gender || null}
-                                size={30}
-                            />
-                        ) : (
-                            <img
-                                className='round sidebar__profile-photo'
-                                src={user?.image_url}
-                            />
-                        )}
+                        <ProfilePhoto
+                            className='round sidebar__profile-photo'
+                            src={user?.image_url || null}
+                            gender={user?.gender || null}
+                            size={30}
+                        />
 
                         <span className='font--sm text--black-light text--bold mg-l--xs'>
                             {user?.full_name}
@@ -41,6 +36,7 @@ function Sidebar({ user, notifCount }: SidebarProps) {
                             <i className='fa fa-home'></i>
                             <span className='text--bold mg-l--sm'>Home</span>
                         </NavLink>
+
                         <NavLink
                             className='d--block font--lg text--gray pd-t--xs pd-b--xs pos--rel'
                             to='/notifications'
@@ -56,6 +52,7 @@ function Sidebar({ user, notifCount }: SidebarProps) {
                                 </span>
                             )}
                         </NavLink>
+
                         <NavLink
                             className='d--block font--lg text--gray pd-t--xs pd-b--xs'
                             to='/users/search'

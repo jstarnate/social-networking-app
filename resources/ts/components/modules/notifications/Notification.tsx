@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { NotificationType } from 'views/Notifications';
-import DefaultAvatar from 'helpers/DefaultAvatar';
+import ProfilePhoto from 'helpers/ProfilePhoto';
 
 interface Props {
     notif: NotificationType;
@@ -8,22 +8,20 @@ interface Props {
 }
 
 function Notification({ notif, updateEvent }: Props) {
+    const background = !notif.read_at ? 'bg--gray-light' : '';
+
     return (
         <div className='mg-t--md'>
             <Link
                 to={notif.data.url}
-                className={`d--flex ai--center pd--sm text--black-light b--1 brdr--primary b-rad--md ${
-                    !notif.read_at ? 'bg--gray-light' : ''
-                }`}
+                className={`d--flex ai--center pd--sm text--black-light b--1 brdr--primary b-rad--md ${background}`}
                 onClick={updateEvent}>
-                {!notif.data.image_url ? (
-                    <DefaultAvatar gender={notif.data.gender} size={40} />
-                ) : (
-                    <img
-                        className='round notification__profile-photo'
-                        src={notif.data.image_url}
-                    />
-                )}
+                <ProfilePhoto
+                    className='notification__profile-photo'
+                    src={notif.data.image_url}
+                    gender={notif.data.gender}
+                    size={40}
+                />
 
                 {notif.data.event_type === 'FOLLOW' ? (
                     <p className='text--black-light mg-l--sm'>

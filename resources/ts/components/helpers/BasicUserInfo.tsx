@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import DefaultAvatar from './DefaultAvatar';
+import ProfilePhoto from './ProfilePhoto';
 import { User } from 'types/models';
 
 interface BasicUserInfoProps extends User {
@@ -15,15 +15,12 @@ interface ContentProps extends User {
 
 const Content = (props: ContentProps) => (
     <>
-        {!props.image_url ? (
-            <DefaultAvatar gender={props.gender} />
-        ) : (
-            <img
-                className={`round ${props.imageClassName}`}
-                src={props.image_url}
-                alt='Profile photo'
-            />
-        )}
+        <ProfilePhoto
+            className={props.imageClassName}
+            src={props.image_url}
+            gender={props.gender}
+            alt='Profile photo'
+        />
 
         <div className='mg-l--xs'>
             <span className='d--block font--sm text--black-light text--bold'>

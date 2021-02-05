@@ -2,7 +2,7 @@ import { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import InputField from 'helpers/InputField';
-import DefaultAvatar from 'helpers/DefaultAvatar';
+import ProfilePhoto from 'helpers/ProfilePhoto';
 import useInput from 'hooks/useInput';
 import useLimitedChars from 'hooks/useLimitedChars';
 import { UserWithId } from 'types/models';
@@ -76,18 +76,13 @@ function EditProfile({ user }: EditProfileProps) {
                 onSubmit={updateUser}>
                 <div className='d--flex ai--center'>
                     <div className='pos--rel d--ib round profile__change-photo-container'>
-                        {!user?.image_url ? (
-                            <DefaultAvatar
-                                gender={user?.gender || null}
-                                size={100}
-                            />
-                        ) : (
-                            <img
-                                className='round profile__headline-profile-photo'
-                                src={user?.image_url}
-                                alt='Profile photo'
-                            />
-                        )}
+                        <ProfilePhoto
+                            className='round profile__headline-profile-photo'
+                            src={user?.image_url || null}
+                            gender={user?.gender || null}
+                            size={100}
+                            alt='Profile photo'
+                        />
 
                         <label
                             className='pos--abs d--block full-width text--center pd-t--xs pd-b--xs cursor--pointer profile__change-photo-button'
