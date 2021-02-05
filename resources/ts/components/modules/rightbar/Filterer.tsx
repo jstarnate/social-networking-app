@@ -1,35 +1,50 @@
-import { ChangeEvent, Children, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import eachMonthOfInterval from 'date-fns/eachMonthOfInterval';
+import eachYearOfInterval from 'date-fns/eachYearOfInterval';
 import InputField from 'helpers/InputField';
+import Select from 'helpers/Select';
 import { set } from 'actions';
-import { generateMonths, generateYears } from 'utilities/generators';
 
+const currentYear = new Date().getFullYear();
+const generateYears = eachYearOfInterval({
+    start: new Date(currentYear - 100, 0),
+    end: new Date(currentYear, 0),
+});
+const generateMonths = eachMonthOfInterval({
+    start: new Date(currentYear, 0),
+    end: new Date(currentYear, 11),
+});
+const years = generateYears.map(date => date.getFullYear());
+const months = generateMonths.map(date =>
+    date.toLocaleDateString('default', { month: 'long' })
+);
 const useQuery = () => new URLSearchParams(useLocation().search);
+const sq = useQuery().get('sq');
+
+// <input type='text'> change event
+function handleInputValue(
+    fn: CallableFunction,
+    event: ChangeEvent<HTMLInputElement>
+) {
+    fn(event.target.value);
+}
+
+// <select> change event
+function handleSelectValue(
+    fn: CallableFunction,
+    event: ChangeEvent<HTMLSelectElement>
+) {
+    fn(event.target.value);
+}
 
 function Filterer() {
-    const [email, setEmail] = useState<string | null>(null);
     const [location, setLocation] = useState<string | null>(null);
     const [birth_month, setBirthMonth] = useState<string | null>(null);
     const [birth_year, setBirthYear] = useState<number | null>(null);
     const dispatch = useDispatch();
-    const query = useQuery();
-    const sq = query.get('sq');
-
-    function handleInputValue(
-        fn: CallableFunction,
-        event: ChangeEvent<HTMLInputElement>
-    ) {
-        fn(event.target.value);
-    }
-
-    function handleSelectValue(
-        fn: CallableFunction,
-        event: ChangeEvent<HTMLSelectElement>
-    ) {
-        fn(event.target.value);
-    }
 
     async function filterUsers(event: FormEvent) {
         event.preventDefault();
@@ -38,7 +53,6 @@ function Filterer() {
 
         const requests = {
             sq: sq || '',
-            email,
             location,
             birth_month,
             birth_year,
@@ -55,13 +69,6 @@ function Filterer() {
 
             <form className='mg-t--md' onSubmit={filterUsers}>
                 <InputField
-                    id='filter-email'
-                    label='Email address'
-                    value={email}
-                    onChangeEvent={handleInputValue.bind(null, setEmail)}
-                />
-
-                <InputField
                     containerClassName='mg-t--md'
                     id='filter-location'
                     label='Location'
@@ -70,41 +77,26 @@ function Filterer() {
                 />
 
                 <div className='d--flex ai--center mg-t--md'>
-                    <div className='half-width'>
-                        <label className='text--bold text--black-light'>
-                            Birth month
-                        </label>
+                    <Select
+                        containerClassName='half-width'
+                        className='d--block full-width bg--white font--md text--black pd--xs b-rad--sm b--1 brdr--gray'
+                        label='Birth month'
+                        defaultOption='Select month'
+                        items={months}
+                        changeEvent={handleSelectValue.bind(
+                            null,
+                            setBirthMonth
+                        )}
+                    />
 
-                        <select
-                            className='d--block full-width bg--white font--md text--black pd--xs b-rad--sm b--1 brdr--gray'
-                            onChange={handleSelectValue.bind(
-                                null,
-                                setBirthMonth
-                            )}>
-                            <option value=''>Select month</option>
-                            {Children.map(generateMonths(), (month: string) => (
-                                <option value={month}>{month}</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <div className='half-width mg-l--auto'>
-                        <label className='text--bold text--black-light'>
-                            Birth year
-                        </label>
-
-                        <select
-                            className='d--block full-width bg--white font--md text--black pd--xs b-rad--sm b--1 brdr--gray'
-                            onChange={handleSelectValue.bind(
-                                null,
-                                setBirthYear
-                            )}>
-                            <option value=''>Select year</option>
-                            {Children.map(generateYears(), (year: number) => (
-                                <option value={year}>{year}</option>
-                            ))}
-                        </select>
-                    </div>
+                    <Select
+                        containerClassName='half-width mg-l--auto'
+                        className='d--block full-width bg--white font--md text--black pd--xs b-rad--sm b--1 brdr--gray'
+                        label='Birth year'
+                        defaultOption='Select year'
+                        items={years}
+                        changeEvent={handleSelectValue.bind(null, setBirthYear)}
+                    />
                 </div>
 
                 <button className='btn btn--primary full-width text--white text--bold b-rad--sm pd-t--xs pd-b--xs mg-t--md'>
