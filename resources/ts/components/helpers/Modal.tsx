@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import useCloseOnEscape from 'hooks/useCloseOnEscape';
 import useOutsideClick from 'hooks/useOutsideClick';
@@ -8,7 +8,7 @@ interface ModalProps {
     type: string;
     message: string | null;
     closeEvent?: () => void;
-    children?: ReactElement;
+    children?: ReactNode;
 }
 
 const Content = (props: ModalProps) => {
