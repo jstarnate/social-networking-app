@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from 'helpers/Spinner';
 import SuggestedUsers from 'modules/rightbar/SuggestedUsers';
-import Filterer from 'modules/rightbar/Filterer';
 import { set } from 'actions';
+
+const Filterer = lazy(() => import('modules/rightbar/Filterer'));
 
 function Rightbar() {
     const [loading, setLoading] = useState<boolean>(false);
@@ -32,7 +33,7 @@ function Rightbar() {
         return (
             <aside className='rightbar'>
                 <div className='pos--fixed bg--primary-pale bl--1 brdr--primary pd-t--lg pd-l--lg pd-r--lg rightbar__wrap'>
-                    <Spinner size={40} color='#7EAEE7' />
+                    <Spinner />
                 </div>
             </aside>
         );
@@ -42,7 +43,11 @@ function Rightbar() {
         <aside className='rightbar'>
             <div className='pos--fixed bg--primary-pale bl--1 brdr--primary pd-t--lg pd-l--lg pd-r--lg rightbar__wrap'>
                 <Switch>
-                    <Route exact path='/users/search' component={Filterer} />
+                    <Route exact path='/users/search'>
+                        <Suspense fallback={<Spinner />}>
+                            <Filterer />
+                        </Suspense>
+                    </Route>
                     <Route component={SuggestedUsers} />
                 </Switch>
             </div>
