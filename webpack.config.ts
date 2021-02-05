@@ -69,7 +69,6 @@ module.exports = {
             modules: path.resolve(__dirname, 'resources/ts/components/modules'),
             hooks: path.resolve(__dirname, 'resources/ts/hooks'),
             types: path.resolve(__dirname, 'resources/ts/types'),
-            utilities: path.resolve(__dirname, 'resources/ts/utilities'),
             actions: path.resolve(__dirname, 'resources/ts/data/actions.ts'),
         },
     },
