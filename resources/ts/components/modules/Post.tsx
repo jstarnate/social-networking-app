@@ -1,20 +1,35 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
+import Modal from 'helpers/Modal';
 import { Post as PostType } from 'types/models';
 import useDebounce from 'hooks/useDebounce';
 
 interface PostProps extends PostType {
     namespace: string;
+    deleteEvent: (id: number) => void;
     render?: (comments: number) => ReactElement;
 }
-
+// FIXME: Add debounce functionality on bookmark event
 function Post(props: PostProps) {
     const [liked, setLiked] = useState<boolean>(props.is_liked);
     const [bookmarked, setBookmarked] = useState<boolean>(props.bookmarked);
     const [likesCount, setLikesCount] = useState<number>(props.likes);
+    const [
+        showDeleteConfirmation,
+        toggleDeleteConfirmation,
+    ] = useState<boolean>(false);
     const likeEvent = useDebounce(toggleLikeButton, toggleLikeRequest, 2000);
+
+    function closeDeleteModal() {
+        toggleDeleteConfirmation(false);
+    }
+
+    async function deletePost() {
+        await axios.delete(`/api/posts/delete/${props.id}`);
+        props.deleteEvent(props.id);
+    }
 
     function toggleLikeButton() {
         setLiked(isLiked => !isLiked);
@@ -49,13 +64,29 @@ function Post(props: PostProps) {
         }
     }
 
+    useEffect(() => {
+        return () => {
+            closeDeleteModal();
+        };
+    }, []);
+
     return (
         <div className='d--block b--1 brdr--primary b-rad--md pd--md mg-t--md'>
-            <BasicUserInfo
-                className='d--if ai--center'
-                imageClassName='home__id-photo'
-                {...props.user}
-            />
+            <div className='d--flex ai--center'>
+                <BasicUserInfo
+                    className='d--if ai--center'
+                    imageClassName='home__id-photo'
+                    {...props.user}
+                />
+
+                {props.from_self && (
+                    <button
+                        className='btn font--lg mg-l--auto'
+                        onClick={toggleDeleteConfirmation.bind(null, true)}>
+                        <i className='fa fa-trash text--gray'></i>
+                    </button>
+                )}
+            </div>
 
             <p
                 className={`text--black-light mg-t--sm ${props.namespace}__post-body`}>
@@ -101,6 +132,25 @@ function Post(props: PostProps) {
                     </button>
                 )}
             </div>
+
+            {showDeleteConfirmation && (
+                <Modal
+                    title='Confirm delete'
+                    type='danger'
+                    message='Are you sure you want to delete this post?'
+                    closeEvent={closeDeleteModal}>
+                    <button
+                        className='btn btn--secondary font--sm b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-r--sm'
+                        onClick={closeDeleteModal}>
+                        Cancel
+                    </button>
+                    <button
+                        className='btn btn--danger font--sm text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md'
+                        onClick={deletePost}>
+                        Yes, delete
+                    </button>
+                </Modal>
+            )}
         </div>
     );
 }
