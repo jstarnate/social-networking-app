@@ -6,7 +6,7 @@ import Post from 'modules/Post';
 import Spinner from 'helpers/Spinner';
 import { State } from 'types/redux';
 import { Post as PostProps } from 'types/models';
-import { pushSpread } from 'actions';
+import { pushSpread, deletePost } from 'actions';
 import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 function Timeline() {
@@ -32,6 +32,10 @@ function Timeline() {
         setLoadingPosts(false);
     }
 
+    function deletePostEvent(id: number) {
+        dispatch(deletePost(id));
+    }
+
     useInfiniteScroll(scrollTarget, ioFunction, posts);
 
     return (
@@ -45,7 +49,12 @@ function Timeline() {
             ) : (
                 <div>
                     {posts.map((post: PostProps) => (
-                        <Post key={post.id} namespace='timeline' {...post} />
+                        <Post
+                            key={post.id}
+                            namespace='timeline'
+                            deleteEvent={deletePostEvent}
+                            {...post}
+                        />
                     ))}
                 </div>
             )}

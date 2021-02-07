@@ -21,6 +21,10 @@ function Posts({ section }: Props) {
     const { username }: RouteParams = useParams();
     const postRoute = `/api/posts/u/${username}/${section || 'posts'}`;
 
+    function deletePost(id: number) {
+        setPosts(posts => posts.filter(post => post.id !== id));
+    }
+
     async function getPosts() {
         setLoadingPosts(true);
 
@@ -74,7 +78,12 @@ function Posts({ section }: Props) {
             <div>
                 <div>
                     {posts.map((post: PostType) => (
-                        <Post key={post.id} namespace='profile' {...post} />
+                        <Post
+                            key={post.id}
+                            namespace='profile'
+                            deleteEvent={deletePost}
+                            {...post}
+                        />
                     ))}
                 </div>
 

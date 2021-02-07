@@ -106,9 +106,8 @@ class PostController extends Controller
         $commentIds = $post->comments->pluck('id');
 
         $post->likers()->detach();
-
+        $post->bookmarkers()->detach();
         Comment::whereIn('id', $commentIds)->delete();
-
         $post->delete();
 
         return response()->json(['message' => 'Post deleted!']);
