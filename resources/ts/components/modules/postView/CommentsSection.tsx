@@ -43,11 +43,7 @@ function CommentsSection({ postId, userGender, avatarLink }: Props) {
             setCommentBody(null);
             setCommentLoading(false);
 
-            // this.$store.commit('update', {
-            //     key: 'posts',
-            //     id: this.$route.params.id,
-            //     payload: { comments: this.post.comments + 1 },
-            // });
+            // TODO: Increment comments count upon creation of comment
         } catch (e) {
             setCommentLoading(false);
         }
@@ -60,9 +56,7 @@ function CommentsSection({ postId, userGender, avatarLink }: Props) {
     function handleCommentBoxKeypress(
         event: KeyboardEvent<HTMLTextAreaElement>
     ) {
-        // if (event.target.value.length >= 250) {
-        //     event.preventDefault();
-        // }
+        // TODO: Prevent user from typing if length is >= 250.
 
         if (event.key === 'Enter' && !event.shiftKey) {
             submitComment();
@@ -70,8 +64,8 @@ function CommentsSection({ postId, userGender, avatarLink }: Props) {
         }
     }
 
-    function deleteCommentEvent(commentId: number) {
-        const filtered = comments.filter(comment => comment.id !== commentId);
+    function deleteCommentEvent(id: number) {
+        const filtered = comments.filter(comment => comment.id !== id);
         setComments(filtered);
     }
 
@@ -99,6 +93,7 @@ function CommentsSection({ postId, userGender, avatarLink }: Props) {
                     alt='Profile photo'
                 />
 
+                {/* FIXME: Make comment box stretchable. */}
                 <textarea
                     className='full-width flex--1 font--md text--black pd-t--xs pd-b--xs pd-l--sm pd-r--sm b--1 brdr--gray mg-l--xs home__comment-box'
                     maxLength={250}
@@ -108,6 +103,8 @@ function CommentsSection({ postId, userGender, avatarLink }: Props) {
                     disabled={commentLoading}
                     onChange={handleCommentBody}
                     onKeyPress={handleCommentBoxKeypress}></textarea>
+
+                {/* TODO: Add "characters left" indicator */}
             </div>
 
             {!loading && !!comments.length && (
