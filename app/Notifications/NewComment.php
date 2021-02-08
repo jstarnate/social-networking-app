@@ -20,11 +20,11 @@ class NewComment extends Notification
      * Create a new notification instance.
      *
      * @param \App\Models\User  $user
-     * @param number  $postId
+     * @param int  $postId
      * @param string  $eventType
      * @return void
      */
-    public function __construct(User $user, number $postId, string $eventType)
+    public function __construct(User $user, int $postId, string $eventType)
     {
         $this->user = $user;
         $this->postId = $postId;
