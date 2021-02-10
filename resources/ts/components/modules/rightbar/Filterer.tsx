@@ -21,8 +21,6 @@ const years = generateYears.map(date => date.getFullYear());
 const months = generateMonths.map(date =>
     date.toLocaleDateString('default', { month: 'long' })
 );
-const useQuery = () => new URLSearchParams(useLocation().search);
-const sq = useQuery().get('sq');
 
 // <input type='text'> change event
 function handleInputValue(
@@ -45,6 +43,8 @@ function Filterer() {
     const [birth_month, setBirthMonth] = useState<string | null>(null);
     const [birth_year, setBirthYear] = useState<number | null>(null);
     const dispatch = useDispatch();
+    const useQuery = () => new URLSearchParams(useLocation().search);
+    const sq = useQuery().get('sq');
 
     async function filterUsers(event: FormEvent) {
         event.preventDefault();

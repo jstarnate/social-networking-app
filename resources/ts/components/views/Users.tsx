@@ -14,8 +14,6 @@ interface UserType extends UserWithId {
     followed?: boolean;
 }
 
-const useQuery = () => new URLSearchParams(useLocation().search);
-
 function Users() {
     const [ids, setIds] = useState<number[]>([]);
     const [scrollLoading, setScrollLoading] = useState<boolean>(false);
@@ -23,8 +21,8 @@ function Users() {
     const users = useSelector((state: State) => state.users);
     const usersLoading = useSelector((state: State) => state.usersLoading);
     const dispatch = useDispatch();
-    const query = useQuery();
-    const sq = query.get('sq');
+    const useQuery = () => new URLSearchParams(useLocation().search);
+    const sq = useQuery().get('sq');
 
     async function ioFunction(observer: IntersectionObserver) {
         setScrollLoading(true);
