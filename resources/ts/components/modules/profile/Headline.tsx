@@ -87,7 +87,7 @@ function Headline() {
                 {user?.not_self ? (
                     followed ? (
                         <button
-                            className='btn btn--danger-o font--md text--bold pd-t--xs pd-b--xs pd-l--lg pd-r--lg mg-l--auto profile__follow-button'
+                            className='btn btn--danger-o font--md text--bold curved pd-t--xs pd-b--xs pd-l--lg pd-r--lg mg-l--auto'
                             onClick={toggleUnfollowConfirmation.bind(
                                 null,
                                 true
@@ -96,7 +96,7 @@ function Headline() {
                         </button>
                     ) : (
                         <button
-                            className='btn btn--primary-o font--md text--bold pd-t--xs pd-b--xs pd-l--lg pd-r--lg mg-l--auto profile__follow-button'
+                            className='btn btn--primary-o font--md text--bold curved pd-t--xs pd-b--xs pd-l--lg pd-r--lg mg-l--auto'
                             onClick={follow}>
                             Follow
                         </button>
