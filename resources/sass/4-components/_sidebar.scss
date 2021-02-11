@@ -17,7 +17,5 @@
 
     &__notif-count {
         @include coords(3px, null, null, 7px);
-        padding-left: 5px;
-        padding-right: 5px;
     }
 }
