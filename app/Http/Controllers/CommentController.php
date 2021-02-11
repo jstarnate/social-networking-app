@@ -69,7 +69,7 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'body' => ['string', 'max:250']
+            'body' => ['string', 'max:170']
         ]);
         
         $user = auth()->user();
