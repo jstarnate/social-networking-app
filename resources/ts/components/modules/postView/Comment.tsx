@@ -32,7 +32,7 @@ function Comment({ id, body, from_self, user, deleteEvent }: Props) {
 
     return (
         <>
-            <div className='b--1 brdr--primary b-rad--sm pd--md mg-t--md'>
+            <div className='full-width b--1 brdr--primary b-rad--sm pd--md mg-t--md'>
                 <div className='d--flex ai--center'>
                     <BasicUserInfo
                         className='d--flex ai--center'
