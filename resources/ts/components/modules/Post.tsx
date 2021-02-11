@@ -11,7 +11,7 @@ interface PostProps extends PostType {
     deleteEvent: (id: number) => void;
     render?: (comments: number) => ReactElement;
 }
-// FIXME: Add debounce functionality on bookmark event
+
 function Post(props: PostProps) {
     const [liked, setLiked] = useState<boolean>(props.is_liked);
     const [bookmarked, setBookmarked] = useState<boolean>(props.bookmarked);
@@ -21,6 +21,11 @@ function Post(props: PostProps) {
         toggleDeleteConfirmation,
     ] = useState<boolean>(false);
     const likeEvent = useDebounce(toggleLikeButton, toggleLikeRequest, 2000);
+    const bookmarkEvent = useDebounce(
+        toggleBookmarkButton,
+        toggleBookmarkRequest,
+        2000
+    );
 
     function closeDeleteModal() {
         toggleDeleteConfirmation(false);
@@ -44,23 +49,15 @@ function Post(props: PostProps) {
         }
     }
 
-    async function bookmark() {
-        setBookmarked(true);
-
-        try {
-            await axios.post('/api/posts/bookmark', { id: props.id });
-        } catch (error) {
-            setBookmarked(false);
-        }
+    function toggleBookmarkButton() {
+        setBookmarked(current => !current);
     }
 
-    async function unbookmark() {
-        setBookmarked(false);
-
-        try {
+    async function toggleBookmarkRequest() {
+        if (!bookmarked) {
+            await axios.post('/api/posts/bookmark', { id: props.id });
+        } else {
             await axios.post('/api/posts/unbookmark', { id: props.id });
-        } catch (error) {
-            setBookmarked(true);
         }
     }
 
@@ -122,15 +119,12 @@ function Post(props: PostProps) {
                     </Link>
                 )}
 
-                {bookmarked ? (
-                    <button className='btn mg-l--xl' onClick={unbookmark}>
-                        <i className='fa fa-bookmark font--lg text--black-light'></i>
-                    </button>
-                ) : (
-                    <button className='btn mg-l--xl' onClick={bookmark}>
-                        <i className='fa fa-bookmark-o font--lg text--black-light'></i>
-                    </button>
-                )}
+                <button className='btn mg-l--xl' onClick={bookmarkEvent}>
+                    <i
+                        className={`fa ${
+                            bookmarked ? 'fa-bookmark' : 'fa-bookmark-o'
+                        } font--lg text--black-light`}></i>
+                </button>
             </div>
 
             {showDeleteConfirmation && (
