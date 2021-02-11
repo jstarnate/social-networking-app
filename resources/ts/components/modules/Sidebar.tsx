@@ -47,7 +47,7 @@ function Sidebar({ user, notifCount }: SidebarProps) {
                             </span>
 
                             {!!notifCount && (
-                                <span className='font--sm text--white bg--danger round pos--abs sidebar__notif-count'>
+                                <span className='font--sm text--white bg--danger round pos--abs pd-l--xxs pd-r--xxs sidebar__notif-count'>
                                     {notifCount > 9 ? '9+' : notifCount}
                                 </span>
                             )}

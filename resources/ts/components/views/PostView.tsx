@@ -25,15 +25,33 @@ function PostView() {
     async function getPost() {
         setLoading(true);
 
-        const { data } = await axios.post('/api/posts/fetch', { id });
+        const { data } = await axios.post('/api/posts/fetch', {
+            id: Number(id),
+        });
 
         setTweet(data.post);
         setLoading(false);
     }
 
     function destroyPost(id: number) {
-        dispatch(deletePost(id));
+        dispatch(deletePost(Number(id)));
         history.goBack();
+    }
+
+    function modifyCount(operation: 'increment' | 'decrement') {
+        setTweet(current => {
+            if (current) {
+                return {
+                    ...current,
+                    comments:
+                        operation === 'increment'
+                            ? current.comments + 1
+                            : current.comments - 1,
+                };
+            }
+
+            return current;
+        });
     }
 
     useEffect(() => {
@@ -41,6 +59,10 @@ function PostView() {
             getPost();
         }
     }, []);
+
+    if (!tweet) {
+        return <h1>Not found</h1>;
+    }
 
     return (
         <section className='flex--1 pd-t--xs pd-b--lg pd-l--sm pd-r--sm timeline'>
@@ -62,9 +84,11 @@ function PostView() {
             )}
 
             <CommentsSection
-                postId={id}
+                postId={Number(id)}
                 userGender={tweet?.user.gender || null}
                 avatarLink={tweet?.user.image_url || null}
+                incrementEvent={modifyCount.bind(null, 'increment')}
+                decrementEvent={modifyCount.bind(null, 'decrement')}
             />
         </section>
     );

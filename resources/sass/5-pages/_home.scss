@@ -10,8 +10,8 @@
     }
 
     &__comment-box {
-        border-radius: 2rem;
         resize: none;
+        overflow: hidden;
 
         &:disabled {
             background: $gray--light;
@@ -31,6 +31,7 @@
     }
 
     &__post-body {
+        word-break: break-word;
         line-height: 1.5;
     }
 }
@@ -40,10 +41,6 @@
 
     &__headline-profile-photo {
         width: 100px;
-    }
-    
-    &__follow-button {
-        border-radius: 2rem;
     }
 
     &__active-tab {

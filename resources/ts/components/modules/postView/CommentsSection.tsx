@@ -1,25 +1,79 @@
-import { useState, useEffect, ChangeEvent, KeyboardEvent } from 'react';
+import { useState, useEffect, KeyboardEvent, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import Spinner from 'helpers/Spinner';
 import ProfilePhoto from 'helpers/ProfilePhoto';
 import Comment from './Comment';
-import { Comment as CommentType } from 'types/models';
+import useLimitedChars from 'hooks/useLimitedChars';
+import { Post as PostType, Comment as CommentType } from 'types/models';
+import { State } from 'types/redux';
+import { updatePost } from 'actions';
 
 interface Props {
-    postId?: number | string;
+    postId: number;
     userGender: 'Male' | 'Female' | null;
     avatarLink: string | null;
+    incrementEvent: () => void;
+    decrementEvent: () => void;
 }
 
-function CommentsSection({ postId, userGender, avatarLink }: Props) {
+function CommentsSection({
+    postId,
+    userGender,
+    avatarLink,
+    incrementEvent,
+    decrementEvent,
+}: Props) {
     const [comments, setComments] = useState<CommentType[]>([]);
     const [commentBody, setCommentBody] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [commentLoading, setCommentLoading] = useState<boolean>(false);
+    const posts = useSelector((state: State) => state.posts);
+    const dispatch = useDispatch();
+    const commentBox = useRef<HTMLTextAreaElement>(null);
+    const [commentCharsLeft, checkCommentLength] = useLimitedChars(
+        170,
+        handleCommentValue
+    );
 
-    useEffect(() => {
-        getComments();
-    }, []);
+    function modifyCount(operation: 'increment' | 'decrement') {
+        if (posts.length) {
+            const post = posts.find((p: PostType) => p.id === postId);
+
+            if (post) {
+                dispatch(
+                    updatePost(postId, {
+                        ...post,
+                        comments:
+                            operation === 'increment'
+                                ? post.comments + 1
+                                : post.comments - 1,
+                    })
+                );
+            }
+        }
+    }
+
+    function handleCommentValue(value: string | null) {
+        setCommentBody(value);
+        resizeCommentBox();
+    }
+
+    function handleCommentBoxKeypress(
+        event: KeyboardEvent<HTMLTextAreaElement>
+    ) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            submitComment();
+            return;
+        }
+    }
+
+    function resizeCommentBox() {
+        if (commentBox.current) {
+            commentBox.current.style.height = 'auto';
+            commentBox.current.style.height = `${commentBox.current.scrollHeight}px`;
+        }
+    }
 
     async function getComments() {
         setLoading(true);
@@ -42,32 +96,29 @@ function CommentsSection({ postId, userGender, avatarLink }: Props) {
             setComments([data.comment, ...comments]);
             setCommentBody(null);
             setCommentLoading(false);
-
-            // TODO: Increment comments count upon creation of comment
+            incrementEvent();
+            modifyCount('increment');
         } catch (e) {
             setCommentLoading(false);
         }
     }
 
-    function handleCommentBody(event: ChangeEvent<HTMLTextAreaElement>) {
-        setCommentBody(event.target.value);
-    }
-
-    function handleCommentBoxKeypress(
-        event: KeyboardEvent<HTMLTextAreaElement>
-    ) {
-        // TODO: Prevent user from typing if length is >= 250.
-
-        if (event.key === 'Enter' && !event.shiftKey) {
-            submitComment();
-            return;
-        }
-    }
-
     function deleteCommentEvent(id: number) {
         const filtered = comments.filter(comment => comment.id !== id);
+
         setComments(filtered);
+        decrementEvent();
+        modifyCount('decrement');
     }
+
+    useEffect(() => {
+        getComments();
+
+        if (commentBox.current) {
+            commentBox.current.setAttribute('rows', '1');
+            resizeCommentBox();
+        }
+    }, []);
 
     if (loading) {
         return (
@@ -79,32 +130,29 @@ function CommentsSection({ postId, userGender, avatarLink }: Props) {
 
     return (
         <div className='mg-t--md'>
-            <h4 className='d--flex ai--center text--gray text--bold'>
-                <span>Comments</span>
-                <span className='round bg--gray home__big-dot mg-l--xxs mg-r--xxs'></span>
-                <span>{comments.length}</span>
-            </h4>
+            <div>
+                <span className='d--block font--sm text--black-light text--right pd-r--sm'>
+                    {commentCharsLeft}
+                </span>
+                <div className='d--flex'>
+                    <ProfilePhoto
+                        src={avatarLink}
+                        gender={userGender}
+                        size={45}
+                        alt='Profile photo'
+                    />
 
-            <div className='d--flex ai--start mg-t--md'>
-                <ProfilePhoto
-                    src={avatarLink}
-                    gender={userGender}
-                    size={45}
-                    alt='Profile photo'
-                />
-
-                {/* FIXME: Make comment box stretchable. */}
-                <textarea
-                    className='full-width flex--1 font--md text--black pd-t--xs pd-b--xs pd-l--sm pd-r--sm b--1 brdr--gray mg-l--xs home__comment-box'
-                    maxLength={250}
-                    rows={1}
-                    placeholder='Press Enter to submit comment'
-                    value={commentBody || ''}
-                    disabled={commentLoading}
-                    onChange={handleCommentBody}
-                    onKeyPress={handleCommentBoxKeypress}></textarea>
-
-                {/* TODO: Add "characters left" indicator */}
+                    <textarea
+                        ref={commentBox}
+                        className='full-width flex--1 font--md text--black pd-t--xs pd-b--xs pd-l--sm pd-r--sm b--1 curved brdr--gray mg-l--xs home__comment-box'
+                        maxLength={250}
+                        rows={1}
+                        placeholder='Write a comment'
+                        value={commentBody || ''}
+                        disabled={commentLoading}
+                        onChange={checkCommentLength}
+                        onKeyPress={handleCommentBoxKeypress}></textarea>
+                </div>
             </div>
 
             {!loading && !!comments.length && (
