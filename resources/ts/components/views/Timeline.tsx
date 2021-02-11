@@ -38,8 +38,6 @@ function Timeline() {
 
     useInfiniteScroll(scrollTarget, ioFunction, posts);
 
-    // FIXME: Add useEffect for populating the existing data instead of making an http request.
-
     return (
         <section className='flex--1 pd-t--lg pd-b--lg pd-l--sm pd-r--sm timeline'>
             <PostBox />
