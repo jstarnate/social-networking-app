@@ -7,7 +7,7 @@ function SuggestedUsers() {
     const suggestedUsers = useSelector((state: State) => state.suggestedUsers);
 
     return (
-        <section>
+        <section className='mg-t--md'>
             <div className='d--flex ai--center'>
                 <h3 className='text--black-light'>Find friends</h3>
                 <Link

@@ -25,7 +25,7 @@ function SuggestedUser({ id, ...user }: UserWithId) {
     }
 
     return (
-        <div className='bg--white b-rad--sm mg-t--md'>
+        <div className='bg--primary-pale b-rad--sm mg-t--md'>
             <BasicUserInfo
                 className='d--flex ai--center pd--xs'
                 imageClassName='rightbar__profile-photo'
