@@ -2,9 +2,9 @@
     width: 350px;
 
     &__wrap {
-        right: 0;
         width: inherit;
-        height: calc(100vw - 70px);
+        height: 100vh;
+        @include coords(0, 0, null, null);
     }
 
     &__profile-photo {
