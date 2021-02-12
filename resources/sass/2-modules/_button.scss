@@ -37,6 +37,15 @@
 	color: $black--light;
 }
 
+.btn--secondary-o {
+	border: 1px solid $gray;
+	color: $black--light;
+
+	&:hover {
+		background: $pale;
+	}
+}
+
 .btn--danger {
 	background: $danger;
 	color: $white;
