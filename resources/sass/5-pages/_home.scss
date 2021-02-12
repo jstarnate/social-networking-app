@@ -26,10 +26,6 @@
         border-radius: $radius--md $radius--md 0 0;
     }
 
-    &__post-submit {
-        border-radius: 0 0 $radius--md $radius--md;
-    }
-
     &__post-body {
         word-break: break-word;
         line-height: 1.5;
