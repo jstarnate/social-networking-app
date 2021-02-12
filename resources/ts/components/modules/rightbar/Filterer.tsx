@@ -64,7 +64,7 @@ function Filterer() {
     }
 
     return (
-        <section>
+        <section className='mg-t--md'>
             <h2 className='text--black'>Filter people</h2>
 
             <form className='mg-t--md' onSubmit={filterUsers}>

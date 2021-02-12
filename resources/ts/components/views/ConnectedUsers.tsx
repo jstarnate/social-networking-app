@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import User from 'modules/users/User';
 import Spinner from 'helpers/Spinner';
@@ -68,13 +69,23 @@ function ConnectedUsers({ name }: Props) {
 
     return (
         <section className='flex--1'>
+            <Helmet>
+                <title>
+                    {name === 'followers'
+                        ? 'Followers'
+                        : name === 'following'
+                        ? 'Followed people'
+                        : 'Home'}
+                </title>
+            </Helmet>
+
             <header className='d--flex ai--center bb--1 brdr--primary'>
                 <Link
                     to={`/u/${username}`}
                     className='btn text--primary pd-t--sm pd-b--sm pd-l--md pd-r--md'>
                     <i className='fa fa-arrow-left'></i>
                 </Link>
-                <h3 className='text--black'>
+                <h3 className='text--black-light'>
                     {name === 'followers' &&
                         username === cachedUser.username &&
                         'People who follow you'}
@@ -92,13 +103,25 @@ function ConnectedUsers({ name }: Props) {
             </header>
 
             <div className='pd--md'>
-                <div>
-                    {users.map(user => (
-                        <User key={user.id} {...user} />
-                    ))}
-                </div>
+                {users.length ? (
+                    <>
+                        <div>
+                            {users.map(user => (
+                                <User key={user.id} {...user} />
+                            ))}
+                        </div>
 
-                <div ref={scrollTarget}></div>
+                        <div ref={scrollTarget}></div>
+                    </>
+                ) : (
+                    <h3 className='text--gray text--center'>
+                        {name === 'followers'
+                            ? 'No followers'
+                            : name === 'following'
+                            ? 'No followed person'
+                            : ''}
+                    </h3>
+                )}
 
                 {loading && <Spinner />}
             </div>

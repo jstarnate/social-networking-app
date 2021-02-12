@@ -18,6 +18,7 @@ const Content = (props: ContentProps) => (
         <ProfilePhoto
             className={props.imageClassName}
             src={props.image_url}
+            size={props.avatarSize}
             gender={props.gender}
             alt='Profile photo'
         />

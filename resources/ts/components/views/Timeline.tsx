@@ -39,7 +39,7 @@ function Timeline() {
     useInfiniteScroll(scrollTarget, ioFunction, posts);
 
     return (
-        <section className='flex--1 pd-t--lg pd-b--lg pd-l--sm pd-r--sm timeline'>
+        <div className='pd-t--lg pd-b--lg pd-l--sm pd-r--sm timeline'>
             <PostBox />
 
             {!loadingPosts && !posts.length ? (
@@ -62,7 +62,7 @@ function Timeline() {
             <div ref={scrollTarget}></div>
 
             {loadingPosts && <Spinner />}
-        </section>
+        </div>
     );
 }
 

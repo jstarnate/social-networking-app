@@ -15,6 +15,10 @@ function PostBox() {
     }
 
     async function submitPost() {
+        if (!body || !body.length) {
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -29,7 +33,7 @@ function PostBox() {
     }
 
     return (
-        <div className='b--1 brdr--primary b-rad--md'>
+        <div className='b--1 brdr--primary-dark b-rad--md'>
             <textarea
                 rows={3}
                 className='font--md text--black-light pd--sm timeline__post-input'
@@ -37,15 +41,10 @@ function PostBox() {
                 value={body || ''}
                 onChange={checkLength}></textarea>
 
-            <div className='bt--1 brdr--primary d--flex ai--center pd-l--md'>
-                <label>
-                    <span className='text--black-light text--bold'>
-                        {charsLeft}{' '}
-                    </span>
-                    <span className='text--black-light'>left</span>
-                </label>
+            <div className='d--flex ai--center pd-t--xs pd-b--xs pd-l--md pd-r--md'>
+                <label className='text--black-light'>{charsLeft}</label>
                 <button
-                    className='btn text--primary-dark text--bold pd-t--sm pd-b--sm pd-l--md pd-r--md mg-l--auto timeline__post-submit'
+                    className='btn btn--primary text--white text--bold curved pd-t--xs pd-b--xs pd-l--md pd-r--md mg-l--auto'
                     disabled={loading}
                     onClick={submitPost}>
                     Submit post

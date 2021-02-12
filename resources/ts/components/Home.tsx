@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import Echo from 'laravel-echo';
-import Header from './modules/Header';
+import ViewWrap from './modules/ViewWrap';
 import Sidebar from './modules/Sidebar';
 import Rightbar from './modules/Rightbar';
 import EditProfile from './views/EditProfile';
@@ -83,8 +83,6 @@ function HomeComponent() {
                 <title>Home</title>
             </Helmet>
 
-            <Header />
-
             <Router>
                 <section
                     className='d--flex mg-l--auto mg-r--auto home'
@@ -92,29 +90,54 @@ function HomeComponent() {
                     <Sidebar user={user} notifCount={notifCount} />
 
                     <Switch>
-                        <Route path='/home' component={Timeline} />
+                        <Route path='/home'>
+                            <ViewWrap>
+                                <Timeline />
+                            </ViewWrap>
+                        </Route>
+
                         <Route path='/u/:username'>
-                            <Suspense fallback={<ProfileLoader />}>
-                                <Profile name={user?.full_name || null} />
-                            </Suspense>
+                            <ViewWrap>
+                                <Suspense fallback={<ProfileLoader />}>
+                                    <Profile name={user?.full_name || null} />
+                                </Suspense>
+                            </ViewWrap>
                         </Route>
+
                         <Route exact path='/profile/:username/edit'>
-                            <EditProfile user={user} />
+                            <ViewWrap>
+                                <EditProfile user={user} />
+                            </ViewWrap>
                         </Route>
-                        <Route
-                            path='/notifications'
-                            component={Notifications}
-                        />
-                        <Route path='/users/search' component={Users} />
-                        <Route
-                            path='/posts/:id/comments'
-                            component={PostView}
-                        />
+
+                        <Route path='/notifications'>
+                            <ViewWrap>
+                                <Notifications />
+                            </ViewWrap>
+                        </Route>
+
+                        <Route path='/users/search'>
+                            <ViewWrap>
+                                <Users />
+                            </ViewWrap>
+                        </Route>
+
+                        <Route path='/posts/:id/comments'>
+                            <ViewWrap>
+                                <PostView />
+                            </ViewWrap>
+                        </Route>
+
                         <Route path='/:username/connected/followers'>
-                            <ConnectedUsers name='followers' />
+                            <ViewWrap>
+                                <ConnectedUsers name='followers' />
+                            </ViewWrap>
                         </Route>
+
                         <Route path='/:username/connected/following'>
-                            <ConnectedUsers name='following' />
+                            <ViewWrap>
+                                <ConnectedUsers name='following' />
+                            </ViewWrap>
                         </Route>
                     </Switch>
 

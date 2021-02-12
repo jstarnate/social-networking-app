@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import InputField from 'helpers/InputField';
 import ProfilePhoto from 'helpers/ProfilePhoto';
@@ -62,13 +63,17 @@ function EditProfile({ user }: EditProfileProps) {
 
     return (
         <section className='flex--1'>
+            <Helmet>
+                <title>Edit profile</title>
+            </Helmet>
+
             <header className='d--flex ai--center bb--1 brdr--primary'>
                 <Link
                     to={`/u/${user?.username}`}
                     className='btn text--primary pd-t--sm pd-b--sm pd-l--md pd-r--md'>
                     <i className='fa fa-arrow-left'></i>
                 </Link>
-                <h3 className='text--black'>Update your profile</h3>
+                <h3 className='text--black-light'>Update your profile</h3>
             </header>
 
             <form

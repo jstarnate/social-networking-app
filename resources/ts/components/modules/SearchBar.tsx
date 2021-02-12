@@ -39,35 +39,35 @@ function SearchBar() {
         <form
             method='GET'
             action='/users/search'
-            className='d--flex mg-l--md pos--rel'
+            className='d--flex pos--rel'
             onSubmit={submitForm}>
             <input
-                className='font--md text--black pd-t--xs pd-b--xs pd-l--xs header__search-input'
+                className='flex--1 font--md bg--pale text--black pd-t--xs pd-b--xs pd-l--xs search__input'
                 type='text'
                 name='sq'
-                placeholder='Search name or username'
+                placeholder='Search by name or username'
                 value={query}
                 onChange={getSearchSuggestions}
             />
 
-            <button className='btn bg--white pd-l--sm pd-r--sm header__search-submit'>
+            <button className='btn bg--pale pd-l--sm pd-r--sm search__submit'>
                 <i className='fa fa-search font--md text--gray'></i>
             </button>
 
             {loading && (
-                <section className='pos--abs full-width bg--white b--1 brdr--gray-light header__loading-spinner'>
+                <section className='pos--abs full-width bg--white b--1 brdr--gray-light search__loading-spinner'>
                     <Ellipsis />
                 </section>
             )}
 
             {!loading && !!users.length && (
                 <Router>
-                    <section className='pos--abs full-width bg--white b--1 brdr--gray-light header__search-suggestions'>
+                    <section className='pos--abs full-width bg--white b--1 brdr--gray-light search__suggestions'>
                         {users.map((user: User, i) => (
                             <BasicUserInfo
                                 key={i}
-                                imageClassName='header__search-profile-photo'
-                                className='d--flex ai--center pd--xs bt--1 brdr--gray-light header__search-suggestion'
+                                imageClassName='search__profile-photo'
+                                className='d--flex ai--center pd--xs bt--1 brdr--gray-light search__suggestion'
                                 avatarSize={35}
                                 {...user}
                             />

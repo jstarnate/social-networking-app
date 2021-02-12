@@ -2,8 +2,9 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import axios from 'axios';
-import Spinner from 'helpers/Spinner';
+import SearchBar from 'modules/SearchBar';
 import SuggestedUsers from 'modules/rightbar/SuggestedUsers';
+import Spinner from 'helpers/Spinner';
 import { set } from 'actions';
 
 const Filterer = lazy(() => import('modules/rightbar/Filterer'));
@@ -40,8 +41,10 @@ function Rightbar() {
     }
 
     return (
-        <aside className='rightbar'>
-            <div className='pos--fixed bg--primary-pale bl--1 brdr--primary pd-t--lg pd-l--lg pd-r--lg rightbar__wrap'>
+        <aside className='pos--rel rightbar'>
+            <div className='pos--fixed bl--1 brdr--primary-light pd--md rightbar__wrap'>
+                <SearchBar />
+
                 <Switch>
                     <Route exact path='/users/search'>
                         <Suspense fallback={<Spinner />}>
