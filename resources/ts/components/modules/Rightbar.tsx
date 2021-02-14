@@ -30,29 +30,26 @@ function Rightbar() {
         }
     }
 
-    if (loading) {
-        return (
-            <aside className='rightbar'>
-                <div className='pos--fixed bg--primary-pale bl--1 brdr--primary pd-t--lg pd-l--lg pd-r--lg rightbar__wrap'>
-                    <Spinner />
-                </div>
-            </aside>
-        );
-    }
-
     return (
         <aside className='pos--rel rightbar'>
             <div className='pos--fixed bl--1 brdr--primary-light pd--md rightbar__wrap'>
                 <SearchBar />
 
-                <Switch>
-                    <Route exact path='/users/search'>
-                        <Suspense fallback={<Spinner />}>
-                            <Filterer />
-                        </Suspense>
-                    </Route>
-                    <Route component={SuggestedUsers} />
-                </Switch>
+                {loading ? (
+                    <Spinner containerClassName='mg-t--md' />
+                ) : (
+                    <Switch>
+                        <Route exact path='/users/search'>
+                            <Suspense
+                                fallback={
+                                    <Spinner containerClassName='mg-t--md' />
+                                }>
+                                <Filterer />
+                            </Suspense>
+                        </Route>
+                        <Route component={SuggestedUsers} />
+                    </Switch>
+                )}
             </div>
         </aside>
     );
