@@ -65,7 +65,7 @@ function Filterer() {
 
     return (
         <section className='mg-t--md'>
-            <h2 className='text--black'>Filter people</h2>
+            <h3 className='text--black-light'>Filter people</h3>
 
             <form className='mg-t--md' onSubmit={filterUsers}>
                 <InputField
@@ -79,7 +79,7 @@ function Filterer() {
                 <div className='d--flex ai--center mg-t--md'>
                     <Select
                         containerClassName='half-width'
-                        className='d--block full-width bg--white font--md text--black pd--xs b-rad--sm b--1 brdr--gray'
+                        className='d--block full-width bg--white text--black pd--xs b-rad--sm b--1 brdr--gray'
                         label='Birth month'
                         defaultOption='Select month'
                         items={months}
@@ -91,7 +91,7 @@ function Filterer() {
 
                     <Select
                         containerClassName='half-width mg-l--auto'
-                        className='d--block full-width bg--white font--md text--black pd--xs b-rad--sm b--1 brdr--gray'
+                        className='d--block full-width bg--white text--black pd--xs b-rad--sm b--1 brdr--gray'
                         label='Birth year'
                         defaultOption='Select year'
                         items={years}
