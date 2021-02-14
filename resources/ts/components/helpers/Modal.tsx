@@ -30,8 +30,7 @@ const Content = (props: ModalProps) => {
                     {props.message}
                 </p>
 
-                <footer
-                    className={`d--flex jc--end bt--1 brdr--${props.type} pd--sm`}>
+                <footer className='d--flex jc--end bt--1 brdr--gray pd--sm'>
                     {props.children || (
                         <a
                             className='btn btn--primary font--sm text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md'
