@@ -11,6 +11,7 @@ function SuggestedUser({ id, ...user }: UserWithId) {
         toggleFollowRequest,
         2000
     );
+    const buttonColor = isFollowed ? 'danger' : 'primary';
 
     function toggleFollowButton() {
         setIsFollowed(followed => !followed);
@@ -25,7 +26,7 @@ function SuggestedUser({ id, ...user }: UserWithId) {
     }
 
     return (
-        <div className='bg--primary-pale b-rad--sm mg-t--md'>
+        <div className='bg--primary-pale b--1 brdr--primary-light b-rad--sm mg-t--md'>
             <BasicUserInfo
                 className='d--flex ai--center pd--xs'
                 imageClassName='rightbar__profile-photo'
@@ -33,9 +34,7 @@ function SuggestedUser({ id, ...user }: UserWithId) {
             />
 
             <button
-                className={`full-width btn btn--${
-                    isFollowed ? 'danger' : 'primary'
-                } pd-t--xs pd-b--xs rightbar__follow-button`}
+                className={`full-width btn btn--${buttonColor} pd-t--xs pd-b--xs rightbar__follow-button`}
                 onClick={followEvent}>
                 {isFollowed ? (
                     <i className='fa fa-user-times'></i>
