@@ -68,7 +68,7 @@ function Post(props: PostProps) {
     }, []);
 
     return (
-        <div className='d--block b--1 brdr--primary-light b-rad--md pd--md mg-t--md'>
+        <div className='d--block bg--primary-pale b--1 brdr--primary-light b-rad--md pd--md mg-t--md'>
             <div className='d--flex ai--center'>
                 <BasicUserInfo
                     className='d--if ai--center'
