@@ -13,8 +13,8 @@ function Spinner({ containerClassName, size, color }: Props) {
                     shapeRendering: 'auto',
                 }}
                 className='d--block'
-                width={`${size}px`}
-                height={`${size}px`}
+                width={size}
+                height={size}
                 viewBox='0 0 100 100'
                 preserveAspectRatio='xMidYMid'>
                 <circle
