@@ -33,7 +33,7 @@ function PostBox() {
     }
 
     return (
-        <div className='b--1 brdr--primary-dark b-rad--md'>
+        <div className='b--1 brdr--primary-light b-rad--md'>
             <textarea
                 rows={3}
                 className='font--md text--black-light pd--sm timeline__post-input'
@@ -41,8 +41,8 @@ function PostBox() {
                 value={body || ''}
                 onChange={checkLength}></textarea>
 
-            <div className='d--flex ai--center pd-t--xs pd-b--xs pd-l--md pd-r--md'>
-                <label className='text--black-light'>{charsLeft}</label>
+            <div className='d--flex ai--center bt--1 brdr--primary-light pd-t--xs pd-b--xs pd-l--md pd-r--md'>
+                <label className='text--gray'>{charsLeft}</label>
                 <button
                     className='btn btn--primary text--white text--bold curved pd-t--xs pd-b--xs pd-l--md pd-r--md mg-l--auto'
                     disabled={loading}
