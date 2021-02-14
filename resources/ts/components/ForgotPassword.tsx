@@ -33,13 +33,8 @@ function ForgotPasswordComponent() {
     }
 
     return (
-        <section className='mg-t--lg mg-l--auto mg-r--auto forgot__wrap'>
-            <p className='text--black-light'>
-                Please enter your email address. A change-password request email
-                will be sent to you afterwards.
-            </p>
-
-            <form className='mg-t--md' onSubmit={submit}>
+        <section className='pd-t--sm pd-b--lg mg-l--auto mg-r--auto forgot__wrap'>
+            <form onSubmit={submit}>
                 <InputField
                     containerClassName='mg-t--0'
                     id='email'
