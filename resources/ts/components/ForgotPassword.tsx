@@ -1,7 +1,9 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { lazy, Suspense, ChangeEvent, FormEvent, useState } from 'react';
 import axios from 'axios';
 import InputField from 'helpers/InputField';
-import Modal from 'helpers/Modal';
+import Spinner from 'helpers/Spinner';
+
+const Modal = lazy(() => import('helpers/Modal'));
 
 function ForgotPasswordComponent() {
     const [email, setEmail] = useState<string | null>(null);
@@ -57,11 +59,16 @@ function ForgotPasswordComponent() {
             </form>
 
             {isSent && (
-                <Modal
-                    title='Request sent!'
-                    type='primary'
-                    message='Please check your email for the sent request. Thank you!'
-                />
+                <Suspense
+                    fallback={
+                        <Spinner containerClassName='pos--fixed ai--center modal' />
+                    }>
+                    <Modal
+                        title='Request sent!'
+                        type='primary'
+                        message='Please check your email for the sent request. Thank you!'
+                    />
+                </Suspense>
             )}
         </section>
     );

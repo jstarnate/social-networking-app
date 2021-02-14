@@ -1,13 +1,14 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { lazy, Suspense, ChangeEvent, FormEvent, useState } from 'react';
 import axios from 'axios';
 import eachMonthOfInterval from 'date-fns/eachMonthOfInterval';
 import eachYearOfInterval from 'date-fns/eachYearOfInterval';
 import InputField from 'helpers/InputField';
 import Select from 'helpers/Select';
-import useInput from 'hooks/useInput';
 import RadioButton from 'helpers/RadioButton';
-import Modal from 'helpers/Modal';
+import Spinner from 'helpers/Spinner';
+import useInput from 'hooks/useInput';
 
+const Modal = lazy(() => import('helpers/Modal'));
 const currentYear = new Date().getFullYear();
 const generateYears = eachYearOfInterval({
     start: new Date(currentYear - 100, 0),
@@ -224,13 +225,18 @@ function RegisterComponent() {
             </form>
 
             {registered && (
-                <Modal
-                    title='Congratulations!'
-                    type='success'
-                    message={`You have successfully registered. Please check
-                            your email (${email}) for the verification of
-                            your account.`}
-                />
+                <Suspense
+                    fallback={
+                        <Spinner containerClassName='pos--fixed ai--center modal' />
+                    }>
+                    <Modal
+                        title='Congratulations!'
+                        type='success'
+                        message={`You have successfully registered. Please check
+                                your email (${email}) for the verification of
+                                your account.`}
+                    />
+                </Suspense>
             )}
         </section>
     );

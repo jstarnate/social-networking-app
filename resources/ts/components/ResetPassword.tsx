@@ -1,8 +1,10 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { lazy, Suspense, ChangeEvent, FormEvent, useState } from 'react';
 import axios from 'axios';
 import InputField from 'helpers/InputField';
+import Spinner from 'helpers/Spinner';
 import useInput from 'hooks/useInput';
-import Modal from 'helpers/Modal';
+
+const Modal = lazy(() => import('helpers/Modal'));
 
 function ResetPasswordComponent() {
     const [password, passwordData, setPasswordError] = useInput(null);
@@ -86,11 +88,16 @@ function ResetPasswordComponent() {
             </form>
 
             {isSent && (
-                <Modal
-                    title='Congratulations!'
-                    type='success'
-                    message={successMessage}
-                />
+                <Suspense
+                    fallback={
+                        <Spinner containerClassName='pos--fixed ai--center modal' />
+                    }>
+                    <Modal
+                        title='Congratulations!'
+                        type='success'
+                        message={successMessage}
+                    />
+                </Suspense>
             )}
         </section>
     );

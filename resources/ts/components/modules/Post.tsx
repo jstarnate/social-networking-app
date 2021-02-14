@@ -1,8 +1,8 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { lazy, Suspense, ReactElement, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
-import Modal from 'helpers/Modal';
+import Spinner from 'helpers/Spinner';
 import { Post as PostType } from 'types/models';
 import useDebounce from 'hooks/useDebounce';
 
@@ -11,6 +11,8 @@ interface PostProps extends PostType {
     deleteEvent: (id: number) => void;
     render?: (comments: number) => ReactElement;
 }
+
+const Modal = lazy(() => import('helpers/Modal'));
 
 function Post(props: PostProps) {
     const [liked, setLiked] = useState<boolean>(props.is_liked);
@@ -128,22 +130,27 @@ function Post(props: PostProps) {
             </div>
 
             {showDeleteConfirmation && (
-                <Modal
-                    title='Confirm delete'
-                    type='danger'
-                    message='Are you sure you want to delete this post?'
-                    closeEvent={closeDeleteModal}>
-                    <button
-                        className='btn btn--secondary font--sm b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-r--sm'
-                        onClick={closeDeleteModal}>
-                        Cancel
-                    </button>
-                    <button
-                        className='btn btn--danger font--sm text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md'
-                        onClick={deletePost}>
-                        Yes, delete
-                    </button>
-                </Modal>
+                <Suspense
+                    fallback={
+                        <Spinner containerClassName='pos--fixed ai--center modal' />
+                    }>
+                    <Modal
+                        title='Confirm delete'
+                        type='danger'
+                        message='Are you sure you want to delete this post?'
+                        closeEvent={closeDeleteModal}>
+                        <button
+                            className='btn btn--secondary font--sm b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-r--sm'
+                            onClick={closeDeleteModal}>
+                            Cancel
+                        </button>
+                        <button
+                            className='btn btn--danger font--sm text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md'
+                            onClick={deletePost}>
+                            Yes, delete
+                        </button>
+                    </Modal>
+                </Suspense>
             )}
         </div>
     );
