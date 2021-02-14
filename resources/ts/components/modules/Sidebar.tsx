@@ -1,13 +1,15 @@
-import { useRef, useState } from 'react';
+import { lazy, Suspense, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import ProfilePhoto from 'helpers/ProfilePhoto';
-import Modal from 'helpers/Modal';
+import Spinner from 'helpers/Spinner';
 import { UserWithId } from 'types/models';
 
 interface SidebarProps {
     user: UserWithId | null;
     notifCount: number;
 }
+
+const Modal = lazy(() => import('helpers/Modal'));
 
 function Sidebar({ user, notifCount }: SidebarProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -94,37 +96,42 @@ function Sidebar({ user, notifCount }: SidebarProps) {
             </div>
 
             {showModal && (
-                <Modal
-                    type='primary'
-                    title='Sign out'
-                    message='Are you sure you want to sign out?'
-                    closeEvent={disableModal}>
-                    <>
-                        <button
-                            className='btn btn--secondary font--sm b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-r--sm'
-                            onClick={disableModal}>
-                            Cancel
-                        </button>
-                        <button
-                            className='btn btn--primary font--sm text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md'
-                            onClick={signOut}>
-                            Sign out
-                        </button>
+                <Suspense
+                    fallback={
+                        <Spinner containerClassName='pos--fixed ai--center modal' />
+                    }>
+                    <Modal
+                        type='primary'
+                        title='Sign out'
+                        message='Are you sure you want to sign out?'
+                        closeEvent={disableModal}>
+                        <>
+                            <button
+                                className='btn btn--secondary font--sm b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-r--sm'
+                                onClick={disableModal}>
+                                Cancel
+                            </button>
+                            <button
+                                className='btn btn--primary font--sm text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md'
+                                onClick={signOut}>
+                                Sign out
+                            </button>
 
-                        <form
-                            ref={logoutForm}
-                            className='d--none'
-                            method='POST'
-                            action='/api/sign-out'>
-                            <input
-                                type='hidden'
-                                name='_token'
-                                value={csrfToken || ''}
-                            />
-                            <input type='submit' />
-                        </form>
-                    </>
-                </Modal>
+                            <form
+                                ref={logoutForm}
+                                className='d--none'
+                                method='POST'
+                                action='/api/sign-out'>
+                                <input
+                                    type='hidden'
+                                    name='_token'
+                                    value={csrfToken || ''}
+                                />
+                                <input type='submit' />
+                            </form>
+                        </>
+                    </Modal>
+                </Suspense>
             )}
         </aside>
     );
