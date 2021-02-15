@@ -33,8 +33,10 @@ function ForgotPasswordComponent() {
     }
 
     return (
-        <section className='pd-t--sm pd-b--lg mg-l--auto mg-r--auto forgot__wrap'>
-            <form onSubmit={submit}>
+        <section className='pd-t--sm pd-b--lg pd-l--md pd-r--md mg-l--auto mg-r--auto forgot__wrap'>
+            <h3 className='text--black-light'>Make a reset password request</h3>
+
+            <form className='mg-t--sm' onSubmit={submit}>
                 <InputField
                     containerClassName='mg-t--0'
                     id='email'
@@ -47,7 +49,7 @@ function ForgotPasswordComponent() {
                 />
 
                 <button
-                    className='btn btn--primary font--md text--white text--bold b-rad--sm pd-t--sm pd-b--sm pd-l--md pd-r--md mg-t--md'
+                    className='btn btn--primary font--md text--white text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-t--md'
                     disabled={!email?.length || loading}>
                     Send request
                 </button>

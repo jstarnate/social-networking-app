@@ -1,6 +1,7 @@
 .register {
     &__wrap {
         max-width: 480px;
+        min-width: 320px;
     }
     
     &__birthday-input {
