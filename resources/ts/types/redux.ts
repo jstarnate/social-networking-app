@@ -1,6 +1,6 @@
 import { UserWithId, Post } from './models';
 
-export type Payload = (UserWithId | Post)[] | boolean;
+export type Payload = (UserWithId | Post)[] | boolean | number;
 
 export interface State {
     [index: string]: Payload;
@@ -8,6 +8,9 @@ export interface State {
     usersLoading: boolean;
     posts: Post[];
     suggestedUsers: UserWithId[];
+    screenWidth: number;
+    openSidebar: boolean;
+    openRightbar: boolean;
 }
 
 export interface SetItem {

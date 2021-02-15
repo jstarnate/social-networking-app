@@ -41,7 +41,7 @@ function SearchBar() {
     useOutsideClick(searchComponent, toggleSuggestions.bind(null, false));
 
     return (
-        <section ref={searchComponent} className='pos--rel'>
+        <section ref={searchComponent} className='pos--rel flex--1'>
             <form
                 method='GET'
                 action='/users/search'

@@ -5,6 +5,9 @@ const state: State = {
     usersLoading: false,
     posts: [],
     suggestedUsers: [],
+    screenWidth: 0,
+    openSidebar: false,
+    openRightbar: false,
 };
 
 export default state;

@@ -1,5 +1,6 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import Echo from 'laravel-echo';
@@ -14,6 +15,7 @@ import PostView from './views/PostView';
 import ConnectedUsers from './views/ConnectedUsers';
 import Spinner from 'helpers/Spinner';
 import { UserWithId } from 'types/models';
+import { set } from 'actions';
 import 'pusher-js';
 
 interface AuthUser extends UserWithId {
@@ -36,6 +38,7 @@ const ProfileLoader = () => (
 function HomeComponent() {
     const [user, setUser] = useState<AuthUser | null>(null);
     const [notifCount, setNotifCount] = useState<number>(0);
+    const dispatch = useDispatch();
     const echo = new Echo({
         broadcaster: 'pusher',
         key: process.env.PUSHER_APP_KEY,
@@ -54,6 +57,29 @@ function HomeComponent() {
         setNotifCount(data.count);
     }
 
+    function setStateOnResize(width: number) {
+        if (width > 1024) {
+            dispatch(set('openSidebar', false));
+            dispatch(set('openRightbar', false));
+        }
+
+        dispatch(set('screenWidth', width));
+    }
+
+    function checkWidth() {
+        let timeout: number | null = null;
+
+        return () => {
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+
+            timeout = window.setTimeout(() => {
+                setStateOnResize(window.innerWidth);
+            }, 700);
+        };
+    }
+
     useEffect(() => {
         if (!storageUser) {
             getAuthUser();
@@ -62,6 +88,8 @@ function HomeComponent() {
         }
 
         getNotifCount();
+        setStateOnResize(window.innerWidth);
+        window.addEventListener('resize', checkWidth());
     }, []);
 
     useEffect(() => {
