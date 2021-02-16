@@ -1,8 +1,10 @@
 import { lazy, Suspense, useRef, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import ProfilePhoto from 'helpers/ProfilePhoto';
 import Spinner from 'helpers/Spinner';
 import { UserWithId } from 'types/models';
+import { State } from 'types/redux';
 
 interface SidebarProps {
     user: UserWithId | null;
@@ -14,6 +16,7 @@ const Modal = lazy(() => import('helpers/Modal'));
 function Sidebar({ user, notifCount }: SidebarProps) {
     const [showModal, setShowModal] = useState<boolean>(false);
     const logoutForm = useRef<HTMLFormElement>(null);
+    const screenWidth = useSelector((state: State) => state.screenWidth);
     const csrfToken = document
         .querySelector('meta[name="csrf-token"]')
         ?.getAttribute('content');
@@ -33,38 +36,40 @@ function Sidebar({ user, notifCount }: SidebarProps) {
 
     return (
         <aside className='pos--rel sidebar'>
-            <div className='pos--fixed d--flex fd--column br--1 brdr--primary-light sidebar__wrap'>
-                <Link
-                    to={`/u/${user?.username}`}
-                    className='d--flex ai--center pd-l--lg mg-t--lg'
-                    href=''>
-                    <ProfilePhoto
-                        className='round sidebar__profile-photo'
-                        src={user?.image_url || null}
-                        gender={user?.gender || null}
-                        size={30}
-                    />
-
-                    <span className='font--sm text--black-light text--bold mg-l--xs'>
-                        {user?.full_name}
-                    </span>
-                </Link>
-
-                <nav className='mg-t--md'>
+            <div className='pos--fixed bg--white d--flex fd--column br--1 brdr--primary-light sidebar__wrap'>
+                <nav className='mg-t--md sidebar__nav'>
                     <NavLink
-                        className='d--block font--lg text--gray pd-t--xs pd-b--xs pd-l--lg'
+                        className='d--block font--lg text--gray pd-t--xs pd-b--xs pd-l--lg sidebar__navitem'
                         to='/home'
                         activeClassName='sidebar__active-link'>
                         <i className='fa fa-home'></i>
-                        <span className='text--bold mg-l--sm'>Home</span>
+                        <span className='text--bold mg-l--sm sidebar__navitem-label'>
+                            Home
+                        </span>
                     </NavLink>
 
                     <NavLink
-                        className='d--block font--lg text--gray pd-t--xs pd-b--xs pd-l--lg pos--rel'
+                        className='d--flex ai--center pd-t--xs pd-b--xs pd-l--lg sidebar__navitem'
+                        to={`/u/${user?.username}`}
+                        activeClassName='sidebar__active-link'>
+                        <ProfilePhoto
+                            className='sidebar__profile-photo'
+                            src={user?.image_url || null}
+                            gender={user?.gender || null}
+                            size={20}
+                        />
+
+                        <span className='font--lg text--gray text--bold mg-l--sm sidebar__navitem-label'>
+                            Profile
+                        </span>
+                    </NavLink>
+
+                    <NavLink
+                        className='d--block font--lg text--gray pd-t--xs pd-b--xs pd-l--lg pos--rel sidebar__navitem'
                         to='/notifications'
                         activeClassName='sidebar__active-link'>
                         <i className='fa fa-bell'></i>
-                        <span className='text--bold mg-l--sm'>
+                        <span className='text--bold mg-l--sm sidebar__navitem-label'>
                             Notifications
                         </span>
 
@@ -76,23 +81,31 @@ function Sidebar({ user, notifCount }: SidebarProps) {
                     </NavLink>
 
                     <NavLink
-                        className='d--block font--lg text--gray pd-t--xs pd-b--xs pd-l--lg'
+                        className='d--block font--lg text--gray pd-t--xs pd-b--xs pd-l--lg sidebar__navitem'
                         to='/users/search'
                         activeClassName='sidebar__active-link'>
                         <i className='fa fa-users'></i>
-                        <span className='text--bold mg-l--sm'>
+                        <span className='text--bold mg-l--sm sidebar__navitem-label'>
                             Search people
                         </span>
                     </NavLink>
                 </nav>
 
-                <div className='mg-t--auto pd-l--lg pd-r--lg pd-t--sm pd-b--sm'>
+                {screenWidth <= 785 ? (
                     <button
-                        className='btn btn--secondary-o full-width curved pd-t--xs pd-b--xs pd-l--lg pd-r--lg'
+                        className='btn pd-t--sm pd-b--sm mg-t--auto'
                         onClick={enableModal}>
-                        Sign out
+                        <i className='fa fa-sign-out text--gray'></i>
                     </button>
-                </div>
+                ) : (
+                    <div className='mg-t--auto pd-l--lg pd-r--lg pd-t--sm pd-b--sm'>
+                        <button
+                            className='btn btn--secondary-o full-width curved pd-t--xs pd-b--xs pd-l--lg pd-r--lg'
+                            onClick={enableModal}>
+                            Sign out
+                        </button>
+                    </div>
+                )}
             </div>
 
             {showModal && (
