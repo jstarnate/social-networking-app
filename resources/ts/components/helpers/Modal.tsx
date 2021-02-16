@@ -17,7 +17,7 @@ const Content = (props: ModalProps) => {
     useOutsideClick(modal, props.closeEvent);
 
     return (
-        <div className='pos--fixed modal'>
+        <div className='pos--fixed pd-l--md pd-r--md modal'>
             <div
                 ref={modal}
                 className='bg--white b-rad--md mg-l--auto mg-r--auto modal__main'>

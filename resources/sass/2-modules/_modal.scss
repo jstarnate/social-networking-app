@@ -5,7 +5,7 @@
 
     &__main {
         max-width: 480px;
-        margin-top: 5.5vw;
+        margin-top: 10%;
     }
     
     &__head {
@@ -14,5 +14,11 @@
     
     &__body {
         line-height: 1.5;
+    }
+
+    @media screen and (max-width: 785px) {
+        &__main {
+            margin-top: 30%;
+        }
     }
 }
