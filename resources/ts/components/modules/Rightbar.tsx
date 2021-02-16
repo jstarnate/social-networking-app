@@ -17,10 +17,6 @@ function Rightbar() {
     const openRightbar = useSelector((state: State) => state.openRightbar);
     const status = screenWidth <= 1024 && openRightbar ? 'rightbar--open' : '';
 
-    useEffect(() => {
-        getSuggestedUsers();
-    }, []);
-
     async function getSuggestedUsers() {
         setLoading(true);
 
@@ -37,6 +33,10 @@ function Rightbar() {
     function hideRightbar() {
         dispatch(set('openRightbar', false));
     }
+
+    useEffect(() => {
+        getSuggestedUsers();
+    }, []);
 
     return (
         <aside className='pos--rel rightbar'>
