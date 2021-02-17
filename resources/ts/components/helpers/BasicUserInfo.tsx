@@ -23,11 +23,13 @@ const Content = (props: ContentProps) => (
             alt='Profile photo'
         />
 
-        <div className='mg-l--xs'>
-            <span className='d--block font--sm text--black-light text--bold'>
+        <div className='mg-l--xs' style={{ minWidth: '0' }}>
+            <span className='d--block font--sm text--black-light text--bold truncated'>
                 {props.full_name}
             </span>
-            <span className='font--sm text--gray'>@{props.username}</span>
+            <span className='d--block font--sm text--gray truncated'>
+                @{props.username}
+            </span>
         </div>
     </>
 );

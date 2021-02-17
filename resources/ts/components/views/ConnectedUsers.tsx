@@ -1,10 +1,11 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import User from 'modules/users/User';
 import Spinner from 'helpers/Spinner';
 import { UserWithId } from 'types/models';
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 interface Props {
     name: 'followers' | 'following';
@@ -26,46 +27,39 @@ function ConnectedUsers({ name }: Props) {
     const scrollTarget = useRef<HTMLDivElement>(null);
     const { username }: RouteParams = useParams();
 
-    const ioCallback: IntersectionObserverCallback = useCallback(
-        async (entries, observer) => {
-            if (entries[0].isIntersecting) {
-                setLoading(true);
+    async function getUsers() {
+        setLoading(true);
 
-                const url = `/api/users/u/${username}/connected/${name}`;
-                const date = users[users.length - 1]?.connected_at || null;
-                const { data } = await axios.post(url, { date });
+        const url = `/api/users/u/${username}/connected/${name}`;
+        const { data } = await axios.post(url);
 
-                if (data.has_more) {
-                    setUsers(u => [...u, ...data.users]);
-                }
+        setUsers(data.users);
+        setLoading(false);
+    }
 
-                if (!data.has_more && scrollTarget && scrollTarget.current) {
-                    observer.unobserve(scrollTarget.current);
-                }
+    async function ioFunction(observer: IntersectionObserver) {
+        setLoading(true);
 
-                setLoading(false);
-            }
-        },
-        [users]
-    );
+        const url = `/api/users/u/${username}/connected/${name}`;
+        const date = users[users.length - 1]?.connected_at || null;
+        const { data } = await axios.post(url, { date });
 
-    useEffect(() => {
-        const options: IntersectionObserverInit = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 1.0,
-        };
-
-        const observer = new IntersectionObserver(ioCallback, options);
-
-        if (scrollTarget && scrollTarget.current) {
-            observer.observe(scrollTarget.current);
+        if (data.has_more) {
+            setUsers(u => [...u, ...data.users]);
         }
 
-        return () => {
-            observer.disconnect();
-        };
-    }, [ioCallback]);
+        if (!data.has_more && scrollTarget && scrollTarget.current) {
+            observer.unobserve(scrollTarget.current);
+        }
+
+        setLoading(false);
+    }
+
+    useInfiniteScroll(scrollTarget, ioFunction, users);
+
+    useEffect(() => {
+        getUsers();
+    }, []);
 
     return (
         <section className='flex--1'>
@@ -105,9 +99,14 @@ function ConnectedUsers({ name }: Props) {
             <div className='pd--md'>
                 {users.length ? (
                     <>
-                        <div>
+                        <div className='users__main'>
                             {users.map(user => (
-                                <User key={user.id} {...user} />
+                                <User
+                                    key={user.id}
+                                    className='b--1 brdr--primary-light b-rad--sm'
+                                    namespace='users'
+                                    {...user}
+                                />
                             ))}
                         </div>
 

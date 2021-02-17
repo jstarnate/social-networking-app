@@ -56,14 +56,14 @@ function Notifications() {
 
     if (loading) {
         return (
-            <section className='flex--1 pd--lg'>
+            <section className='flex--1 pd--md'>
                 <Spinner />
             </section>
         );
     }
 
     return (
-        <section className='flex--1 pd--lg'>
+        <section className='flex--1 pd--md'>
             <Helmet>
                 <title>Notifications</title>
             </Helmet>

@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import SuggestedUser from './SuggestedUser';
+import User from 'modules/users/User';
 import { State } from 'types/redux';
 
 function SuggestedUsers() {
@@ -19,7 +19,12 @@ function SuggestedUsers() {
 
             <div>
                 {suggestedUsers.map(user => (
-                    <SuggestedUser key={user.id} {...user} />
+                    <User
+                        key={user.id}
+                        className='bg--primary-pale b--1 brdr--primary-light b-rad--sm mg-t--md'
+                        namespace='rightbar'
+                        {...user}
+                    />
                 ))}
             </div>
         </section>

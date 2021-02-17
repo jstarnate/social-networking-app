@@ -49,22 +49,25 @@ function Users() {
     useInfiniteScroll(scrollTarget, ioFunction, ids);
 
     return (
-        <section className='flex--1 pd--lg'>
+        <section className='flex--1 pd--md'>
             <Helmet>
                 <title>Users</title>
             </Helmet>
 
-            <h3 className='text--black-light'>
-                Find people you want to follow
-            </h3>
+            <h3 className='text--black-light'>Search for people</h3>
 
             {usersLoading ? (
-                <Spinner />
+                <Spinner containerClassName='mg-t--md' />
             ) : (
                 <>
-                    <div>
+                    <div className='mg-t--md users__main'>
                         {users.map(user => (
-                            <User key={user.id} {...user} />
+                            <User
+                                key={user.id}
+                                className='b--1 brdr--primary-light b-rad--sm'
+                                namespace='users'
+                                {...user}
+                            />
                         ))}
                     </div>
 
