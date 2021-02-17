@@ -1,13 +1,16 @@
 import { Switch, Route, NavLink, useRouteMatch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import Headline from 'modules/profile/Headline';
 import Posts from 'modules/profile/Posts';
+import { State } from 'types/redux';
 
 interface ProfileProps {
     name: string | null;
 }
 
 function Profile({ name }: ProfileProps) {
+    const screenWidth = useSelector((state: State) => state.screenWidth);
     const { url, path } = useRouteMatch();
 
     return (
@@ -24,25 +27,41 @@ function Profile({ name }: ProfileProps) {
                     activeClassName='profile__active-tab'
                     to={url}
                     exact>
-                    Posts
+                    {screenWidth >= 650 ? (
+                        <span>Posts</span>
+                    ) : (
+                        <i className='fa fa-pencil-square'></i>
+                    )}
                 </NavLink>
                 <NavLink
                     className='flex--1 font--md text--primary text--center pd-t--sm pd-b--sm'
                     activeClassName='profile__active-tab'
                     to={`${url}/likes`}>
-                    Likes
+                    {screenWidth >= 650 ? (
+                        <span>Likes</span>
+                    ) : (
+                        <i className='fa fa-heart'></i>
+                    )}
                 </NavLink>
                 <NavLink
                     className='flex--1 font--md text--primary text--center pd-t--sm pd-b--sm'
                     activeClassName='profile__active-tab'
                     to={`${url}/comments`}>
-                    Comments
+                    {screenWidth >= 650 ? (
+                        <span>Comments</span>
+                    ) : (
+                        <i className='fa fa-comments'></i>
+                    )}
                 </NavLink>
                 <NavLink
                     className='flex--1 font--md text--primary text--center pd-t--sm pd-b--sm'
                     activeClassName='profile__active-tab'
                     to={`${url}/bookmarks`}>
-                    Bookmarks
+                    {screenWidth >= 650 ? (
+                        <span>Bookmarks</span>
+                    ) : (
+                        <i className='fa fa-bookmark'></i>
+                    )}
                 </NavLink>
             </div>
 

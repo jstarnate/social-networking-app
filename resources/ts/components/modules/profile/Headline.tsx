@@ -72,11 +72,11 @@ function Headline() {
     }
 
     return (
-        <section className='pd-t--lg pd-l--sm pd-r--sm'>
+        <section className='pd-t--lg pd-l--sm pd-r--sm profile__headline'>
             {/* Basic info and follow/unfollow button */}
-            <div className='d--flex ai--center'>
+            <div className='d--flex ai--center profile__headline-top'>
                 <BasicUserInfo
-                    className='d--flex ai--center'
+                    className='d--flex ai--center profile__basic-info'
                     avatarSize={100}
                     full_name={user?.full_name || null}
                     username={user?.username || null}
@@ -87,7 +87,7 @@ function Headline() {
                 {user?.not_self ? (
                     followed ? (
                         <button
-                            className='btn btn--danger-o font--md text--bold curved pd-t--xs pd-b--xs pd-l--lg pd-r--lg mg-l--auto'
+                            className='btn btn--danger-o text--bold curved pd-t--xxs pd-b--xxs pd-l--lg pd-r--lg mg-l--auto profile__button'
                             onClick={toggleUnfollowConfirmation.bind(
                                 null,
                                 true
@@ -96,7 +96,7 @@ function Headline() {
                         </button>
                     ) : (
                         <button
-                            className='btn btn--primary-o font--md text--bold curved pd-t--xs pd-b--xs pd-l--lg pd-r--lg mg-l--auto'
+                            className='btn btn--primary-o text--bold curved pd-t--xxs pd-b--xxs pd-l--lg pd-r--lg mg-l--auto profile__button'
                             onClick={follow}>
                             Follow
                         </button>
@@ -104,7 +104,7 @@ function Headline() {
                 ) : (
                     <Link
                         to={`/profile/${username}/edit`}
-                        className='btn btn--primary-o b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-l--auto'>
+                        className='btn btn--primary-o font--sm b-rad--sm pd-t--xxs pd-b--xxs pd-l--md pd-r--md mg-l--auto profile__button'>
                         Edit profile
                     </Link>
                 )}
@@ -120,17 +120,23 @@ function Headline() {
             {/* Location, birth date, and date joined */}
             <div className='mg-t--sm'>
                 {!!user?.location && (
-                    <InfoLabel icon='map-marker' label={user.location} />
+                    <InfoLabel
+                        containerClassName='profile__secondary-info'
+                        icon='map-marker'
+                        label={user.location}
+                    />
                 )}
 
                 <InfoLabel
-                    containerClassName={user?.location ? 'mg-l--lg' : null}
+                    containerClassName={`${
+                        user?.location ? 'mg-l--lg' : ''
+                    } profile__secondary-info`}
                     icon='gift'
                     label={user?.birth_date}
                 />
 
                 <InfoLabel
-                    containerClassName='mg-l--lg'
+                    containerClassName='mg-l--lg profile__secondary-info'
                     icon='calendar'
                     label={user?.date_joined}
                 />

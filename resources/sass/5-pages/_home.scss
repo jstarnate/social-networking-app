@@ -73,6 +73,30 @@
     &__modal-submit-container {
         border-radius: 0 0 $radius--md $radius--md;
     }
+
+    @media screen and (max-width: 650px) {
+        &__headline {
+            text-align: center;
+        }
+
+        &__headline-top,
+        &__basic-info {
+            display: block;
+        }
+        
+        &__basic-info > * {
+            margin: 0 auto 0 auto;
+        }
+
+        &__button {
+            margin-top: $space--sm;
+        }
+
+        &__secondary-info {
+            display: block;
+            margin: $space--xs 0 0 0;
+        }
+    }
 }
 
 .notification {
