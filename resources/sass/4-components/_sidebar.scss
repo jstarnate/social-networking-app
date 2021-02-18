@@ -25,6 +25,7 @@
 
     @media screen and (max-width: 785px) {
         width: 51px;
+        min-width: 51px;
         
         &__wrap {
             width: auto;

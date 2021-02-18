@@ -1,10 +1,13 @@
 interface Props {
+    className?: string;
     size?: number;
 }
 
-function FemaleDefaultAvatar({ size }: Props) {
+function FemaleDefaultAvatar({ className, size }: Props) {
     return (
-        <div style={{ width: `${size}px`, height: `${size}px` }}>
+        <div
+            className={className}
+            style={{ width: `${size}px`, height: `${size}px` }}>
             <svg
                 className='d--block'
                 width={size}

@@ -71,21 +71,13 @@ function Post(props: PostProps) {
 
     return (
         <div className='d--block bg--primary-pale b--1 brdr--primary-light b-rad--md pd--md mg-t--md'>
-            <div className='d--flex ai--center'>
-                <BasicUserInfo
-                    className='d--if ai--center'
-                    imageClassName='home__id-photo'
-                    {...props.user}
-                />
-
-                {props.from_self && (
-                    <button
-                        className='btn font--lg mg-l--auto'
-                        onClick={toggleDeleteConfirmation.bind(null, true)}>
-                        <i className='fa fa-trash text--gray'></i>
-                    </button>
-                )}
-            </div>
+            <BasicUserInfo
+                imageClassName='home__id-photo'
+                avatarSize={55}
+                fromSelf={props.from_self}
+                buttonEvent={toggleDeleteConfirmation.bind(null, true)}
+                {...props.user}
+            />
 
             <p
                 className={`text--black-light mg-t--sm ${props.namespace}__post-body`}>

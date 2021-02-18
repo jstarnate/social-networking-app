@@ -2,6 +2,11 @@
     max-width: 1366px;
     min-width: 320px;
 
+    &__post-headline {
+        max-width: 180px;
+        min-width: 100%;
+    }
+
     &__id-photo {
         width: 55px;
     }
@@ -80,13 +85,12 @@
             text-align: center;
         }
 
-        &__headline-top,
-        &__basic-info {
+        &__headline-top {
             display: block;
         }
         
-        &__basic-info > * {
-            margin: 0 auto 0 auto;
+        &__photo {
+            margin: 0 auto;
         }
 
         &__button {

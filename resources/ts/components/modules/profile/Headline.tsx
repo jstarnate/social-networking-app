@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import BasicUserInfo from 'helpers/BasicUserInfo';
+import ProfilePhoto from 'helpers/ProfilePhoto';
 import Modal from 'helpers/Modal';
 import InfoLabel from './InfoLabel';
 import { UserWithId } from 'types/models';
@@ -75,14 +75,24 @@ function Headline() {
         <section className='pd-t--lg pd-l--sm pd-r--sm profile__headline'>
             {/* Basic info and follow/unfollow button */}
             <div className='d--flex ai--center profile__headline-top'>
-                <BasicUserInfo
-                    className='d--flex ai--center profile__basic-info'
-                    avatarSize={100}
-                    full_name={user?.full_name || null}
-                    username={user?.username || null}
+                <ProfilePhoto
+                    className='profile__photo'
+                    src={user?.image_url || null}
+                    size={100}
                     gender={user?.gender || null}
-                    image_url={user?.image_url || null}
+                    alt='Profile photo'
                 />
+
+                <div className='mg-l--xs'>
+                    <span
+                        className='d--block font--sm text--black-light text--bold'
+                        style={{ whiteSpace: 'pre-wrap' }}>
+                        {user?.full_name}
+                    </span>
+                    <span className='d--block font--sm text--gray'>
+                        @{user?.username}
+                    </span>
+                </div>
 
                 {user?.not_self ? (
                     followed ? (

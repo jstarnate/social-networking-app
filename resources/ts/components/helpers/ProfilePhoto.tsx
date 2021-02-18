@@ -11,11 +11,11 @@ interface Props {
 
 function ProfilePhoto({ className, gender, size, src, alt }: Props) {
     if (!src && gender === 'Male') {
-        return <MaleDefaultAvatar size={size} />;
+        return <MaleDefaultAvatar className={className} size={size} />;
     }
 
     if (!src && gender === 'Female') {
-        return <FemaleDefaultAvatar size={size} />;
+        return <FemaleDefaultAvatar className={className} size={size} />;
     }
 
     return (
