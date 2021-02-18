@@ -59,7 +59,6 @@ function HomeComponent() {
 
     function setStateOnResize(width: number) {
         if (width > 1024) {
-            dispatch(set('openSidebar', false));
             dispatch(set('openRightbar', false));
         }
 

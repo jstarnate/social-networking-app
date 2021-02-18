@@ -6,7 +6,6 @@ const state: State = {
     posts: [],
     suggestedUsers: [],
     screenWidth: 0,
-    openSidebar: false,
     openRightbar: false,
 };
 

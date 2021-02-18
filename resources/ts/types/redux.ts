@@ -9,7 +9,6 @@ export interface State {
     posts: Post[];
     suggestedUsers: UserWithId[];
     screenWidth: number;
-    openSidebar: boolean;
     openRightbar: boolean;
 }
 
