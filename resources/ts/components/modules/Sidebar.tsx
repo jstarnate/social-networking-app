@@ -65,7 +65,7 @@ function Sidebar({ user, notifCount }: SidebarProps) {
                     </NavLink>
 
                     <NavLink
-                        className='d--block font--lg text--gray pd-t--xs pd-b--xs pd-l--lg pos--rel sidebar__navitem'
+                        className='d--flex ai--center font--lg text--gray pd-t--xs pd-b--xs pd-l--lg sidebar__navitem'
                         to='/notifications'
                         activeClassName='sidebar__active-link'>
                         <i className='fa fa-bell'></i>
@@ -74,7 +74,7 @@ function Sidebar({ user, notifCount }: SidebarProps) {
                         </span>
 
                         {!!notifCount && (
-                            <span className='font--sm text--white bg--danger round pos--abs pd-l--xxs pd-r--xxs sidebar__notif-count'>
+                            <span className='font--sm text--white bg--danger round pd-l--xxs pd-r--xxs mg-l--sm sidebar__notif-count'>
                                 {notifCount > 9 ? '9+' : notifCount}
                             </span>
                         )}
