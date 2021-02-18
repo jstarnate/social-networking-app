@@ -36,14 +36,14 @@ function Notifications() {
     }
 
     function updateReadStatus(id: string) {
-        setNotifs(notifItems =>
-            notifItems.map((notifItem: NotificationType) => {
-                if (notifItem.id === id) {
+        setNotifs(current =>
+            current.map((item: NotificationType) => {
+                if (item.id === id) {
                     const dateNow = new Date().toString();
-                    notifItem.read_at = dateNow;
+                    item.read_at = dateNow;
                 }
 
-                return notifItem;
+                return item;
             })
         );
 
