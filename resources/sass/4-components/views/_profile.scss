@@ -1,0 +1,65 @@
+.profile {
+    $this: &;
+
+    &__headline-profile-photo {
+        width: 100px;
+    }
+
+    &__active-tab {
+        border-bottom: 3px solid $primary;
+        font-weight: 700;
+    }
+
+    &__post-body {
+        line-height: 1.5;
+    }
+
+    &__edit-profile-form {
+        max-width: 480px;
+    }
+
+    &__change-photo-container {
+        overflow: hidden;
+
+        &:hover #{$this}__change-photo-button {
+            visibility: visible;
+        }
+    }
+
+    &__change-photo-button {
+        @include coords(null, null, 0, 0);
+        background: rgba(0, 0, 0, 0.5);
+        visibility: hidden;
+    }
+
+    &__edit-bio {
+        resize: none;
+    }
+
+    &__modal-submit-container {
+        border-radius: 0 0 $radius--md $radius--md;
+    }
+
+    @media screen and (max-width: 650px) {
+        &__headline {
+            text-align: center;
+        }
+
+        &__headline-top {
+            display: block;
+        }
+        
+        &__photo {
+            margin: 0 auto;
+        }
+
+        &__button {
+            margin-top: $space--sm;
+        }
+
+        &__secondary-info {
+            display: block;
+            margin: $space--xs 0 0 0;
+        }
+    }
+}

@@ -1,0 +1,12 @@
+.timeline {
+    &__post-input {
+        width: 100%;
+        resize: none;
+        border-radius: $radius--md $radius--md 0 0;
+    }
+
+    &__post-body {
+        word-break: break-word;
+        line-height: 1.5;
+    }
+}
