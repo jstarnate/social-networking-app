@@ -105,7 +105,7 @@ function RegisterComponent() {
     }
 
     return (
-        <section className='pd-t--sm pd-b--lg mg-l--auto mg-r--auto register__wrap'>
+        <section className='pd-t--sm pd-b--lg pd-l--md pd-r--md mg-l--auto mg-r--auto register__wrap'>
             <h2 className='text--black-light'>Create your account</h2>
 
             <form className='mg-t--md register' onSubmit={submit}>
@@ -189,7 +189,7 @@ function RegisterComponent() {
                     <div className='d--flex mg-t--xs'>
                         <Select
                             className='bg--none text--black pd-t--xs pd-b--xs pd-l--sm pd-r--sm b-rad--sm b--1 brdr--gray'
-                            defaultOption='Select month'
+                            defaultOption='Month'
                             items={months}
                             changeEvent={handleSelectValue.bind(
                                 null,
@@ -201,13 +201,13 @@ function RegisterComponent() {
                             className='text--black b--1 brdr--gray b-rad--sm pd-l--sm pd-r--sm mg-l--sm register__birthday-input'
                             type='text'
                             inputMode='numeric'
-                            placeholder='DD'
+                            placeholder='Day'
                             onChange={handleBirthDayValue}
                         />
 
                         <Select
                             className='bg--none text--black b-rad--sm b--1 brdr--gray pd-t--xs pd-b--xs pd-l--sm pd-r--sm mg-l--sm'
-                            defaultOption='Select year'
+                            defaultOption='Year'
                             items={years}
                             changeEvent={handleSelectValue.bind(
                                 null,

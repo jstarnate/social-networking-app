@@ -1,10 +1,11 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import SearchBar from 'modules/SearchBar';
 import SuggestedUsers from 'modules/rightbar/SuggestedUsers';
 import Spinner from 'helpers/Spinner';
+import { State } from 'types/redux';
 import { set } from 'actions';
 
 const Filterer = lazy(() => import('modules/rightbar/Filterer'));
@@ -12,10 +13,9 @@ const Filterer = lazy(() => import('modules/rightbar/Filterer'));
 function Rightbar() {
     const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        getSuggestedUsers();
-    }, []);
+    const screenWidth = useSelector((state: State) => state.screenWidth);
+    const openRightbar = useSelector((state: State) => state.openRightbar);
+    const status = screenWidth <= 1024 && openRightbar ? 'rightbar--open' : '';
 
     async function getSuggestedUsers() {
         setLoading(true);
@@ -30,10 +30,27 @@ function Rightbar() {
         }
     }
 
+    function hideRightbar() {
+        dispatch(set('openRightbar', false));
+    }
+
+    useEffect(() => {
+        getSuggestedUsers();
+    }, []);
+
     return (
         <aside className='pos--rel rightbar'>
-            <div className='pos--fixed bl--1 brdr--primary-light pd--md rightbar__wrap'>
-                <SearchBar />
+            <div
+                className={`pos--fixed bg--white bl--1 brdr--primary-light pd--md rightbar__wrap ${status}`}>
+                <div className='d--flex'>
+                    {screenWidth <= 1024 && (
+                        <button className='btn mg-r--sm' onClick={hideRightbar}>
+                            <i className='fa fa-arrow-right font--lg text--black-light'></i>
+                        </button>
+                    )}
+
+                    <SearchBar />
+                </div>
 
                 {loading ? (
                     <Spinner containerClassName='mg-t--md' />

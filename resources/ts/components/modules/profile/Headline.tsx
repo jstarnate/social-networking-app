@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import BasicUserInfo from 'helpers/BasicUserInfo';
+import ProfilePhoto from 'helpers/ProfilePhoto';
 import Modal from 'helpers/Modal';
 import InfoLabel from './InfoLabel';
 import { UserWithId } from 'types/models';
@@ -72,22 +72,32 @@ function Headline() {
     }
 
     return (
-        <section className='pd-t--lg pd-l--sm pd-r--sm'>
+        <section className='pd-t--lg pd-l--sm pd-r--sm profile__headline'>
             {/* Basic info and follow/unfollow button */}
-            <div className='d--flex ai--center'>
-                <BasicUserInfo
-                    className='d--flex ai--center'
-                    avatarSize={100}
-                    full_name={user?.full_name || null}
-                    username={user?.username || null}
+            <div className='d--flex ai--center profile__headline-top'>
+                <ProfilePhoto
+                    className='profile__photo'
+                    src={user?.image_url || null}
+                    size={100}
                     gender={user?.gender || null}
-                    image_url={user?.image_url || null}
+                    alt='Profile photo'
                 />
+
+                <div className='mg-l--xs'>
+                    <span
+                        className='d--block font--sm text--black-light text--bold'
+                        style={{ whiteSpace: 'pre-wrap' }}>
+                        {user?.full_name}
+                    </span>
+                    <span className='d--block font--sm text--gray'>
+                        @{user?.username}
+                    </span>
+                </div>
 
                 {user?.not_self ? (
                     followed ? (
                         <button
-                            className='btn btn--danger-o font--md text--bold curved pd-t--xs pd-b--xs pd-l--lg pd-r--lg mg-l--auto'
+                            className='btn btn--danger-o text--bold curved pd-t--xxs pd-b--xxs pd-l--lg pd-r--lg mg-l--auto profile__button'
                             onClick={toggleUnfollowConfirmation.bind(
                                 null,
                                 true
@@ -96,7 +106,7 @@ function Headline() {
                         </button>
                     ) : (
                         <button
-                            className='btn btn--primary-o font--md text--bold curved pd-t--xs pd-b--xs pd-l--lg pd-r--lg mg-l--auto'
+                            className='btn btn--primary-o text--bold curved pd-t--xxs pd-b--xxs pd-l--lg pd-r--lg mg-l--auto profile__button'
                             onClick={follow}>
                             Follow
                         </button>
@@ -104,7 +114,7 @@ function Headline() {
                 ) : (
                     <Link
                         to={`/profile/${username}/edit`}
-                        className='btn btn--primary-o b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-l--auto'>
+                        className='btn btn--primary-o font--sm b-rad--sm pd-t--xxs pd-b--xxs pd-l--md pd-r--md mg-l--auto profile__button'>
                         Edit profile
                     </Link>
                 )}
@@ -120,17 +130,23 @@ function Headline() {
             {/* Location, birth date, and date joined */}
             <div className='mg-t--sm'>
                 {!!user?.location && (
-                    <InfoLabel icon='map-marker' label={user.location} />
+                    <InfoLabel
+                        containerClassName='profile__secondary-info'
+                        icon='map-marker'
+                        label={user.location}
+                    />
                 )}
 
                 <InfoLabel
-                    containerClassName={user?.location ? 'mg-l--lg' : null}
+                    containerClassName={`${
+                        user?.location ? 'mg-l--lg' : ''
+                    } profile__secondary-info`}
                     icon='gift'
                     label={user?.birth_date}
                 />
 
                 <InfoLabel
-                    containerClassName='mg-l--lg'
+                    containerClassName='mg-l--lg profile__secondary-info'
                     icon='calendar'
                     label={user?.date_joined}
                 />

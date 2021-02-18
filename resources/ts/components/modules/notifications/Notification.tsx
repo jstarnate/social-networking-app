@@ -41,7 +41,8 @@ function Notification({ notif, updateEvent }: Props) {
                 ) : notif.data.event_type === 'OP_COMMENT' ? (
                     <p className='text--black-light mg-l--sm'>
                         <b className='text--black'>{notif.data.name}</b>{' '}
-                        commented on {notif.data.gender} post.
+                        commented on{' '}
+                        {notif.data.gender === 'Male' ? 'his' : 'her'} post.
                     </p>
                 ) : null}
             </Link>

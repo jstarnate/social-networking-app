@@ -51,7 +51,7 @@ function ResetPasswordComponent() {
 
     return (
         <section className='mg-l--auto mg-r--auto mg-t--md reset__wrap'>
-            <form onSubmit={submit}>
+            <form className='pd-r--lg pd-l--md' onSubmit={submit}>
                 <InputField
                     id='password'
                     type='password'
@@ -67,12 +67,10 @@ function ResetPasswordComponent() {
                                 ? 'text--danger'
                                 : 'text--black-light'
                         }`}>
-                        {passwordConfirmationError
-                            ? passwordConfirmationError
-                            : 'Confirm new password'}
+                        {passwordConfirmationError || 'Confirm new password'}
                     </label>
                     <input
-                        className='font--md text--black b--1 b-rad--sm full-width pd--sm mg-t--xxs'
+                        className='full-width text--black b--1 brdr--gray b-rad--sm pd--xs mg-t--xxs'
                         id='repeat'
                         type='password'
                         value={password_confirmation || ''}
@@ -81,7 +79,7 @@ function ResetPasswordComponent() {
                 </div>
 
                 <button
-                    className='btn btn--primary font--md text--bold b-rad--sm pd-t--sm pd-b--sm pd-l--sm pd-r--sm mg-t--md'
+                    className='btn btn--primary font--md text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--lg pd-r--lg mg-t--md'
                     disabled={loading}>
                     Change password
                 </button>

@@ -1,14 +1,24 @@
 import { ReactNode } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from 'types/redux';
+import { set } from 'actions';
 
 interface Props {
     children: ReactNode;
 }
 
 function ViewWrap({ children }: Props) {
+    const screenWidth = useSelector((state: State) => state.screenWidth);
+    const dispatch = useDispatch();
+
+    function showRightbar() {
+        dispatch(set('openRightbar', true));
+    }
+
     return (
         <section className='flex--1'>
-            <header className='pos--sticky full-width d--flex jc--center bg--white bb--1 brdr--primary-light pd-t--xs pd-b--xs header'>
-                <a href='/home'>
+            <header className='pos--sticky full-width d--flex ai--center jc--center bg--white bb--1 brdr--primary-light pd-t--md pd-b--md header'>
+                <a className='pos--abs header__logo-link' href='/home'>
                     <svg
                         width='30'
                         height='30'
@@ -23,6 +33,14 @@ function ViewWrap({ children }: Props) {
                         />
                     </svg>
                 </a>
+
+                {screenWidth <= 1024 && (
+                    <button
+                        className='btn pos--abs pd-t--xs pd-b--xs pd-l--sm pd-r--sm header__right-button'
+                        onClick={showRightbar}>
+                        <i className='fa fa-arrow-left text--black-light'></i>
+                    </button>
+                )}
             </header>
 
             {children}

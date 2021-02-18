@@ -6,46 +6,43 @@ interface BasicUserInfoProps extends User {
     className?: string;
     imageClassName?: string;
     avatarSize?: number;
+    fromSelf?: boolean;
+    buttonEvent?: () => void;
 }
 
-interface ContentProps extends User {
-    imageClassName?: string;
-    avatarSize?: number;
-}
-
-const Content = (props: ContentProps) => (
-    <>
-        <ProfilePhoto
-            className={props.imageClassName}
-            src={props.image_url}
-            size={props.avatarSize}
-            gender={props.gender}
-            alt='Profile photo'
-        />
-
-        <div className='mg-l--xs'>
-            <span className='d--block font--sm text--black-light text--bold'>
-                {props.full_name}
-            </span>
-            <span className='font--sm text--gray'>@{props.username}</span>
-        </div>
-    </>
-);
-
-function BasicUserInfo({ className, url, ...props }: BasicUserInfoProps) {
-    if (!url) {
-        return (
-            <div className={className}>
-                <Content {...props} />
-            </div>
-        );
-    }
-
+function BasicUserInfo(props: BasicUserInfoProps) {
     return (
-        <Link className={className} to={url || ''}>
-            <Content {...props} />
+        <Link className={props.className} to={props.url || ''}>
+            <ProfilePhoto
+                className={props.imageClassName}
+                src={props.image_url}
+                size={props.avatarSize}
+                gender={props.gender}
+                alt='Profile photo'
+            />
+
+            <div className='mg-l--xs' style={{ minWidth: '0' }}>
+                <span className='d--block font--sm text--black-light text--bold truncated'>
+                    {props.full_name}
+                </span>
+                <span className='d--block font--sm text--gray truncated'>
+                    @{props.username}
+                </span>
+            </div>
+
+            {props.fromSelf && props.buttonEvent && (
+                <button
+                    className='btn font--lg pd-l--md mg-l--auto'
+                    onClick={props.buttonEvent}>
+                    <i className='fa fa-trash text--gray'></i>
+                </button>
+            )}
         </Link>
     );
 }
+
+BasicUserInfo.defaultProps = {
+    className: 'd--flex ai--center home__post-headline',
+};
 
 export default BasicUserInfo;
