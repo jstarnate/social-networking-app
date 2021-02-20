@@ -11,10 +11,8 @@
         transform: translate(-50%, -50%);
     }
 
-    @media screen and (max-width: 1024px) {
-        &__right-button {
-            @include coords(50%, 0);
-            transform: translateY(-50%);
-        }
+    &__loading-spinner,
+    &__search-suggestions {
+        @include coords(100%, null, null, 0);
     }
 }
