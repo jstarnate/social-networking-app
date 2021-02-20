@@ -6,7 +6,7 @@ import Spinner from 'helpers/Spinner';
 import { Post as PostType } from 'types/models';
 import useDebounce from 'hooks/useDebounce';
 
-interface PostProps extends PostType {
+interface Props extends PostType {
     namespace: string;
     deleteEvent: (id: number) => void;
     render?: (comments: number) => ReactElement;
@@ -14,7 +14,7 @@ interface PostProps extends PostType {
 
 const Modal = lazy(() => import('helpers/Modal'));
 
-function Post(props: PostProps) {
+function Post(props: Props) {
     const [liked, setLiked] = useState<boolean>(props.is_liked);
     const [bookmarked, setBookmarked] = useState<boolean>(props.bookmarked);
     const [likesCount, setLikesCount] = useState<number>(props.likes);
@@ -74,8 +74,6 @@ function Post(props: PostProps) {
             <BasicUserInfo
                 imageClassName='home__id-photo'
                 avatarSize={55}
-                fromSelf={props.from_self}
-                buttonEvent={toggleDeleteConfirmation.bind(null, true)}
                 {...props.user}
             />
 
@@ -85,7 +83,9 @@ function Post(props: PostProps) {
             </p>
 
             <div className='mg-t--sm'>
-                <button className='btn font--lg' onClick={likeEvent}>
+                <button
+                    className='btn font--lg home__post-action-button'
+                    onClick={likeEvent}>
                     {liked ? (
                         <i className='fa fa-heart font--lg text--danger-dark'></i>
                     ) : (
@@ -105,7 +105,7 @@ function Post(props: PostProps) {
                 ) : (
                     <Link
                         to={`/posts/${props.id}/comments`}
-                        className='btn font--lg mg-l--xl'>
+                        className='btn font--lg mg-l--xl home__post-action-button'>
                         <i className='fa fa-comment-o text--black-light'></i>
                         <span className='text--black-light mg-l--xxs'>
                             {props.comments}
@@ -113,12 +113,22 @@ function Post(props: PostProps) {
                     </Link>
                 )}
 
-                <button className='btn mg-l--xl' onClick={bookmarkEvent}>
+                <button
+                    className='btn mg-l--xl home__post-action-button'
+                    onClick={bookmarkEvent}>
                     <i
                         className={`fa ${
                             bookmarked ? 'fa-bookmark' : 'fa-bookmark-o'
                         } font--lg text--black-light`}></i>
                 </button>
+
+                {props.from_self && (
+                    <button
+                        className='btn mg-l--xl home__post-action-button'
+                        onClick={toggleDeleteConfirmation.bind(null, true)}>
+                        <i className='fa fa-trash font--lg text--gray'></i>
+                    </button>
+                )}
             </div>
 
             {showDeleteConfirmation && (
