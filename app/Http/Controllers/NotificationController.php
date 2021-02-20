@@ -17,10 +17,10 @@ class NotificationController extends Controller
 	public function get(Request $request)
 	{
 		$notifications = auth()->user()->notifications()
-							->orderBy('created_at', 'desc')
+							->latest()
 							->where('created_at', '<', $request->date ?: now())
 							->get()
-							->take(5);
+							->take(10);
 
 		$items = $notifications->map(function($notif) {
 			$notif->time_diff = $notif->created_at->diffForHumans();
