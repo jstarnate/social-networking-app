@@ -2,15 +2,13 @@ import { Link } from 'react-router-dom';
 import ProfilePhoto from './ProfilePhoto';
 import { User } from 'types/models';
 
-interface BasicUserInfoProps extends User {
+interface Props extends User {
     className?: string;
     imageClassName?: string;
     avatarSize?: number;
-    fromSelf?: boolean;
-    buttonEvent?: () => void;
 }
 
-function BasicUserInfo(props: BasicUserInfoProps) {
+function BasicUserInfo(props: Props) {
     return (
         <Link className={props.className} to={props.url || ''}>
             <ProfilePhoto
@@ -29,20 +27,12 @@ function BasicUserInfo(props: BasicUserInfoProps) {
                     @{props.username}
                 </span>
             </div>
-
-            {props.fromSelf && props.buttonEvent && (
-                <button
-                    className='btn font--lg pd-l--md mg-l--auto'
-                    onClick={props.buttonEvent}>
-                    <i className='fa fa-trash text--gray'></i>
-                </button>
-            )}
         </Link>
     );
 }
 
 BasicUserInfo.defaultProps = {
-    className: 'd--flex ai--center home__post-headline',
+    className: 'd--if ai--center home__post-headline',
 };
 
 export default BasicUserInfo;
