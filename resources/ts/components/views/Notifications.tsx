@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import Notification from 'modules/notifications/Notification';
 import Spinner from 'helpers/Spinner';
+import useInfiniteScroll from 'hooks/useInfiniteScroll';
 
 export interface NotificationType {
     id: string;
@@ -20,17 +21,35 @@ export interface NotificationType {
     created_at: string;
     updated_at: string;
 }
-// FIXME: Implement infinite scroll functionality
+
 function Notifications() {
     const [loading, setLoading] = useState<boolean>(false);
     const [notifs, setNotifs] = useState<NotificationType[]>([]);
+    const scrollTarget = useRef<HTMLInputElement>(null);
 
     async function getNotifications() {
         setLoading(true);
 
-        const { data } = await axios.get('/api/notifications/get');
+        const { data } = await axios.post('/api/notifications/get');
 
         setNotifs(data.items);
+        setLoading(false);
+    }
+
+    async function ioFunction(observer: IntersectionObserver) {
+        setLoading(true);
+
+        const date = notifs[notifs.length - 1].created_at;
+        const { data } = await axios.post('/api/notifications/get', { date });
+
+        if (data.has_more) {
+            setNotifs(current => [...current, ...data.items]);
+        }
+
+        if (!data.has_more && scrollTarget && scrollTarget.current) {
+            observer.unobserve(scrollTarget.current);
+        }
+
         setLoading(false);
     }
 
@@ -61,11 +80,11 @@ function Notifications() {
         getNotifications();
     }, []);
 
+    useInfiniteScroll(scrollTarget, ioFunction, notifs);
+
     return (
         <section className='pd-b--md pd-l--md pd-r--md'>
-            {loading ? (
-                <Spinner />
-            ) : !loading && !notifs.length ? (
+            {!loading && !notifs.length ? (
                 <h3 className='text--gray text--bold text--center'>
                     You do not have any notification yet.
                 </h3>
@@ -78,8 +97,12 @@ function Notifications() {
                             notif={notif}
                         />
                     ))}
+
+                    <div ref={scrollTarget}></div>
                 </>
             )}
+
+            {loading && <Spinner containerClassName='mg-t--md' />}
         </section>
     );
 }
