@@ -23,4 +23,10 @@
             background: $gray--light;
         }
     }
+
+    @media screen and (max-width: 480px) {
+        &__post-action-button:not(:first-child) {
+            margin-left: $space--lg;
+        }
+    }
 }
