@@ -1,85 +1,60 @@
-import { useState, useRef } from 'react';
-import SearchBar from './SearchBar';
-import Modal from 'helpers/Modal';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import MobileSearchBar from 'modules/header/SearchBar.mobile';
+import { State } from 'types/redux';
+import { set } from 'actions';
 
-function Header() {
-    const [showModal, setShowModal] = useState<boolean>(false);
-    const logoutForm = useRef<HTMLFormElement>(null);
-    const csrfToken = document
-        .querySelector('meta[name="csrf-token"]')
-        ?.getAttribute('content');
+interface Props {
+    title: string;
+    path: string;
+}
 
-    function enableModal() {
-        setShowModal(true);
+function Header({ title, path }: Props) {
+    const [searchMode, toggleSearchMode] = useState<boolean>(false);
+    const screenWidth = useSelector((state: State) => state.screenWidth);
+    const dispatch = useDispatch();
+    const { goBack } = useHistory();
+
+    function showRightbar() {
+        dispatch(set('openRightbar', true));
     }
 
-    function disableModal() {
-        setShowModal(false);
-    }
-
-    function signOut() {
-        logoutForm.current?.submit();
-        localStorage.clear();
+    if (screenWidth <= 785 && searchMode) {
+        return (
+            <MobileSearchBar closeEvent={toggleSearchMode.bind(null, false)} />
+        );
     }
 
     return (
-        <header className='pos--sticky bg--primary pd-t--sm pd-b--sm pd-l--lg pd-r--lg header'>
-            <div className='d--flex ai--center mg-l--auto mg-r--auto header__wrap'>
-                <a href='/home'>
-                    <svg
-                        width='40'
-                        height='40'
-                        viewBox='0 0 40 40'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'>
-                        <circle cx='20' cy='20' r='20' fill='black' />
-                        <path
-                            d='M6.85718 12H18V29.1429L9.14289 20.2857M33.4286 12H24.8572M24.8572 12H21.7143L9.42861 31.1429M24.8572 12V31.7143'
-                            stroke='white'
-                            strokeWidth='2'
-                        />
-                    </svg>
-                </a>
-
-                <SearchBar />
-
-                <button className='btn pd--xs mg-l--auto' onClick={enableModal}>
-                    <i className='fa fa-sign-out font--md text--gray'></i>
+        <header className='pos--sticky full-width d--flex ai--center bg--white bb--1 brdr--primary-light header'>
+            {path !== '/home' && (
+                <button className='btn pd--sm' onClick={goBack}>
+                    <i className='fa fa-arrow-left font--md text--primary'></i>
                 </button>
-            </div>
+            )}
 
-            {showModal && (
-                <Modal
-                    type='primary'
-                    title='Sign out'
-                    message='Are you sure you want to sign out?'
-                    closeEvent={disableModal}>
-                    <>
-                        <button
-                            className='btn btn--secondary font--sm b-ra--sm pd-t--xs pd-b--xs pd-l--md pd-r--md mg-r--sm'
-                            onClick={disableModal}>
-                            Cancel
-                        </button>
-                        <button
-                            className='btn btn--primary font--sm text--bold b-rad--sm pd-t--xs pd-b--xs pd-l--md pd-r--md'
-                            onClick={signOut}>
-                            Sign out
-                        </button>
+            <h3
+                className={`text--black-light ${
+                    path === '/home' ? 'pd-t--xs pd-b--xs mg-l--sm' : ''
+                }`}>
+                {title}
+            </h3>
 
-                        <form
-                            ref={logoutForm}
-                            className='d--none'
-                            method='POST'
-                            action='/api/sign-out'>
-                            <input
-                                type='hidden'
-                                name='_token'
-                                value={csrfToken || ''}
-                            />
-                            <input type='submit' />
-                        </form>
-                    </>
-                </Modal>
+            {screenWidth <= 1024 && screenWidth > 785 && (
+                <button
+                    className='btn pd--sm mg-l--auto'
+                    onClick={showRightbar}>
+                    <i className='fa fa-bars font--md text--gray'></i>
+                </button>
+            )}
+
+            {screenWidth <= 785 && (
+                <button
+                    className='btn pd--sm mg-l--auto'
+                    onClick={toggleSearchMode.bind(null, true)}>
+                    <i className='fa fa-search font--md text--gray'></i>
+                </button>
             )}
         </header>
     );
