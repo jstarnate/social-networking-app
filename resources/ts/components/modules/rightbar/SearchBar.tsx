@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent, useRef, useState } from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import BasicUserInfo from 'helpers/BasicUserInfo';
 import Ellipsis from 'helpers/Ellipsis';
@@ -69,29 +68,27 @@ function SearchBar() {
             )}
 
             {!loading && showSuggestions && !!users.length && (
-                <BrowserRouter>
-                    <div className='pos--abs full-width bg--white b--1 brdr--primary search__suggestions'>
-                        {users.map((user: User, i) => {
-                            const bordered = i ? 'bt--1 brdr--primary' : '';
+                <div className='pos--abs full-width bg--white b--1 brdr--primary search__suggestions'>
+                    {users.map((user, i) => {
+                        const bordered = i ? 'bt--1 brdr--primary' : '';
 
-                            return (
-                                <BasicUserInfo
-                                    key={i}
-                                    imageClassName='search__profile-photo'
-                                    className={`d--flex ai--center pd--xs ${bordered} search__suggestion`}
-                                    avatarSize={35}
-                                    {...user}
-                                />
-                            );
-                        })}
+                        return (
+                            <BasicUserInfo
+                                key={i}
+                                imageClassName='search__profile-photo'
+                                className={`d--flex ai--center pd--xs ${bordered} search__suggestion`}
+                                avatarSize={35}
+                                {...user}
+                            />
+                        );
+                    })}
 
-                        <a
-                            className='d--block font--sm text--primary-dark text--center bt--1 brdr--primary pd-t--xs pd-b--xs'
-                            href={`/users/search?sq=${query}`}>
-                            Show all
-                        </a>
-                    </div>
-                </BrowserRouter>
+                    <a
+                        className='d--block font--sm text--primary-dark text--center bt--1 brdr--primary pd-t--xs pd-b--xs'
+                        href={`/users/search?sq=${query}`}>
+                        Show all
+                    </a>
+                </div>
             )}
         </section>
     );
