@@ -14,7 +14,7 @@ function Notification({ notif, updateEvent }: Props) {
         <div className='mg-t--md'>
             <Link
                 to={notif.data.url}
-                className={`d--flex ai--center pd--sm text--black-light b--1 brdr--primary b-rad--md ${background}`}
+                className={`d--flex ai--center pd--xs text--black-light b--1 brdr--primary b-rad--md ${background}`}
                 onClick={updateEvent}>
                 <ProfilePhoto
                     className='notification__profile-photo'
