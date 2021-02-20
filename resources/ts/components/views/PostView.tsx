@@ -65,7 +65,7 @@ function PostView() {
     }
 
     return (
-        <section className='flex--1 pd-t--xs pd-b--lg pd-l--sm pd-r--sm timeline'>
+        <div className='pd-t--xs pd-b--lg pd-l--sm pd-r--sm timeline'>
             {!loading && tweet && (
                 <Post
                     key={1}
@@ -90,7 +90,7 @@ function PostView() {
                 incrementEvent={modifyCount.bind(null, 'increment')}
                 decrementEvent={modifyCount.bind(null, 'decrement')}
             />
-        </section>
+        </div>
     );
 }
 
