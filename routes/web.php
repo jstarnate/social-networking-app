@@ -117,7 +117,7 @@ Route::group([
     'middleware' => 'auth',
     'prefix' => 'api/notifications'
 ], function() {
-    Route::get('/get', [NotificationController::class, 'get']);
+    Route::post('/get', [NotificationController::class, 'get']);
     Route::get('/count', [NotificationController::class, 'getCount']);
     Route::put('/read', [NotificationController::class, 'read']);
 });
