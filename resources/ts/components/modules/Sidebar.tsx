@@ -1,25 +1,42 @@
-import { lazy, Suspense, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
+import Echo from 'laravel-echo';
 import ProfilePhoto from 'helpers/ProfilePhoto';
 import Spinner from 'helpers/Spinner';
 import { UserWithId } from 'types/models';
 import { State } from 'types/redux';
+import 'pusher-js';
 
-interface SidebarProps {
+interface Props {
     user: UserWithId | null;
-    notifCount: number;
+}
+
+interface EchoData {
+    count: number;
 }
 
 const Modal = lazy(() => import('helpers/Modal'));
+const csrfToken = document
+    .querySelector('meta[name="csrf-token"]')
+    ?.getAttribute('content');
+const echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.PUSHER_APP_KEY,
+    cluster: process.env.PUSHER_APP_CLUSTER,
+});
 
-function Sidebar({ user, notifCount }: SidebarProps) {
+function Sidebar({ user }: Props) {
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [notifCount, setNotifCount] = useState<number>(0);
     const logoutForm = useRef<HTMLFormElement>(null);
     const screenWidth = useSelector((state: State) => state.screenWidth);
-    const csrfToken = document
-        .querySelector('meta[name="csrf-token"]')
-        ?.getAttribute('content');
+
+    async function getNotifCount() {
+        const { data } = await axios.get('/api/notifications/count');
+        setNotifCount(data.count);
+    }
 
     function enableModal() {
         setShowModal(true);
@@ -33,6 +50,21 @@ function Sidebar({ user, notifCount }: SidebarProps) {
         logoutForm.current?.submit();
         localStorage.clear();
     }
+
+    useEffect(() => {
+        getNotifCount();
+    }, []);
+
+    useEffect(() => {
+        if (user) {
+            echo.channel(`notify.user.${user.id}`).listen(
+                'SendUnreadNotifsCount',
+                (data: EchoData) => {
+                    setNotifCount(data.count);
+                }
+            );
+        }
+    }, [user]);
 
     return (
         <aside className='pos--rel sidebar'>
