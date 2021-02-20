@@ -11,8 +11,12 @@
         <div class="pos--rel d--flex mg-l--auto mg-r--auto header__wrap">
             <a class="pos--abs header__logo-link" href="{{ route('index') }}">
                 <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="20" cy="20" r="20" fill="black"/>
-                    <path d="M6.85718 12H18V29.1429L9.14289 20.2857M33.4286 12H24.8572M24.8572 12H21.7143L9.42861 31.1429M24.8572 12V31.7143" stroke="white" stroke-width="2"/>
+                    <rect width="40" height="40" rx="20" fill="black"/>
+                    <path d="M10.4 22.9917H15.6632V28.2L12.9 25.3875L10.4 22.9917Z" fill="white"/>
+                    <path d="M21.979 16.1167H25.1369V22.9917L21.979 28.2V16.1167Z" fill="white"/>
+                    <path d="M17.2421 13.2H19.9789H25.1894H30.4L25.1368 16.325H17.2421V14.7625V13.2Z" fill="white"/>
+                    <rect x="17.2421" y="16.2208" width="3.15789" height="11.9792" fill="white"/>
+                    <path d="M10.4 16.4L15.6 13.2V16.4H10.4Z" fill="white"/>
                 </svg>
             </a>
     
