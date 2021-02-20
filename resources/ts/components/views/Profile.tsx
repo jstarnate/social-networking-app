@@ -1,24 +1,15 @@
 import { Switch, Route, NavLink, useRouteMatch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Helmet } from 'react-helmet';
 import Headline from 'modules/profile/Headline';
 import Posts from 'modules/profile/Posts';
 import { State } from 'types/redux';
 
-interface ProfileProps {
-    name: string | null;
-}
-
-function Profile({ name }: ProfileProps) {
+function Profile() {
     const screenWidth = useSelector((state: State) => state.screenWidth);
     const { url, path } = useRouteMatch();
 
     return (
-        <section className='flex--1 profile'>
-            <Helmet>
-                <title>{name}</title>
-            </Helmet>
-
+        <div className='profile'>
             <Headline />
 
             <div className='d--flex bb--1 brdr--primary mg-t--sm'>
@@ -77,7 +68,7 @@ function Profile({ name }: ProfileProps) {
                     <Posts section='bookmarks' />
                 </Route>
             </Switch>
-        </section>
+        </div>
     );
 }
 

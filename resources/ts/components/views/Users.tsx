@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
@@ -48,35 +47,27 @@ function Users() {
 
     useInfiniteScroll(scrollTarget, ioFunction, ids);
 
+    if (usersLoading) {
+        return <Spinner containerClassName='pd--md' />;
+    }
+
     return (
-        <section className='flex--1 pd--md'>
-            <Helmet>
-                <title>Users</title>
-            </Helmet>
+        <div className='pd--md'>
+            <div className='users__main'>
+                {users.map(user => (
+                    <User
+                        key={user.id}
+                        className='b--1 brdr--primary-light b-rad--sm'
+                        namespace='users'
+                        {...user}
+                    />
+                ))}
+            </div>
 
-            <h3 className='text--black-light'>Search for people</h3>
+            <div ref={scrollTarget}></div>
 
-            {usersLoading ? (
-                <Spinner containerClassName='mg-t--md' />
-            ) : (
-                <>
-                    <div className='mg-t--md users__main'>
-                        {users.map(user => (
-                            <User
-                                key={user.id}
-                                className='b--1 brdr--primary-light b-rad--sm'
-                                namespace='users'
-                                {...user}
-                            />
-                        ))}
-                    </div>
-
-                    <div ref={scrollTarget}></div>
-
-                    {scrollLoading && <Spinner />}
-                </>
-            )}
-        </section>
+            {scrollLoading && <Spinner />}
+        </div>
     );
 }
 

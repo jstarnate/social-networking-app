@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import User from 'modules/users/User';
 import Spinner from 'helpers/Spinner';
@@ -18,8 +17,6 @@ interface ConnectedUser extends UserWithId {
 interface RouteParams {
     username: string;
 }
-
-const cachedUser = JSON.parse(localStorage.getItem('user') || '{}');
 
 function ConnectedUsers({ name }: Props) {
     const [users, setUsers] = useState<ConnectedUser[]>([]);
@@ -62,69 +59,34 @@ function ConnectedUsers({ name }: Props) {
     }, []);
 
     return (
-        <section className='flex--1'>
-            <Helmet>
-                <title>
+        <div className='pd--md'>
+            {users.length ? (
+                <>
+                    <div className='users__main'>
+                        {users.map(user => (
+                            <User
+                                key={user.id}
+                                className='b--1 brdr--primary-light b-rad--sm'
+                                namespace='users'
+                                {...user}
+                            />
+                        ))}
+                    </div>
+
+                    <div ref={scrollTarget}></div>
+                </>
+            ) : (
+                <h3 className='text--gray text--center'>
                     {name === 'followers'
-                        ? 'Followers'
+                        ? 'No followers'
                         : name === 'following'
-                        ? 'Followed people'
-                        : 'Home'}
-                </title>
-            </Helmet>
-
-            <header className='d--flex ai--center bb--1 brdr--primary'>
-                <Link
-                    to={`/u/${username}`}
-                    className='btn text--primary pd-t--sm pd-b--sm pd-l--md pd-r--md'>
-                    <i className='fa fa-arrow-left'></i>
-                </Link>
-                <h3 className='text--black-light'>
-                    {name === 'followers' &&
-                        username === cachedUser.username &&
-                        'People who follow you'}
-                    {name === 'followers' &&
-                        username !== cachedUser.username &&
-                        `People who follow ${username}`}
-
-                    {name === 'following' &&
-                        username === cachedUser.username &&
-                        'People you follow'}
-                    {name === 'following' &&
-                        username !== cachedUser.username &&
-                        `People ${username} follows`}
+                        ? 'No followed person'
+                        : ''}
                 </h3>
-            </header>
+            )}
 
-            <div className='pd--md'>
-                {users.length ? (
-                    <>
-                        <div className='users__main'>
-                            {users.map(user => (
-                                <User
-                                    key={user.id}
-                                    className='b--1 brdr--primary-light b-rad--sm'
-                                    namespace='users'
-                                    {...user}
-                                />
-                            ))}
-                        </div>
-
-                        <div ref={scrollTarget}></div>
-                    </>
-                ) : (
-                    <h3 className='text--gray text--center'>
-                        {name === 'followers'
-                            ? 'No followers'
-                            : name === 'following'
-                            ? 'No followed person'
-                            : ''}
-                    </h3>
-                )}
-
-                {loading && <Spinner />}
-            </div>
-        </section>
+            {loading && <Spinner />}
+        </div>
     );
 }
 
