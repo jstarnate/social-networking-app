@@ -1,8 +1,8 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import SearchBar from 'modules/SearchBar';
+import SearchBar from 'modules/rightbar/SearchBar';
 import SuggestedUsers from 'modules/rightbar/SuggestedUsers';
 import Spinner from 'helpers/Spinner';
 import { State } from 'types/redux';
@@ -15,6 +15,7 @@ function Rightbar() {
     const dispatch = useDispatch();
     const screenWidth = useSelector((state: State) => state.screenWidth);
     const openRightbar = useSelector((state: State) => state.openRightbar);
+    const { pathname } = useLocation();
     const status = screenWidth <= 1024 && openRightbar ? 'rightbar--open' : '';
 
     async function getSuggestedUsers() {
@@ -37,6 +38,12 @@ function Rightbar() {
     useEffect(() => {
         getSuggestedUsers();
     }, []);
+
+    useEffect(() => {
+        if (screenWidth <= 1024 && screenWidth > 785 && openRightbar) {
+            dispatch(set('openRightbar', false));
+        }
+    }, [pathname]);
 
     return (
         <aside className='pos--rel rightbar'>
