@@ -1,10 +1,11 @@
 import { RefObject, useCallback, useEffect } from 'react';
 import { UserWithId, Post } from 'types/models';
+import { NotificationType } from 'views/Notifications';
 
 export default function (
     target: RefObject<HTMLDivElement>,
     fn: (observer: IntersectionObserver) => void,
-    dependency: (UserWithId | Post | number)[]
+    dependency: (UserWithId | Post | NotificationType | number)[]
 ) {
     const ioCallback: IntersectionObserverCallback = useCallback(
         async (entries, observer) => {
