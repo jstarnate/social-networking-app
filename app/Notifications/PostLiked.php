@@ -19,10 +19,10 @@ class PostLiked extends Notification
      * Create a new notification instance.
      *
      * @param \App\Models\User  $user
-     * @param number  $postId
+     * @param int  $postId
      * @return void
      */
-    public function __construct(User $user, number $postId)
+    public function __construct(User $user, int $postId)
     {
         $this->user = $user;
         $this->postId = $postId;
