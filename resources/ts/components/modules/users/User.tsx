@@ -34,7 +34,7 @@ function User({ className, namespace, id, ...user }: UserData) {
     return (
         <div className={className}>
             <BasicUserInfo
-                className='d--flex ai--center pd--xs'
+                className='d--grid ai--center pd--xs'
                 imageClassName={`${namespace}__profile-photo`}
                 {...user}
             />
