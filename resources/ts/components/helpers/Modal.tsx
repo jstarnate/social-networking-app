@@ -5,7 +5,7 @@ import useOutsideClick from 'hooks/useOutsideClick';
 
 interface ModalProps {
     title: string;
-    type: string;
+    color?: string;
     message: string | null;
     closeEvent?: () => void;
     children?: ReactNode;
@@ -21,8 +21,7 @@ const Content = (props: ModalProps) => {
             <div
                 ref={modal}
                 className='bg--white b-rad--md mg-l--auto mg-r--auto modal__main'>
-                <header
-                    className={`d--flex bg--${props.type} pd--xs modal__head`}>
+                <header className={`${props.color} pd--xs modal__head`}>
                     <h3 className='text--white'>{props.title}</h3>
                 </header>
 
@@ -60,5 +59,9 @@ function AlertModal(props: ModalProps) {
 
     return createPortal(<Content {...props} />, el);
 }
+
+AlertModal.defaultProps = {
+    color: 'bg--primary',
+};
 
 export default AlertModal;
