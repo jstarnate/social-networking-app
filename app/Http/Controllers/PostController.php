@@ -50,10 +50,22 @@ class PostController extends Controller
     public function getFromProfile(Request $request, string $username, string $section)
     {
         $user = User::where('username', $username)->first();
-        $payload = $user->{$section}()->orderBy('updated_at', 'desc')
-                    ->{$section === 'likes' ? 'wherePivot' : 'where'}('updated_at', '<', $request->date ?: now())
-                    ->get()
-                    ->take(5);
+        $method = $section === 'likes' ? 'wherePivot' : 'where';
+        $date = $request->date ?: now();
+
+        if ($section === 'comments') {
+            $ids = $user->comments->map(fn($c) => $c->post_id)->unique();
+            $models = $ids->map(fn($id) => Post::find($id))->sortByDesc('updated_at');
+            $payload = $models->take(5);
+        }
+        else {
+            $payload = $user->{$section}()
+                            ->orderBy('updated_at', 'desc')
+                            ->{$method}('updated_at', '<', $date)
+                            ->get()
+                            ->take(5);
+        }
+        
         $items = $payload->map(fn($item) => $item->format());
         $has_more = !$payload->isEmpty();
 
