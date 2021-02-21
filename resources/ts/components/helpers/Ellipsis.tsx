@@ -10,7 +10,7 @@ function Ellipsis({ size, color }: Props) {
                 margin: 'auto',
                 shapeRendering: 'auto',
             }}
-            className='d--block bg--white'
+            className='d--block'
             width={`${size}px`}
             height={`${size}px`}
             viewBox='0 0 100 100'
