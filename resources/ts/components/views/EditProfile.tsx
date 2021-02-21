@@ -1,7 +1,8 @@
-import { FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import axios from 'axios';
 import InputField from 'helpers/InputField';
 import ProfilePhoto from 'helpers/ProfilePhoto';
+import Ellipsis from 'helpers/Ellipsis';
 import useInput from 'hooks/useInput';
 import useLimitedChars from 'hooks/useLimitedChars';
 import { UserWithId } from 'types/models';
@@ -15,6 +16,11 @@ interface EditProfileProps {
     user: AuthUser | null;
 }
 
+interface ImageData {
+    id: number | null;
+    path: string | null;
+}
+
 function EditProfile({ user }: EditProfileProps) {
     const [full_name, fullNameData, setFullNameError] = useInput(
         user?.full_name
@@ -23,11 +29,45 @@ function EditProfile({ user }: EditProfileProps) {
     const [location, locationData] = useInput(user?.location);
     const [bio, setBio] = useState<string | null | undefined>(user?.bio);
     const [bioError, setBioError] = useState<string | null>(null);
+    const [image, setImage] = useState<ImageData>({
+        id: null,
+        path: user?.image_url || null,
+    });
     const [updateLoading, setUpdateLoading] = useState<boolean>(false);
+    const [uploadLoading, setUploadLoading] = useState<boolean>(false);
     const [bioCharsLeft, checkBioLength] = useLimitedChars(90, handleBioValue);
 
     function handleBioValue(value: string | null) {
         setBio(value);
+    }
+
+    async function upload(event: ChangeEvent<HTMLInputElement>) {
+        setUploadLoading(true);
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        };
+
+        const formData = new FormData();
+
+        if (event.target.files) {
+            formData.append('image', event.target.files[0]);
+        }
+
+        try {
+            const { data } = await axios.post(
+                '/api/users/upload',
+                formData,
+                config
+            );
+
+            setImage(data);
+            setUploadLoading(false);
+        } catch (error) {
+            setUploadLoading(false);
+        }
     }
 
     async function updateUser(event: FormEvent) {
@@ -38,6 +78,7 @@ function EditProfile({ user }: EditProfileProps) {
         try {
             await axios.put('/api/users/auth/update', {
                 id: user?.id,
+                image_url: image.path,
                 full_name,
                 username,
                 location,
@@ -64,28 +105,35 @@ function EditProfile({ user }: EditProfileProps) {
             className='pd--md mg-l--auto mg-r--auto profile__edit-profile-form'
             onSubmit={updateUser}>
             <div className='d--flex ai--center'>
-                <div className='pos--rel d--ib round profile__change-photo-container'>
-                    <ProfilePhoto
-                        className='round profile__headline-profile-photo'
-                        src={user?.image_url || null}
-                        gender={user?.gender || null}
-                        size={100}
-                        alt='Profile photo'
-                    />
+                {uploadLoading ? (
+                    <div className='d--ib bg--gray-light d--flex ai--center jc--center round profile__loading-image'>
+                        <Ellipsis />
+                    </div>
+                ) : (
+                    <div className='pos--rel d--ib round profile__change-photo-container'>
+                        <ProfilePhoto
+                            className='round profile__headline-profile-photo'
+                            src={image.path}
+                            gender={user?.gender || null}
+                            size={100}
+                            alt='Profile photo'
+                        />
 
-                    <label
-                        className='pos--abs d--block full-width text--center pd-t--xs pd-b--xs cursor--pointer profile__change-photo-button'
-                        htmlFor='avatar'>
-                        <i className='fa fa-camera text--white'></i>
-                    </label>
+                        <label
+                            className='pos--abs d--block full-width text--center pd-t--xs pd-b--xs cursor--pointer profile__change-photo-button'
+                            htmlFor='avatar'>
+                            <i className='fa fa-camera text--white'></i>
+                        </label>
 
-                    <input
-                        id='avatar'
-                        className='d--none'
-                        type='file'
-                        accept='.jpg,jpeg,.png'
-                    />
-                </div>
+                        <input
+                            id='avatar'
+                            className='d--none'
+                            type='file'
+                            accept='.jpg,jpeg,.png'
+                            onChange={upload}
+                        />
+                    </div>
+                )}
 
                 <span className='font--sm text--black-light mg-l--sm'>
                     Max size:
