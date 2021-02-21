@@ -29,11 +29,11 @@ function HomeComponent() {
     const screenWidth = useSelector((state: State) => state.screenWidth);
     const dispatch = useDispatch();
 
-    async function getAuthUser() {
-        const { data } = await axios.get('/api/users/auth');
-
-        setUser(data.user);
-        localStorage.setItem('user', JSON.stringify(data.user));
+    function getAuthUser() {
+        axios.get('/api/users/auth').then(({ data }) => {
+            setUser(data.user);
+            localStorage.setItem('user', JSON.stringify(data.user));
+        });
     }
 
     function setStateOnResize(width: number) {

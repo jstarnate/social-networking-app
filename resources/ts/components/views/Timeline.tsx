@@ -15,21 +15,22 @@ function Timeline() {
     const scrollTarget = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
 
-    async function ioFunction(observer: IntersectionObserver) {
+    function ioFunction(observer: IntersectionObserver) {
         setLoadingPosts(true);
 
         const date = posts[posts.length - 1]?.updated_at || null;
-        const { data } = await axios.post('/api/posts', { date });
 
-        if (data.has_more) {
-            dispatch(pushSpread('posts', data.items));
-        }
+        axios.post('/api/posts', { date }).then(({ data }) => {
+            if (data.has_more) {
+                dispatch(pushSpread('posts', data.items));
+            }
 
-        if (!data.has_more && scrollTarget && scrollTarget.current) {
-            observer.unobserve(scrollTarget.current);
-        }
+            if (!data.has_more && scrollTarget && scrollTarget.current) {
+                observer.unobserve(scrollTarget.current);
+            }
 
-        setLoadingPosts(false);
+            setLoadingPosts(false);
+        });
     }
 
     function deletePostEvent(id: number) {

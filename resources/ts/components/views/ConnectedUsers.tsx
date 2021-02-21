@@ -24,32 +24,34 @@ function ConnectedUsers({ name }: Props) {
     const scrollTarget = useRef<HTMLDivElement>(null);
     const { username }: RouteParams = useParams();
 
-    async function getUsers() {
+    function getUsers() {
         setLoading(true);
 
         const url = `/api/users/u/${username}/connected/${name}`;
-        const { data } = await axios.post(url);
 
-        setUsers(data.users);
-        setLoading(false);
+        axios.post(url).then(({ data }) => {
+            setUsers(data.users);
+            setLoading(false);
+        });
     }
 
-    async function ioFunction(observer: IntersectionObserver) {
+    function ioFunction(observer: IntersectionObserver) {
         setLoading(true);
 
         const url = `/api/users/u/${username}/connected/${name}`;
         const date = users[users.length - 1]?.connected_at || null;
-        const { data } = await axios.post(url, { date });
 
-        if (data.has_more) {
-            setUsers(u => [...u, ...data.users]);
-        }
+        axios.post(url, { date }).then(({ data }) => {
+            if (data.has_more) {
+                setUsers(u => [...u, ...data.users]);
+            }
 
-        if (!data.has_more && scrollTarget && scrollTarget.current) {
-            observer.unobserve(scrollTarget.current);
-        }
+            if (!data.has_more && scrollTarget && scrollTarget.current) {
+                observer.unobserve(scrollTarget.current);
+            }
 
-        setLoading(false);
+            setLoading(false);
+        });
     }
 
     useInfiniteScroll(scrollTarget, ioFunction, users);

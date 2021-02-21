@@ -25,30 +25,31 @@ function Posts({ section }: Props) {
         setPosts(posts => posts.filter(post => post.id !== id));
     }
 
-    async function getPosts() {
+    function getPosts() {
         setLoadingPosts(true);
 
-        const { data } = await axios.post(postRoute);
-
-        setPosts(data.items);
-        setLoadingPosts(false);
+        axios.post(postRoute).then(({ data }) => {
+            setPosts(data.items);
+            setLoadingPosts(false);
+        });
     }
 
-    async function ioFunction(observer: IntersectionObserver) {
+    function ioFunction(observer: IntersectionObserver) {
         setLoadingPosts(true);
 
         const date = posts[posts.length - 1].updated_at;
-        const { data } = await axios.post(postRoute, { date });
 
-        if (data.has_more) {
-            setPosts(p => [...p, ...data.items]);
-        }
+        axios.post(postRoute, { date }).then(({ data }) => {
+            if (data.has_more) {
+                setPosts(p => [...p, ...data.items]);
+            }
 
-        if (!data.has_more && scrollTarget && scrollTarget.current) {
-            observer.unobserve(scrollTarget.current);
-        }
+            if (!data.has_more && scrollTarget && scrollTarget.current) {
+                observer.unobserve(scrollTarget.current);
+            }
 
-        setLoadingPosts(false);
+            setLoadingPosts(false);
+        });
     }
 
     useInfiniteScroll(scrollTarget, ioFunction, posts);

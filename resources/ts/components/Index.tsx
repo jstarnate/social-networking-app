@@ -9,22 +9,20 @@ function IndexComponent() {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
-    async function submit(event: FormEvent) {
+    function submit(event: FormEvent) {
         event.preventDefault();
 
         setLoading(true);
 
-        try {
-            const { data } = await axios.post('/api/sign-in', {
-                username,
-                password,
+        axios
+            .post('/api/sign-in', { username, password })
+            .then(({ data }) => {
+                location = data.url;
+            })
+            .catch(err => {
+                setError(err.response.data.errors.message);
+                setLoading(false);
             });
-
-            location = data.url;
-        } catch (err) {
-            setError(err.response.data.errors.message);
-            setLoading(false);
-        }
     }
 
     return (

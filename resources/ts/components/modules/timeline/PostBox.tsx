@@ -14,22 +14,23 @@ function PostBox() {
         setBody(value);
     }
 
-    async function submitPost() {
+    function submitPost() {
         if (!body || !body.length) {
             return;
         }
 
         setLoading(true);
 
-        try {
-            const { data } = await axios.post('/api/posts/create', { body });
-
-            dispatch(unshiftAdd('posts', data.post));
-            setBody(null);
-            setLoading(false);
-        } catch (err) {
-            setLoading(false);
-        }
+        axios
+            .post('/api/posts/create', { body })
+            .then(({ data }) => {
+                dispatch(unshiftAdd('posts', data.post));
+                setBody(null);
+                setLoading(false);
+            })
+            .catch(() => {
+                setLoading(false);
+            });
     }
 
     return (

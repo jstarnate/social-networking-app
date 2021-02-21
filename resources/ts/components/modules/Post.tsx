@@ -33,9 +33,10 @@ function Post(props: Props) {
         toggleDeleteConfirmation(false);
     }
 
-    async function deletePost() {
-        await axios.delete(`/api/posts/delete/${props.id}`);
-        props.deleteEvent(props.id);
+    function deletePost() {
+        axios.delete(`/api/posts/delete/${props.id}`).then(() => {
+            props.deleteEvent(props.id);
+        });
     }
 
     function toggleLikeButton() {
@@ -43,11 +44,11 @@ function Post(props: Props) {
         setLikesCount(count => (liked ? count - 1 : count + 1));
     }
 
-    async function toggleLikeRequest() {
+    function toggleLikeRequest() {
         if (!liked) {
-            await axios.post('/api/posts/like', { id: props.id });
+            axios.post('/api/posts/like', { id: props.id });
         } else {
-            await axios.post('/api/posts/dislike', { id: props.id });
+            axios.post('/api/posts/dislike', { id: props.id });
         }
     }
 
@@ -55,11 +56,11 @@ function Post(props: Props) {
         setBookmarked(current => !current);
     }
 
-    async function toggleBookmarkRequest() {
+    function toggleBookmarkRequest() {
         if (!bookmarked) {
-            await axios.post('/api/posts/bookmark', { id: props.id });
+            axios.post('/api/posts/bookmark', { id: props.id });
         } else {
-            await axios.post('/api/posts/unbookmark', { id: props.id });
+            axios.post('/api/posts/unbookmark', { id: props.id });
         }
     }
 

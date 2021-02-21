@@ -46,7 +46,7 @@ function Filterer() {
     const useQuery = () => new URLSearchParams(useLocation().search);
     const sq = useQuery().get('sq');
 
-    async function filterUsers(event: FormEvent) {
+    function filterUsers(event: FormEvent) {
         event.preventDefault();
 
         dispatch(set('usersLoading', true));
@@ -57,10 +57,10 @@ function Filterer() {
             birth_month,
             birth_year,
         };
-        const { data } = await axios.post('/api/users/filter', requests);
-
-        dispatch(set('users', data.users));
-        dispatch(set('usersLoading', false));
+        axios.post('/api/users/filter', requests).then(({ data }) => {
+            dispatch(set('users', data.users));
+            dispatch(set('usersLoading', false));
+        });
     }
 
     return (

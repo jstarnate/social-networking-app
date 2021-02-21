@@ -41,7 +41,7 @@ function EditProfile({ user }: EditProfileProps) {
         setBio(value);
     }
 
-    async function upload(event: ChangeEvent<HTMLInputElement>) {
+    function upload(event: ChangeEvent<HTMLInputElement>) {
         setUploadLoading(true);
 
         const config = {
@@ -56,48 +56,46 @@ function EditProfile({ user }: EditProfileProps) {
             formData.append('image', event.target.files[0]);
         }
 
-        try {
-            const { data } = await axios.post(
-                '/api/users/upload',
-                formData,
-                config
-            );
-
-            setImage(data);
-            setUploadLoading(false);
-        } catch (error) {
-            setUploadLoading(false);
-        }
+        axios
+            .post('/api/users/upload', formData, config)
+            .then(({ data }) => {
+                setImage(data);
+                setUploadLoading(false);
+            })
+            .catch(() => {
+                setUploadLoading(false);
+            });
     }
 
-    async function updateUser(event: FormEvent) {
+    function updateUser(event: FormEvent) {
         event.preventDefault();
 
         setUpdateLoading(true);
 
-        try {
-            await axios.put('/api/users/auth/update', {
+        axios
+            .put('/api/users/auth/update', {
                 id: user?.id,
                 image_url: image.path,
                 full_name,
                 username,
                 location,
                 bio,
+            })
+            .then(() => {
+                localStorage.removeItem('user');
+                window.location.href = `/u/${username}`;
+            })
+            .catch(error => {
+                if (error.response.status === 422) {
+                    const { errors } = error.response.data;
+
+                    setFullNameError(errors.full_name);
+                    setUsernameError(errors.username);
+                    setBioError(errors.bio ? errors.bio[0] : null);
+                }
+
+                setUpdateLoading(false);
             });
-
-            localStorage.removeItem('user');
-            window.location.href = `/u/${username}`;
-        } catch (error) {
-            if (error.response.status === 422) {
-                const { errors } = error.response.data;
-
-                setFullNameError(errors.full_name);
-                setUsernameError(errors.username);
-                setBioError(errors.bio ? errors.bio[0] : null);
-            }
-
-            setUpdateLoading(false);
-        }
     }
 
     return (

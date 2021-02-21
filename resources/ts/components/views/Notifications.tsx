@@ -27,30 +27,31 @@ function Notifications() {
     const [notifs, setNotifs] = useState<NotificationType[]>([]);
     const scrollTarget = useRef<HTMLInputElement>(null);
 
-    async function getNotifications() {
+    function getNotifications() {
         setLoading(true);
 
-        const { data } = await axios.post('/api/notifications/get');
-
-        setNotifs(data.items);
-        setLoading(false);
+        axios.post('/api/notifications/get').then(({ data }) => {
+            setNotifs(data.items);
+            setLoading(false);
+        });
     }
 
-    async function ioFunction(observer: IntersectionObserver) {
+    function ioFunction(observer: IntersectionObserver) {
         setLoading(true);
 
         const date = notifs[notifs.length - 1].created_at;
-        const { data } = await axios.post('/api/notifications/get', { date });
 
-        if (data.has_more) {
-            setNotifs(current => [...current, ...data.items]);
-        }
+        axios.post('/api/notifications/get', { date }).then(({ data }) => {
+            if (data.has_more) {
+                setNotifs(current => [...current, ...data.items]);
+            }
 
-        if (!data.has_more && scrollTarget && scrollTarget.current) {
-            observer.unobserve(scrollTarget.current);
-        }
+            if (!data.has_more && scrollTarget && scrollTarget.current) {
+                observer.unobserve(scrollTarget.current);
+            }
 
-        setLoading(false);
+            setLoading(false);
+        });
     }
 
     function updateReadStatus(id: string) {

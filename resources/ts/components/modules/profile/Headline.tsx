@@ -48,13 +48,13 @@ function Headline() {
         axios.post('/api/users/unfollow', { id: user?.id || null });
     }
 
-    async function getAuthUser() {
+    function getAuthUser() {
         setLoading(true);
 
-        const { data } = await axios.get(`/api/users/u/${username}`);
-
-        setUser(data.user);
-        setLoading(false);
+        axios.get(`/api/users/u/${username}`).then(({ data }) => {
+            setUser(data.user);
+            setLoading(false);
+        });
     }
 
     useEffect(() => {

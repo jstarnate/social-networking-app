@@ -23,11 +23,11 @@ function User({ className, namespace, id, ...user }: UserData) {
         setIsFollowed(followed => !followed);
     }
 
-    async function toggleFollowRequest() {
+    function toggleFollowRequest() {
         if (!isFollowed) {
-            await axios.post('/api/users/follow', { id });
+            axios.post('/api/users/follow', { id });
         } else {
-            await axios.post('/api/users/unfollow', { id });
+            axios.post('/api/users/unfollow', { id });
         }
     }
 

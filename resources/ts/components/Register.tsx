@@ -66,7 +66,7 @@ function RegisterComponent() {
         );
     }
 
-    async function submit(event: FormEvent) {
+    function submit(event: FormEvent) {
         event.preventDefault();
 
         setLoading(true);
@@ -82,26 +82,27 @@ function RegisterComponent() {
             birth_year,
         };
 
-        try {
-            await axios.post('/api/sign-up', requests);
+        axios
+            .post('/api/sign-up', requests)
+            .then(() => {
+                openModal();
+                setRegistered(true);
+            })
+            .catch(error => {
+                const e = error.response.data.errors;
+                const bde = e.birth_month || e.birth_day || e.birth_year;
 
-            openModal();
-            setRegistered(true);
-        } catch (error) {
-            const e = error.response.data.errors;
-            const bde = e.birth_month || e.birth_day || e.birth_year;
-
-            setFullNameError(e.full_name);
-            setEmailError(e.email);
-            setUsernameError(e.username);
-            setPasswordError(e.password);
-            setGenderError(e.gender);
-            setPasswordError(e.password);
-            setBirthdateError(
-                bde ? 'Please complete your whole birth date.' : null
-            );
-            setLoading(false);
-        }
+                setFullNameError(e.full_name);
+                setEmailError(e.email);
+                setUsernameError(e.username);
+                setPasswordError(e.password);
+                setGenderError(e.gender);
+                setPasswordError(e.password);
+                setBirthdateError(
+                    bde ? 'Please complete your whole birth date.' : null
+                );
+                setLoading(false);
+            });
     }
 
     return (

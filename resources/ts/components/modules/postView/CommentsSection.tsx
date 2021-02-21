@@ -75,32 +75,33 @@ function CommentsSection({
         }
     }
 
-    async function getComments() {
+    function getComments() {
         setLoading(true);
 
-        const { data } = await axios.post('/api/comments/get', { postId });
-
-        setComments(data.items);
-        setLoading(false);
+        axios.post('/api/comments/get', { postId }).then(({ data }) => {
+            setComments(data.items);
+            setLoading(false);
+        });
     }
 
-    async function submitComment() {
+    function submitComment() {
         setCommentLoading(true);
 
-        try {
-            const { data } = await axios.post('/api/comments/store', {
+        axios
+            .post('/api/comments/store', {
                 id: postId,
                 body: commentBody,
+            })
+            .then(({ data }) => {
+                setComments([data.comment, ...comments]);
+                setCommentBody(null);
+                setCommentLoading(false);
+                incrementEvent();
+                modifyCount('increment');
+            })
+            .catch(() => {
+                setCommentLoading(false);
             });
-
-            setComments([data.comment, ...comments]);
-            setCommentBody(null);
-            setCommentLoading(false);
-            incrementEvent();
-            modifyCount('increment');
-        } catch (e) {
-            setCommentLoading(false);
-        }
     }
 
     function deleteCommentEvent(id: number) {

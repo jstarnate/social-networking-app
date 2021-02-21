@@ -18,17 +18,18 @@ function Rightbar() {
     const { pathname } = useLocation();
     const status = screenWidth <= 1024 && openRightbar ? 'rightbar--open' : '';
 
-    async function getSuggestedUsers() {
+    function getSuggestedUsers() {
         setLoading(true);
 
-        try {
-            const { data } = await axios.get('/api/users/suggested');
-
-            dispatch(set('suggestedUsers', data.users));
-            setLoading(false);
-        } catch (error) {
-            setLoading(false);
-        }
+        axios
+            .get('/api/users/suggested')
+            .then(({ data }) => {
+                dispatch(set('suggestedUsers', data.users));
+                setLoading(false);
+            })
+            .catch(() => {
+                setLoading(false);
+            });
     }
 
     function hideRightbar() {

@@ -15,21 +15,22 @@ function ForgotPasswordComponent() {
         setEmail(event.target.value);
     }
 
-    async function submit(event: FormEvent) {
+    function submit(event: FormEvent) {
         event.preventDefault();
 
         setLoading(true);
 
-        try {
-            await axios.post('/api/forgot-password/send', { email });
+        axios
+            .post('/api/forgot-password/send', { email })
+            .then(() => {
+                setIsSent(true);
+            })
+            .catch(error => {
+                const { email } = error.response.data.errors;
 
-            setIsSent(true);
-        } catch (error) {
-            const { email } = error.response.data.errors;
-
-            setError(email ? email[0] : null);
-            setLoading(false);
-        }
+                setError(email ? email[0] : null);
+                setLoading(false);
+            });
     }
 
     return (

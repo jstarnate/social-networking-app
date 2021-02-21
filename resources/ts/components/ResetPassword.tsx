@@ -22,31 +22,29 @@ function ResetPasswordComponent() {
         setPasswordConfirmation(event.target.value);
     }
 
-    async function submit(event: FormEvent) {
+    function submit(event: FormEvent) {
         event.preventDefault();
 
         setLoading(true);
 
-        try {
-            const { data } = await axios.post('/api/reset-password', {
-                password,
-                password_confirmation,
+        axios
+            .post('/api/reset-password', { password, password_confirmation })
+            .then(({ data }) => {
+                setSuccessMessage(data.message);
+                setIsSent(true);
+                setLoading(false);
+            })
+            .catch(error => {
+                const errors = error.response.data.errors;
+
+                setPasswordError(errors.password);
+                setPasswordConfirmationError(
+                    errors.password_confirmation
+                        ? errors.password_confirmation[0]
+                        : null
+                );
+                setLoading(false);
             });
-
-            setSuccessMessage(data.message);
-            setIsSent(true);
-            setLoading(false);
-        } catch (error) {
-            const errors = error.response.data.errors;
-
-            setPasswordError(errors.password);
-            setPasswordConfirmationError(
-                errors.password_confirmation
-                    ? errors.password_confirmation[0]
-                    : null
-            );
-            setLoading(false);
-        }
     }
 
     return (

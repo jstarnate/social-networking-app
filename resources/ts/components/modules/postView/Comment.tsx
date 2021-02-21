@@ -19,9 +19,10 @@ function Comment({ id, body, from_self, user, deleteEvent }: Props) {
         setShowModal(false);
     }
 
-    async function deleteComment() {
-        await axios.delete(`/api/comments/${id}/destroy`);
-        deleteEvent(id);
+    function deleteComment() {
+        axios.delete(`/api/comments/${id}/destroy`).then(() => {
+            deleteEvent(id);
+        });
     }
 
     useEffect(() => {

@@ -22,15 +22,13 @@ function PostView() {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    async function getPost() {
+    function getPost() {
         setLoading(true);
 
-        const { data } = await axios.post('/api/posts/fetch', {
-            id: Number(id),
+        axios.post('/api/posts/fetch', { id: Number(id) }).then(({ data }) => {
+            setTweet(data.post);
+            setLoading(false);
         });
-
-        setTweet(data.post);
-        setLoading(false);
     }
 
     function destroyPost(id: number) {

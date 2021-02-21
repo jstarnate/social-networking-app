@@ -33,9 +33,10 @@ function Sidebar({ user }: Props) {
     const logoutForm = useRef<HTMLFormElement>(null);
     const screenWidth = useSelector((state: State) => state.screenWidth);
 
-    async function getNotifCount() {
-        const { data } = await axios.get('/api/notifications/count');
-        setNotifCount(data.count);
+    function getNotifCount() {
+        axios.get('/api/notifications/count').then(({ data }) => {
+            setNotifCount(data.count);
+        });
     }
 
     function enableModal() {

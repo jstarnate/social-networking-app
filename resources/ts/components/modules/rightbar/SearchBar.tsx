@@ -12,7 +12,7 @@ function SearchBar() {
     const [loading, setLoading] = useState<boolean>(false);
     const searchComponent = useRef<HTMLElement>(null);
 
-    async function getSearchSuggestions(event: ChangeEvent<HTMLInputElement>) {
+    function getSearchSuggestions(event: ChangeEvent<HTMLInputElement>) {
         const { value } = event.target;
 
         setQuery(value);
@@ -21,14 +21,15 @@ function SearchBar() {
             setLoading(true);
         }
 
-        try {
-            const { data } = await axios.get(`/api/users/search?sq=${value}`);
-
-            setUsers(data.users);
-            setLoading(false);
-        } catch (e) {
-            setLoading(false);
-        }
+        axios
+            .get(`/api/users/search?sq=${value}`)
+            .then(({ data }) => {
+                setUsers(data.users);
+                setLoading(false);
+            })
+            .catch(() => {
+                setLoading(false);
+            });
     }
 
     function submitForm(event: FormEvent) {

@@ -23,26 +23,25 @@ function Users() {
     const useQuery = () => new URLSearchParams(useLocation().search);
     const sq = useQuery().get('sq');
 
-    async function ioFunction(observer: IntersectionObserver) {
+    function ioFunction(observer: IntersectionObserver) {
         setScrollLoading(true);
 
-        const { data } = await axios.post('/api/users/search/results', {
-            sq,
-            ids,
-        });
+        axios
+            .post('/api/users/search/results', { sq, ids })
+            .then(({ data }) => {
+                if (data.has_more) {
+                    const newIds = data.items.map((item: UserType) => item.id);
 
-        if (data.has_more) {
-            const newIds = data.items.map((item: UserType) => item.id);
+                    dispatch(pushSpread('users', data.items));
+                    setIds(userIds => [...userIds, ...newIds]);
+                }
 
-            dispatch(pushSpread('users', data.items));
-            setIds(userIds => [...userIds, ...newIds]);
-        }
+                if (!data.has_more && scrollTarget && scrollTarget.current) {
+                    observer.unobserve(scrollTarget.current);
+                }
 
-        if (!data.has_more && scrollTarget && scrollTarget.current) {
-            observer.unobserve(scrollTarget.current);
-        }
-
-        setScrollLoading(false);
+                setScrollLoading(false);
+            });
     }
 
     useInfiniteScroll(scrollTarget, ioFunction, ids);
