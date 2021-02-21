@@ -5,12 +5,7 @@ import axios from 'axios';
 import RouteView from './modules/RouteView';
 import Sidebar from './modules/Sidebar';
 import Rightbar from './modules/Rightbar';
-import EditProfile from './views/EditProfile';
 import Timeline from './views/Timeline';
-import Notifications from './views/Notifications';
-import Users from './views/Users';
-import PostView from './views/PostView';
-import ConnectedUsers from './views/ConnectedUsers';
 import Spinner from 'helpers/Spinner';
 import { UserWithId } from 'types/models';
 import { set } from 'actions';
@@ -22,7 +17,13 @@ interface AuthUser extends UserWithId {
 }
 
 const storageUser = localStorage.getItem('user');
+
 const Profile = lazy(() => import('./views/Profile'));
+const EditProfile = lazy(() => import('./views/EditProfile'));
+const Notifications = lazy(() => import('./views/Notifications'));
+const Users = lazy(() => import('./views/Users'));
+const PostView = lazy(() => import('./views/PostView'));
+const ConnectedUsers = lazy(() => import('./views/ConnectedUsers'));
 
 function HomeComponent() {
     const [user, setUser] = useState<AuthUser | null>(null);
@@ -83,9 +84,7 @@ function HomeComponent() {
                     subTitle='Profile'
                     path='/u/:username'>
                     <Suspense
-                        fallback={
-                            <Spinner containerClassName='flex--1 mg-t--lg' />
-                        }>
+                        fallback={<Spinner containerClassName='mg-t--md' />}>
                         <Profile />
                     </Suspense>
                 </RouteView>
@@ -95,42 +94,60 @@ function HomeComponent() {
                     title='Edit profile'
                     subTitle='Edit profile'
                     path='/profile/:username/edit'>
-                    <EditProfile user={user} />
+                    <Suspense
+                        fallback={<Spinner containerClassName='mg-t--md' />}>
+                        <EditProfile user={user} />
+                    </Suspense>
                 </RouteView>
 
                 <RouteView
                     title='Notifications'
                     subTitle='Notifications'
-                    path='/notifications'
-                    component={Notifications}
-                />
+                    path='/notifications'>
+                    <Suspense
+                        fallback={<Spinner containerClassName='mg-t--md' />}>
+                        <Notifications />
+                    </Suspense>
+                </RouteView>
 
                 <RouteView
                     title='Search people'
                     subTitle='Search people'
-                    path='/users/search'
-                    component={Users}
-                />
+                    path='/users/search'>
+                    <Suspense
+                        fallback={<Spinner containerClassName='mg-t--md' />}>
+                        <Users />
+                    </Suspense>
+                </RouteView>
 
                 <RouteView
                     title='Home'
                     subTitle='View post'
-                    path='/posts/:id/comments'
-                    component={PostView}
-                />
+                    path='/posts/:id/comments'>
+                    <Suspense
+                        fallback={<Spinner containerClassName='mg-t--xs' />}>
+                        <PostView />
+                    </Suspense>
+                </RouteView>
 
                 <RouteView
                     title='Followers'
                     subTitle='Followers'
                     path='/:username/connected/followers'>
-                    <ConnectedUsers name='followers' />
+                    <Suspense
+                        fallback={<Spinner containerClassName='mg-t--md' />}>
+                        <ConnectedUsers name='followers' />
+                    </Suspense>
                 </RouteView>
 
                 <RouteView
                     title='Followed people'
                     subTitle='Followed people'
                     path='/:username/connected/following'>
-                    <ConnectedUsers name='following' />
+                    <Suspense
+                        fallback={<Spinner containerClassName='mg-t--md' />}>
+                        <ConnectedUsers name='following' />
+                    </Suspense>
                 </RouteView>
             </Switch>
 
