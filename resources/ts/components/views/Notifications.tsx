@@ -85,9 +85,9 @@ function Notifications() {
     return (
         <section className='pd-b--md pd-l--md pd-r--md'>
             {!loading && !notifs.length ? (
-                <h3 className='text--gray text--bold text--center'>
+                <h4 className='text--gray text--bold text--center mg-t--md'>
                     You do not have any notification yet.
-                </h3>
+                </h4>
             ) : (
                 <>
                     {notifs.map(notif => (
