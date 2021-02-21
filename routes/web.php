@@ -81,6 +81,7 @@ Route::group([
     Route::get('/search', [UserController::class, 'search']);
     Route::post('/search/results', [UserController::class, 'getSearchResults']);
     Route::post('/filter', [UserController::class, 'filter']);
+    Route::post('/upload', [UserController::class, 'upload']);
 });
 
 // ==== Posts ====
