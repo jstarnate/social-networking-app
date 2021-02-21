@@ -114,7 +114,7 @@ class UserController extends Controller
         $this->authorize('update', User::find($request->id));
 
         $user = User::where('id', auth()->user()->id);
-        $body = $request->only('full_name', 'username', 'location', 'bio');
+        $body = $request->only('full_name', 'username', 'location', 'bio', 'image_url');
 
         $user->update($body);
 
@@ -232,8 +232,6 @@ class UserController extends Controller
      */
     public function upload(Request $request)
     {
-        $this->authorize('update', User::find($request->id));
-
         $image = $request->file('image');
         $size = 240;
         list($width, $height) = getimagesize($image);
@@ -242,11 +240,12 @@ class UserController extends Controller
             throw ValidationException::withMessages(['image' => "Maximum is {$size}x{$size}."]);
         }
 
-        Cloudder::upload($image->getRealPath(), null, ['folder' => 'social']);
+        $result = $image->storeOnCloudinary('social');
 
-        $url = Cloudder::show(Cloudder::getPublicId(), ['width' => $size, 'height' => $size]);
-
-        return response()->json(compact('url'));
+        return response()->json([
+            'id' => $result->getPublicId(),
+            'path' => $result->getSecurePath(),
+        ]);
     }
 
 }
