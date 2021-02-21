@@ -61,12 +61,12 @@ function Posts({ section }: Props) {
         return (
             <h4 className='text--gray text--bold text--center pd-t--md pd-b--md pd-l--sm pd-r--sm'>
                 {section === 'likes'
-                    ? "You don't have any liked post yet."
+                    ? 'No liked post yet.'
                     : section === 'comments'
-                    ? "You don't have any comment yet."
+                    ? 'No comment yet.'
                     : section === 'bookmarks'
-                    ? "You don't have any bookmarked post yet."
-                    : "You haven't posted anything yet."}
+                    ? 'No bookmarked post yet.'
+                    : 'No post.'}
             </h4>
         );
     }
