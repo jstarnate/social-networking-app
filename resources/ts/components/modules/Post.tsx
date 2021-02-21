@@ -75,8 +75,14 @@ function Post(props: Props) {
             <BasicUserInfo
                 imageClassName='home__id-photo'
                 avatarSize={55}
-                {...props.user}
-            />
+                fromSelf={props.from_self}
+                {...props.user}>
+                <button
+                    className='btn pd-l--md mg-l--auto'
+                    onClick={toggleDeleteConfirmation.bind(null, true)}>
+                    <i className='fa fa-trash font--lg text--gray'></i>
+                </button>
+            </BasicUserInfo>
 
             <p
                 className={`text--black-light mg-t--sm ${props.namespace}__post-body`}>

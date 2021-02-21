@@ -34,21 +34,13 @@ function Comment({ id, body, from_self, user, deleteEvent }: Props) {
     return (
         <>
             <div className='full-width b--1 brdr--primary b-rad--sm pd--md mg-t--md'>
-                <div className='d--flex ai--center'>
-                    <BasicUserInfo
-                        className='d--flex ai--center'
-                        avatarSize={45}
-                        {...user}
-                    />
-
-                    {from_self && (
-                        <button
-                            className='btn mg-l--auto'
-                            onClick={showDeleteCommentConfirmation}>
-                            <i className='fa fa-trash font--lg text--gray'></i>
-                        </button>
-                    )}
-                </div>
+                <BasicUserInfo avatarSize={45} fromSelf={from_self} {...user}>
+                    <button
+                        className='btn pd-l--md mg-l--auto'
+                        onClick={showDeleteCommentConfirmation}>
+                        <i className='fa fa-trash font--lg text--gray'></i>
+                    </button>
+                </BasicUserInfo>
 
                 <p className='text--black mg-t--sm timeline__post-body'>
                     {body}
