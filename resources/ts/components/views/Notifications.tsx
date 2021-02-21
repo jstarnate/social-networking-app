@@ -59,7 +59,7 @@ function Notifications() {
             (notif: NotificationType) => notif.id === id
         );
 
-        if (selected && !selected.read_at) {
+        if (selected && selected.read_at) {
             return;
         }
 
