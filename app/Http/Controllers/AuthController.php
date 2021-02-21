@@ -95,6 +95,8 @@ class AuthController extends Controller
             return redirect()->route('index');
         }
 
+        $username = $user->first()->username;
+
         event(new Verified($user->first()));
 
         session()->regenerate();
@@ -106,8 +108,7 @@ class AuthController extends Controller
             'token' => null,
         ]);
 
-        // TODO: change the route to profile and add "username" parameter.
-        return redirect()->route('home');
+        return redirect()->route('profile', compact('username'));
     }
 
     /**
@@ -167,7 +168,7 @@ class AuthController extends Controller
             'password_confirmation' => ['required', 'same:password']
         ]);
 
-        $token = Str::replaceFirst(url()->current() . '/', '', url()->previous());
+        $token = Str::replaceFirst(env('APP_URL') . '/reset-password/', '', url()->previous());
         $email = DB::table('password_resets')->where('token', $token)->first()->email;
         $user = User::where('email', $email);
 
