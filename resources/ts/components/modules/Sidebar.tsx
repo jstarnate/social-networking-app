@@ -146,7 +146,6 @@ function Sidebar({ user }: Props) {
                         <Spinner containerClassName='pos--fixed ai--center modal' />
                     }>
                     <Modal
-                        type='primary'
                         title='Sign out'
                         message='Are you sure you want to sign out?'
                         closeEvent={disableModal}>

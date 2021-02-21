@@ -176,7 +176,6 @@ function Headline() {
             {showUnfollowConfirmation && (
                 <Modal
                     title='Confirm unfollow'
-                    type='primary'
                     message={`You will no longer see posts from ${username}. Continue?`}
                     closeEvent={closeUnfollowModal}>
                     <>

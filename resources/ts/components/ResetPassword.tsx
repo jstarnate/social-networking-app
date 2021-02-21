@@ -90,11 +90,7 @@ function ResetPasswordComponent() {
                     fallback={
                         <Spinner containerClassName='pos--fixed ai--center modal' />
                     }>
-                    <Modal
-                        title='Congratulations!'
-                        type='success'
-                        message={successMessage}
-                    />
+                    <Modal title='Success!' message={successMessage} />
                 </Suspense>
             )}
         </section>

@@ -138,7 +138,7 @@ function Post(props: Props) {
                     }>
                     <Modal
                         title='Confirm delete'
-                        type='danger'
+                        color='bg--danger'
                         message='Are you sure you want to delete this post?'
                         closeEvent={closeDeleteModal}>
                         <button

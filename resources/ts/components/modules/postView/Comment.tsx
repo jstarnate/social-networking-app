@@ -56,8 +56,8 @@ function Comment({ id, body, from_self, user, deleteEvent }: Props) {
 
             {showModal && (
                 <Modal
-                    type='danger'
                     title='Confirm deletion'
+                    color='bg--danger'
                     message='Are you sure you want to delete your comment?'
                     closeEvent={hideDeleteCommentConfirmation}>
                     <button

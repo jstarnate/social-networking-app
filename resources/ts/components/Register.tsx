@@ -230,11 +230,10 @@ function RegisterComponent() {
                         <Spinner containerClassName='pos--fixed ai--center modal' />
                     }>
                     <Modal
-                        title='Congratulations!'
-                        type='success'
+                        title='Success!'
                         message={`You have successfully registered. Please check
-                                your email (${email}) for the verification of
-                                your account.`}
+                                    your email (${email}) for the verification of
+                                    your account.`}
                     />
                 </Suspense>
             )}

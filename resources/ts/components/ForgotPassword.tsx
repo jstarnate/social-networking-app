@@ -62,7 +62,6 @@ function ForgotPasswordComponent() {
                     }>
                     <Modal
                         title='Request sent!'
-                        type='primary'
                         message='Please check your email for the sent request. Thank you!'
                     />
                 </Suspense>
