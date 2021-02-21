@@ -18,12 +18,20 @@
         max-width: 480px;
     }
 
+    &__photo {
+        width: 100px;
+    }
+
     &__change-photo-container {
         overflow: hidden;
 
         &:hover #{$this}__change-photo-button {
             visibility: visible;
         }
+    }
+
+    &__loading-image {
+        @include size(100px);
     }
 
     &__change-photo-button {
