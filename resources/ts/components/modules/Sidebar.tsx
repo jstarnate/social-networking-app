@@ -18,20 +18,20 @@ interface EchoData {
 }
 
 const Modal = lazy(() => import('helpers/Modal'));
-const csrfToken = document
-    .querySelector('meta[name="csrf-token"]')
-    ?.getAttribute('content');
-const echo = new Echo({
-    broadcaster: 'pusher',
-    key: process.env.PUSHER_APP_KEY,
-    cluster: process.env.PUSHER_APP_CLUSTER,
-});
 
 function Sidebar({ user }: Props) {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [notifCount, setNotifCount] = useState<number>(0);
     const logoutForm = useRef<HTMLFormElement>(null);
     const screenWidth = useSelector((state: State) => state.screenWidth);
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute('content');
+    const echo = new Echo({
+        broadcaster: 'pusher',
+        key: process.env.MIX_PUSHER_APP_KEY,
+        cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    });
 
     function getNotifCount() {
         axios.get('/api/notifications/count').then(({ data }) => {
