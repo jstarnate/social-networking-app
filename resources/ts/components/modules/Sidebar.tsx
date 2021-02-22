@@ -7,7 +7,7 @@ import ProfilePhoto from 'helpers/ProfilePhoto';
 import Spinner from 'helpers/Spinner';
 import { UserWithId } from 'types/models';
 import { State } from 'types/redux';
-import 'pusher-js';
+import Pusher from  'pusher-js';
 
 interface Props {
     user: UserWithId | null;
@@ -17,6 +17,7 @@ interface EchoData {
     count: number;
 }
 
+window.Pusher = Pusher;
 const Modal = lazy(() => import('helpers/Modal'));
 
 function Sidebar({ user }: Props) {
