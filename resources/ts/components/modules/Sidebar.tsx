@@ -48,14 +48,11 @@ function Sidebar({ user }: Props) {
     }
 
     function initializeEcho() {
-        const key = '447be77af8401411e761';
-        const cluster = 'ap1';
-
         const echo = new Echo({
             broadcaster: 'pusher',
+            key: '447be77af8401411e761',
+            cluster: 'ap1',
             encrypted: true,
-            key,
-            cluster,
         });
 
         if (user) {
