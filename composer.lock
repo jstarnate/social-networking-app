@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "436847df9ee1317ea6b127462dd3b544",
+    "content-hash": "89146c0bad140f3ead9a5584314f763c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2354,16 +2354,16 @@
         },
         {
             "name": "pusher/pusher-php-server",
-            "version": "v4.1.5",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pusher/pusher-http-php.git",
-                "reference": "251f22602320c1b1aff84798fe74f3f7ee0504a9"
+                "reference": "0c08fb3a7db1a40102acdde1d17ed265febdaeaa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pusher/pusher-http-php/zipball/251f22602320c1b1aff84798fe74f3f7ee0504a9",
-                "reference": "251f22602320c1b1aff84798fe74f3f7ee0504a9",
+                "url": "https://api.github.com/repos/pusher/pusher-http-php/zipball/0c08fb3a7db1a40102acdde1d17ed265febdaeaa",
+                "reference": "0c08fb3a7db1a40102acdde1d17ed265febdaeaa",
                 "shasum": ""
             },
             "require": {
@@ -2378,7 +2378,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.4-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
@@ -2404,7 +2404,7 @@
                 "rest",
                 "trigger"
             ],
-            "time": "2020-12-09T09:38:19+00:00"
+            "time": "2021-02-19T10:13:24+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
