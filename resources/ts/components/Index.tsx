@@ -26,8 +26,8 @@ function IndexComponent() {
     }
 
     useEffect(() => {
-        console.log(process.env.PUSHER_APP_KEY);
-        console.log(process.env.MIX_PUSHER_APP_KEY);
+        console.log({ key: process.env.PUSHER_APP_KEY });
+        console.log({ mixKey: process.env.MIX_PUSHER_APP_KEY });
     }, []);
 
     return (
