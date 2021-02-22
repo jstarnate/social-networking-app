@@ -9,6 +9,12 @@ import { UserWithId } from 'types/models';
 import { State } from 'types/redux';
 import Pusher from 'pusher-js';
 
+declare global {
+    interface Window {
+        pusher: typeof Pusher;
+    }
+}
+
 interface Props {
     user: UserWithId | null;
 }
@@ -17,6 +23,7 @@ interface EchoData {
     count: number;
 }
 
+window.pusher = Pusher;
 const Modal = lazy(() => import('helpers/Modal'));
 
 function Sidebar({ user }: Props) {
