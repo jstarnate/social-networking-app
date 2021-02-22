@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 import useInput from 'hooks/useInput';
 import InputField from 'helpers/InputField';
@@ -24,6 +24,11 @@ function IndexComponent() {
                 setLoading(false);
             });
     }
+
+    useEffect(() => {
+        console.log(process.env.PUSHER_APP_KEY);
+        console.log(process.env.MIX_PUSHER_APP_KEY);
+    }, []);
 
     return (
         <section className='pd-t--sm pd-b--lg pd-l--md pd-r--md mg-l--auto mg-r--auto index__wrap'>

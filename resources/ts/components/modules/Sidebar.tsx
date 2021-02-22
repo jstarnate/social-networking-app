@@ -50,8 +50,8 @@ function Sidebar({ user }: Props) {
     function initializeEcho() {
         const echo = new Echo({
             broadcaster: 'pusher',
-            key: process.env.PUSHER_APP_KEY,
-            cluster: process.env.PUSHER_APP_CLUSTER,
+            key: '447be77af8401411e761',
+            cluster: 'ap1',
             encrypted: true,
         });
 
