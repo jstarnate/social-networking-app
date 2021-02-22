@@ -7,7 +7,7 @@ import ProfilePhoto from 'helpers/ProfilePhoto';
 import Spinner from 'helpers/Spinner';
 import { UserWithId } from 'types/models';
 import { State } from 'types/redux';
-import Pusher from 'pusher-js';
+import 'pusher-js';
 
 interface Props {
     user: UserWithId | null;
