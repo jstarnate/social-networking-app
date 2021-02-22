@@ -48,11 +48,14 @@ function Sidebar({ user }: Props) {
     }
 
     function initializeEcho() {
+        const key = process.env.PUSHER_APP_KEY;
+        const cluster = process.env.PUSHER_APP_CLUSTER;
+
         const echo = new Echo({
             broadcaster: 'pusher',
-            key: `${process.env.PUSHER_APP_KEY}`,
-            cluster: `${process.env.PUSHER_APP_CLUSTER}`,
             encrypted: true,
+            key,
+            cluster,
         });
 
         if (user) {
