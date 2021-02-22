@@ -9,12 +9,6 @@ import { UserWithId } from 'types/models';
 import { State } from 'types/redux';
 import Pusher from 'pusher-js';
 
-declare global {
-    interface Window {
-        pusher: typeof Pusher;
-    }
-}
-
 interface Props {
     user: UserWithId | null;
 }
@@ -23,7 +17,6 @@ interface EchoData {
     count: number;
 }
 
-window.pusher = Pusher;
 const Modal = lazy(() => import('helpers/Modal'));
 
 function Sidebar({ user }: Props) {
@@ -34,11 +27,6 @@ function Sidebar({ user }: Props) {
     const csrfToken = document
         .querySelector('meta[name="csrf-token"]')
         ?.getAttribute('content');
-    const echo = new Echo({
-        broadcaster: 'pusher',
-        key: process.env.MIX_PUSHER_APP_KEY,
-        cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    });
 
     function getNotifCount() {
         axios.get('/api/notifications/count').then(({ data }) => {
@@ -59,11 +47,13 @@ function Sidebar({ user }: Props) {
         localStorage.clear();
     }
 
-    useEffect(() => {
-        getNotifCount();
-    }, []);
+    function initializeEcho() {
+        const echo = new Echo({
+            broadcaster: 'pusher',
+            key: process.env.MIX_PUSHER_APP_KEY,
+            cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+        });
 
-    useEffect(() => {
         if (user) {
             echo.channel(`notify.user.${user.id}`).listen(
                 'SendUnreadNotifsCount',
@@ -72,6 +62,14 @@ function Sidebar({ user }: Props) {
                 }
             );
         }
+    }
+
+    useEffect(() => {
+        getNotifCount();
+    }, []);
+
+    useEffect(() => {
+        initializeEcho();
     }, [user]);
 
     return (
