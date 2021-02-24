@@ -18,6 +18,9 @@ A web app built with Laravel and React.
 4. Set the application key with `php artisan key:generate`.
 5. Migrate the database tables and generate fake data with `php artisan migrate --seed`.
 6. Run `npm run dev` (or `yarn dev`) and `php artisan serve`.
+7. Login with the following credentials:
+    - Username: ***user123***
+    - Password: ***password***
 
 **Sources:**
 - [Font Awesome](https://fontawesome.com) - Icon fonts
