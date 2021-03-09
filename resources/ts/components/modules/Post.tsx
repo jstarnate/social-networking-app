@@ -128,14 +128,6 @@ function Post(props: Props) {
                             bookmarked ? 'fa-bookmark' : 'fa-bookmark-o'
                         } font--lg text--black-light`}></i>
                 </button>
-
-                {props.from_self && (
-                    <button
-                        className='btn mg-l--xl home__post-action-button'
-                        onClick={toggleDeleteConfirmation.bind(null, true)}>
-                        <i className='fa fa-trash font--lg text--gray'></i>
-                    </button>
-                )}
             </div>
 
             {showDeleteConfirmation && (
